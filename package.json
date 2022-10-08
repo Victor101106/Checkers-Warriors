@@ -1,0 +1,16 @@
+{
+	"name": "checkers-warriors",
+	"version": "1.0.0",
+	"description": "Checkers is a classic board game, now imagine with pixel art and some gameplay updates. Well, this is Checkers Warriors!",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"config": {
+		"commitizen": {
+			"path": "cz-conventional-changelog"
+		}
+	},
+	"author": "",
+	"license": "ISC"
+}
