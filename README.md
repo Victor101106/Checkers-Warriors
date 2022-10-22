@@ -11,6 +11,6 @@
 
 <div id="tags" align="center">
     <img alt="MIT License" src="https://img.shields.io/badge/License-MIT-green.svg">
-    <img alt="Galaxy Toolshed (created date)" src="https://img.shields.io/galaxytoolshed/created-date/Checkers%20Warriors/Victor101106?label=Created%20date">
-    <img alt="GitHub commit activity" src="https://img.shields.io/github/commit-activity/w/Victor101106/Checkers%20Warriors?label=Commit%20activity">
+    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/Victor101106/Checkers-Warriors?label=Last%20commit">
+    <img alt="GitHub commit activity" src="https://img.shields.io/github/commit-activity/w/Victor101106/Checkers-Warriors?label=Commit%20activity">
 </div>
