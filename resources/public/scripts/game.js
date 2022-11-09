@@ -11,11 +11,25 @@ export function Game() {
         turn: undefined,
     }
 
+    function setRule(newRule) {
+        state.rules = {
+            ...state.rules,
+            ...newRule
+        }
+        emitter.emit('set-rule', newRule)
+    }
+
+    function getRule(rule) {
+        return state.rules[rule]
+    }
+
     function listen(event, callback) {
         emitter.listen(event, callback)
     }
 
     const returnObject = {
+        setRule,
+        getRule,
         listen,
         state
     }
