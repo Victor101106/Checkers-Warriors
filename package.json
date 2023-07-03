@@ -3,5 +3,13 @@
   "version": "0.0.1",
   "scripts": {},
   "keywords": [],
-  "author": "Victor101106"
+  "author": "Victor101106",
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "dependencies": {
+    "commitizen": "^4.3.0"
+  }
 }
