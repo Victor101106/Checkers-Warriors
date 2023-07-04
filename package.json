@@ -12,5 +12,8 @@
   "dependencies": {
     "commitizen": "^4.3.0"
   },
-  "license": "GPL-3.0-only"
+  "license": "GPL-3.0-only",
+  "devDependencies": {
+    "typescript": "^5.1.6"
+  }
 }
