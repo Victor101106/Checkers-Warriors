@@ -1,7 +1,9 @@
 {
   "name": "checkers-warriors",
   "version": "0.0.1",
-  "scripts": {},
+  "scripts": {
+    "build": "tsup source"
+  },
   "keywords": [],
   "author": "Victor101106",
   "config": {
@@ -14,6 +16,8 @@
   },
   "license": "GPL-3.0-only",
   "devDependencies": {
+    "tsup": "^7.1.0",
+    "tsx": "^3.12.7",
     "typescript": "^5.1.6"
   }
 }
