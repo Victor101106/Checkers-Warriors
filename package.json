@@ -12,11 +12,9 @@
       "path": "cz-conventional-changelog"
     }
   },
-  "dependencies": {
-    "commitizen": "^4.3.0"
-  },
   "license": "GPL-3.0-only",
   "devDependencies": {
+    "commitizen": "^4.3.0",
     "tsup": "^7.1.0",
     "tsx": "^3.12.7",
     "typescript": "^5.1.6",
