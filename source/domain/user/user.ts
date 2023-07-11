@@ -24,7 +24,7 @@ export class User {
     public readonly name: Name
     public readonly id: Id
     
-    constructor(createdAt: Date, password: Password, email: Email, name: Name, id: Id) {
+    private constructor(createdAt: Date, password: Password, email: Email, name: Name, id: Id) {
         this.createdAt = createdAt
         this.password = password
         this.email = email
@@ -33,19 +33,19 @@ export class User {
         Object.freeze(this)
     }
 
-    static create(input: UserRequest): Either<InvalidPassword | InvalidEmail | InvalidName | InvalidId, User> {
+    static create(request: UserRequest): Either<InvalidPassword | InvalidEmail | InvalidName | InvalidId, User> {
 
-        const passwordOrError = Password.create(input.password.value, input.password.validate)
-        const emailOrError = Email.create(input.email)
-        const nameOrError = Name.create(input.name)
-        const idOrError = Id.create(input.id)
+        const passwordOrError = Password.create(request.password.value, request.password.validate)
+        const emailOrError = Email.create(request.email)
+        const nameOrError = Name.create(request.name)
+        const idOrError = Id.create(request.id)
 
         if (passwordOrError.isLeft()) return left(passwordOrError.value)
         if (emailOrError.isLeft()) return left(emailOrError.value)
         if (nameOrError.isLeft()) return left(nameOrError.value)
         if (idOrError.isLeft()) return left(idOrError.value)
 
-        const createdAt = input.createdAt || new Date()
+        const createdAt = request.createdAt || new Date()
         const password = passwordOrError.value
         const email = emailOrError.value
         const name = nameOrError.value

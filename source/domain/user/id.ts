@@ -5,7 +5,7 @@ export class Id {
 
     public readonly value: string
 
-    constructor(value: string) {
+    private constructor(value: string) {
         this.value = value
         Object.freeze(this)
     }
