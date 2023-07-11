@@ -22,11 +22,10 @@ export class Id {
     }
 
     static generateId() {
-        let date = new Date().getTime()
-        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-            const result = (date + Math.random() * 16) % 16 | 0
-            date = Math.floor(date / 16)
-            return (c == 'x' ? result : (result&0x3|0x8)).toString(16)
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(char) {
+            var result = Math.random() * 16 | 0
+            var v = char == 'x' ? result : (result & 0x3 | 0x8)
+            return v.toString(16);
         })
     }
 
