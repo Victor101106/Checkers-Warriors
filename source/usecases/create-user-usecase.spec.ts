@@ -1,0 +1,63 @@
+import { InMemoryUserRepository } from "../external/repositories/in-memory/in-memory-user-repository"
+import { BcryptPasswordService } from "../external/services/adapters/bcrypt-password-service"
+import { UuidUniqueIdService } from "../external/services/adapters/uuid-unique-id-service"
+import { InvalidPassword } from "../domain/user/errors/invalid-password"
+import { EmailAlreadyInUse } from "./errors/email-already-in-use"
+import { CreateUserUseCase } from "./create-user-usecase"
+import { Left, Right } from "../shared/either"
+import { describe, expect, it } from "vitest"
+import { User } from "../domain/user/user"
+
+describe('Create user use case', () => {
+
+    const inMemoryUserRepository = new InMemoryUserRepository()
+    const bcryptPasswordService = new BcryptPasswordService()
+    const uuidUniqueIdService = new UuidUniqueIdService()
+    const createUserUseCase = new CreateUserUseCase(bcryptPasswordService, uuidUniqueIdService, inMemoryUserRepository)
+
+    it('should be able to create and save a user', async () => {
+
+        const userOrError = await createUserUseCase.execute({
+            password: 'Password123.',
+            email: 'email@mail.com',
+            name: 'Name'
+        })
+
+        expect(userOrError).instanceOf(Right)
+
+        const user = userOrError.value as User
+
+        const userOrUndefined = await inMemoryUserRepository.findById(user.id.value)
+
+        expect(userOrUndefined).toBe(user)
+
+    })
+
+    it('should not be able to create a user with a used email', async () => {
+
+        const userOrError = await createUserUseCase.execute({
+            password: 'Password456.',
+            email: 'email@mail.com',
+            name: 'Name'
+        })
+
+        expect(userOrError).instanceOf(Left)
+        expect(userOrError.value).instanceOf(EmailAlreadyInUse)
+
+    })
+
+    it('should not be able to create a user with a invalid password', async () => {
+
+        const userOrError = await createUserUseCase.execute({
+            password: 'Password789',
+            email: 'email2@mail.com',
+            name: 'Name'
+        })
+
+        expect(userOrError).instanceOf(Left)
+        expect(userOrError.value).instanceOf(InvalidPassword)
+
+    })
+
+
+})
