@@ -1,3 +1,4 @@
+import { InvalidOrientation } from "../../../domain/board/errors/invalid-orientation"
 import { InvalidPosition } from "../../../domain/board/errors/invalid-position"
 import { InvalidMeasure } from "../../../domain/board/errors/invalid-measure"
 import { InvalidRange } from "../../../domain/board/errors/invalid-range"
@@ -12,7 +13,7 @@ export class CreateBrazilianBoardUseCase implements CreateBoardUseCase {
     public readonly columns: number = 8
     public readonly rows: number = 8
 
-    execute(): Either<InvalidMeasure | InvalidPosition | InvalidRange, Board> {
+    execute(): Either<InvalidMeasure | InvalidPosition | InvalidRange | InvalidOrientation, Board> {
         
         const boardOrError = Board.create({
             columns: this.columns,

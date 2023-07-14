@@ -1,3 +1,4 @@
+import { InvalidOrientation } from "./errors/invalid-orientation"
 import { InvalidRange } from "./errors/invalid-range"
 import { Left, Right } from "../../shared/either"
 import { describe, expect, it } from "vitest"
@@ -39,6 +40,44 @@ describe('Piece domain', () => {
 
         if (object.isLeft()) {
             expect(object.value).instanceOf(InvalidRange)
+        }
+
+    })
+
+    it('should not be able to create a piece with a invalid orientation that dont have value', () => {
+
+        const object = Piece.create({
+            orientations: {
+                column: [-1, 0, 1],
+                row: []
+            },
+            player: 0,
+            range: Infinity
+        })
+
+        expect(object).instanceOf(Left)
+
+        if (object.isLeft()) {
+            expect(object.value).instanceOf(InvalidOrientation)
+        }
+
+    })
+
+    it('should not be able to create a piece with a invalid orientation than has just zero', () => {
+
+        const object = Piece.create({
+            orientations: {
+                column: [-1, 0, 1],
+                row: [0]
+            },
+            player: 0,
+            range: Infinity
+        })
+
+        expect(object).instanceOf(Left)
+
+        if (object.isLeft()) {
+            expect(object.value).instanceOf(InvalidOrientation)
         }
 
     })
