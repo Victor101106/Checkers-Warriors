@@ -5,11 +5,11 @@ import { UserNotFound } from "./errors/user-not-found"
 import { Either, left, right } from "../shared/either"
 import { User } from "../domain/user/user"
 
-export interface EnsureAuthenticatedRequest {
+export interface GetUserByAccessTokenRequest {
     accessToken: string
 }
 
-export class EnsureAuthenticatedUseCase {
+export class GetUserByAccessTokenUseCase {
 
     private readonly accessTokenService: AccessTokenService
     private readonly userRepository: UserRepository
@@ -19,7 +19,7 @@ export class EnsureAuthenticatedUseCase {
         this.userRepository = userRepository
     }
 
-    async execute({ accessToken }: EnsureAuthenticatedRequest): Promise<Either<UserNotFound | InvalidToken, User>> {
+    async execute({ accessToken }: GetUserByAccessTokenRequest): Promise<Either<UserNotFound | InvalidToken, User>> {
 
         const userIdOrError = await this.accessTokenService.verify(accessToken)
 
