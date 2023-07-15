@@ -2,6 +2,7 @@
   "name": "checkers-warriors",
   "version": "0.0.1",
   "scripts": {
+    "start:dev": "tsx watch source/main/server.ts",
     "start:test": "vitest",
     "build": "tsup source"
   },
