@@ -1,4 +1,3 @@
-import { FindCorrectMovementUseCase } from "../find-correct-movements-usecase"
-import { findMovementUseCase } from "./find-movement-usecase-factory"
+import { FindCorrectMovementsUseCase } from "../find-correct-movements-usecase"
 
-export const findCorrectMovementsUseCase = new FindCorrectMovementUseCase(findMovementUseCase)
+export const findCorrectMovementsUseCase = new FindCorrectMovementsUseCase()

@@ -1,4 +1,4 @@
-import { FindCorrectMovementUseCase } from "./find-correct-movements-usecase"
+import { FindCorrectMovementsUseCase } from "./find-correct-movements-usecase"
 import { CreateMovementTreeUseCase } from "./create-movement-tree-usecase"
 import { InvalidPosition } from "../domain/board/errors/invalid-position"
 import { Direction } from "../domain/board/types/direction"
@@ -23,11 +23,11 @@ export type FindAllPlayerCorrectMovementsResponse = {
 
 export class FindAllPlayerCorrectMovementsUseCase {
 
-    private readonly findCorrectMovementUseCase: FindCorrectMovementUseCase
+    private readonly findCorrectMovementsUseCase: FindCorrectMovementsUseCase
     private readonly createMovementTreeUseCase: CreateMovementTreeUseCase
 
-    constructor(findCorrectMovementUseCase: FindCorrectMovementUseCase, createMovementTreeUseCase: CreateMovementTreeUseCase) {
-        this.findCorrectMovementUseCase = findCorrectMovementUseCase
+    constructor(findCorrectMovementsUseCase: FindCorrectMovementsUseCase, createMovementTreeUseCase: CreateMovementTreeUseCase) {
+        this.findCorrectMovementsUseCase = findCorrectMovementsUseCase
         this.createMovementTreeUseCase = createMovementTreeUseCase
     }
 
@@ -56,7 +56,7 @@ export class FindAllPlayerCorrectMovementsUseCase {
 
                     const nodes = nodesOrError.value
 
-                    const correctMovementsOrError = this.findCorrectMovementUseCase.execute({ startsAt, board, nodes })
+                    const correctMovementsOrError = this.findCorrectMovementsUseCase.execute({ startsAt, board, nodes })
 
                     if (correctMovementsOrError.isRight() && correctMovementsOrError.value.length) {
                         
