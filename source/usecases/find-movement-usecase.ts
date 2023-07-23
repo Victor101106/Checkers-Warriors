@@ -1,12 +1,20 @@
-import { FindMovementByRuleRequest, FindMovementByRuleResponse, FindMovementByRuleUseCase } from "../../find-movement-by-rule-usecase"
-import { Position } from "../../../domain/board/types/position"
-import { Jump } from "../../../domain/board/types/jump"
+import { Position } from "../domain/board/types/position"
+import { Jump } from "../domain/board/types/jump"
+import { Node } from "../domain/board/types/node"
 
-export class FindMovementByQuantityRuleUseCase implements FindMovementByRuleUseCase {
+export type FindMovementRequest = Array<Node>
 
-    execute(nodes: FindMovementByRuleRequest): FindMovementByRuleResponse {
+export type FindMovementResponse = {
+    positions: Position[]
+    endsAt: Position
+    jumps: Jump[]
+}[]
+
+export class FindMovementUseCase {
+    
+    execute(nodes: FindMovementRequest): FindMovementResponse {
         
-        let movements: FindMovementByRuleResponse = new Array()
+        let movements: FindMovementResponse = new Array()
         let score: number = 0
 
         for (let node of nodes) {
@@ -27,9 +35,9 @@ export class FindMovementByQuantityRuleUseCase implements FindMovementByRuleUseC
 
                     if (jumps.length > score) {
                         score = jumps.length
-                        movements = [{ positions, endsAt, jumps, score }]
+                        movements = [{ positions, endsAt, jumps }]
                     } else if (jumps.length == score) {
-                        movements.push({ positions, endsAt, jumps, score })
+                        movements.push({ positions, endsAt, jumps })
                     }
 
                 }
@@ -39,15 +47,13 @@ export class FindMovementByQuantityRuleUseCase implements FindMovementByRuleUseC
                     movements = [{
                         positions: [item.position], 
                         endsAt: item.position, 
-                        jumps: item.jumps,
-                        score: score
+                        jumps: item.jumps
                     }]
                 } else if (!childs.length && item.jumps.length == score) {
                     movements.push({
                         positions: [item.position], 
                         endsAt: item.position, 
-                        jumps: item.jumps,
-                        score: score
+                        jumps: item.jumps
                     })
                 }
 

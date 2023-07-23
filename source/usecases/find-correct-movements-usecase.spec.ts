@@ -1,21 +1,20 @@
-import { FindMovementByQuantityRuleUseCase } from "./adapters/find-movement-by-rule/find-movement-by-quantity-rule-usecase"
 import { CreateBrazilianBoardUseCase } from "./adapters/create-board/create-brazilian-board-usecase"
 import { FindCorrectMovementUseCase } from "./find-correct-movements-usecase"
-import { FindMovementByRuleResponse } from "./find-movement-by-rule-usecase"
 import { CreateMovementTreeUseCase } from "./create-movement-tree-usecase"
 import { CreateTrajectoryUseCase } from "./create-trajectory-usecase"
 import { Direction } from "../domain/board/types/direction"
 import { Board } from "../domain/board/board"
 import { describe, it, expect } from "vitest"
 import { Right } from "../shared/either"
+import { FindMovementResponse, FindMovementUseCase } from "./find-movement-usecase"
 
 describe('Find movement by quantity rule use case', () => {
 
     const createBrazilianBoardUseCase = new CreateBrazilianBoardUseCase()
     const createTrajectoryUseCase = new CreateTrajectoryUseCase()
     const createMovementTreeUseCase = new CreateMovementTreeUseCase(createTrajectoryUseCase)
-    const findMovementByQuantityRuleUseCase = new FindMovementByQuantityRuleUseCase()
-    const findCorrectMovementUseCase = new FindCorrectMovementUseCase(findMovementByQuantityRuleUseCase)
+    const findMovementUseCase = new FindMovementUseCase()
+    const findCorrectMovementUseCase = new FindCorrectMovementUseCase(findMovementUseCase)
     
     const boardOrError = createBrazilianBoardUseCase.execute()
 
@@ -54,7 +53,7 @@ describe('Find movement by quantity rule use case', () => {
 
         expect(correctMovementsOrError).instanceOf(Right)
 
-        const correctMovements = correctMovementsOrError.value as FindMovementByRuleResponse
+        const correctMovements = correctMovementsOrError.value as FindMovementResponse
 
         expect(correctMovements.length).toBe(2)
 

@@ -1,4 +1,3 @@
-import { FindMovementByQuantityRuleUseCase } from "./adapters/find-movement-by-rule/find-movement-by-quantity-rule-usecase"
 import { InMemoryMatchRepository } from "../external/repositories/in-memory/in-memory-match-repository"
 import { InMemoryUserRepository } from "../external/repositories/in-memory/in-memory-user-repository"
 import { CreateBrazilianBoardUseCase } from "./adapters/create-board/create-brazilian-board-usecase"
@@ -18,6 +17,7 @@ import { Left, Right } from "../shared/either"
 import { Match } from "../domain/match/match"
 import { describe, expect, it } from "vitest"
 import { User } from "../domain/user/user"
+import { FindMovementUseCase } from "./find-movement-usecase"
 
 describe('Create match use case', async () => {
 
@@ -31,8 +31,8 @@ describe('Create match use case', async () => {
     const createUserUseCase = new CreateUserUseCase(bcryptPasswordService, uuidUniqueIdService, inMemoryUserRepository)
     const createTrajectoryUseCase = new CreateTrajectoryUseCase()
     const createMovementTreeUseCase = new CreateMovementTreeUseCase(createTrajectoryUseCase)
-    const findMovementByQuantityRuleUseCase = new FindMovementByQuantityRuleUseCase()
-    const findCorrectMovementUseCase = new FindCorrectMovementUseCase(findMovementByQuantityRuleUseCase)
+    const findMovementUseCase = new FindMovementUseCase()
+    const findCorrectMovementUseCase = new FindCorrectMovementUseCase(findMovementUseCase)
     const findAllPlayerCorrectMovementsUseCase = new FindAllPlayerCorrectMovementsUseCase(findCorrectMovementUseCase, createMovementTreeUseCase)
     const moveBrazilianPieceUseCase = new MoveBrazilianPieceUseCase(findAllPlayerCorrectMovementsUseCase)
     const movePieceOnMatchUseCase = new MovePieceOnMatchUseCase([ moveBrazilianPieceUseCase ], inMemoryMatchRepository)

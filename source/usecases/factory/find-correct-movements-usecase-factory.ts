@@ -1,4 +1,4 @@
-import { findMovementByQuantityRuleUseCase } from "./find-movement-by-rule-usecase-factory"
 import { FindCorrectMovementUseCase } from "../find-correct-movements-usecase"
+import { findMovementUseCase } from "./find-movement-usecase-factory"
 
-export const findCorrectMovementsByQuantityRuleUseCase = new FindCorrectMovementUseCase(findMovementByQuantityRuleUseCase)
+export const findCorrectMovementsUseCase = new FindCorrectMovementUseCase(findMovementUseCase)

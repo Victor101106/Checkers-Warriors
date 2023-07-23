@@ -1,4 +1,4 @@
-import { FindMovementByRuleResponse, FindMovementByRuleUseCase } from "./find-movement-by-rule-usecase"
+import { FindMovementResponse, FindMovementUseCase } from "./find-movement-usecase"
 import { InvalidPosition } from "../domain/board/errors/invalid-position"
 import { Position } from "../domain/board/types/position"
 import { Either, left, right } from "../shared/either"
@@ -13,13 +13,13 @@ export interface FindCorrectMovementRequest {
 
 export class FindCorrectMovementUseCase {
 
-    private readonly findMovementByRuleUseCase: FindMovementByRuleUseCase
+    private readonly findMovementUseCase: FindMovementUseCase
 
-    constructor(findMovementByRuleUseCase: FindMovementByRuleUseCase) {
-        this.findMovementByRuleUseCase = findMovementByRuleUseCase
+    constructor(findMovementUseCase: FindMovementUseCase) {
+        this.findMovementUseCase = findMovementUseCase
     }
 
-    execute({ startsAt, nodes, board }: FindCorrectMovementRequest): Either<InvalidPosition, FindMovementByRuleResponse> {
+    execute({ startsAt, nodes, board }: FindCorrectMovementRequest): Either<InvalidPosition, FindMovementResponse> {
 
         const pieceOrError = board.getSpot(startsAt)
         
@@ -28,7 +28,7 @@ export class FindCorrectMovementUseCase {
 
         const piece = pieceOrError.value
 
-        const movements = this.findMovementByRuleUseCase.execute(nodes)        
+        const movements = this.findMovementUseCase.execute(nodes)        
         const correctMovements = movements.filter(movement => {
 
             const hasColumnOrientation = movement.positions.length && piece.orientations.column.has((movement.positions[0].column - startsAt.column) < 0 ? -1 : 1)
