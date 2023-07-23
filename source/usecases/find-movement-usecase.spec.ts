@@ -1,18 +1,12 @@
-import { describe, it, expect } from "vitest"
-import { CreateBrazilianBoardUseCase } from "./adapters/create-board/create-brazilian-board-usecase"
-import { CreateTrajectoryUseCase } from "./create-trajectory-usecase"
-import { CreateMovementTreeUseCase } from "./create-movement-tree-usecase"
-import { FindMovementUseCase } from "./find-movement-usecase"
-import { Right } from "../shared/either"
-import { Board } from "../domain/board/board"
+import { createMovementTreeUseCase } from "./factory/create-movement-tree-usecase-factory"
+import { createBrazilianBoardUseCase } from "./factory/create-board-usecase-factory"
+import { findMovementUseCase } from "./factory/find-movement-usecase-factory"
 import { Direction } from "../domain/board/types/direction"
+import { describe, it, expect } from "vitest"
+import { Board } from "../domain/board/board"
+import { Right } from "../shared/either"
 
 describe('Find movement by quantity rule use case', () => {
-
-    const createBrazilianBoardUseCase = new CreateBrazilianBoardUseCase()
-    const createTrajectoryUseCase = new CreateTrajectoryUseCase()
-    const createMovementTreeUseCase = new CreateMovementTreeUseCase(createTrajectoryUseCase)
-    const findMovementUseCase = new FindMovementUseCase()
     
     const boardOrError = createBrazilianBoardUseCase.execute()
 

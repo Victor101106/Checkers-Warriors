@@ -1,6 +1,6 @@
 import { InMemoryUserRepository } from "../external/repositories/in-memory/in-memory-user-repository"
-import { BcryptPasswordService } from "../external/services/adapters/bcrypt-password-service"
-import { UuidUniqueIdService } from "../external/services/adapters/uuid-unique-id-service"
+import { bcryptPasswordService } from "../external/services/factory/password-service-factory"
+import { uuidUniqueIdService } from "../external/services/factory/unique-id-service-factory"
 import { InvalidPassword } from "../domain/user/errors/invalid-password"
 import { EmailAlreadyInUse } from "./errors/email-already-in-use"
 import { CreateUserUseCase } from "./create-user-usecase"
@@ -11,8 +11,6 @@ import { User } from "../domain/user/user"
 describe('Create user use case', () => {
 
     const inMemoryUserRepository = new InMemoryUserRepository()
-    const bcryptPasswordService = new BcryptPasswordService()
-    const uuidUniqueIdService = new UuidUniqueIdService()
     const createUserUseCase = new CreateUserUseCase(bcryptPasswordService, uuidUniqueIdService, inMemoryUserRepository)
 
     it('should be able to create and save a user', async () => {

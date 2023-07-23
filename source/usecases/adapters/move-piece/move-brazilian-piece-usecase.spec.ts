@@ -1,23 +1,10 @@
-import { FindAllPlayerCorrectMovementsUseCase } from "../../find-all-player-correct-movements-usecase"
-import { CreateBrazilianBoardUseCase } from "../create-board/create-brazilian-board-usecase"
-import { FindCorrectMovementUseCase } from "../../find-correct-movements-usecase"
-import { CreateMovementTreeUseCase } from "../../create-movement-tree-usecase"
-import { MoveBrazilianPieceUseCase } from "./move-brazilian-piece-usecase"
-import { CreateTrajectoryUseCase } from "../../create-trajectory-usecase"
+import { createBrazilianBoardUseCase } from "../../factory/create-board-usecase-factory"
+import { moveBrazilianPieceUseCase } from "../../factory/move-piece-usecase-factory"
 import { Board } from "../../../domain/board/board"
 import { Right } from "../../../shared/either"
 import { describe, it, expect } from "vitest"
-import { FindMovementUseCase } from "../../find-movement-usecase"
 
 describe('Find movement by quantity rule use case', () => {
-
-    const createBrazilianBoardUseCase = new CreateBrazilianBoardUseCase()
-    const createTrajectoryUseCase = new CreateTrajectoryUseCase()
-    const createMovementTreeUseCase = new CreateMovementTreeUseCase(createTrajectoryUseCase)
-    const findMovementUseCase = new FindMovementUseCase()
-    const findCorrectMovementUseCase = new FindCorrectMovementUseCase(findMovementUseCase)
-    const findAllPlayerCorrectMovementsUseCase = new FindAllPlayerCorrectMovementsUseCase(findCorrectMovementUseCase, createMovementTreeUseCase)
-    const moveBrazilianPieceUseCase = new MoveBrazilianPieceUseCase(findAllPlayerCorrectMovementsUseCase)
 
     const boardOrError = createBrazilianBoardUseCase.execute()
 

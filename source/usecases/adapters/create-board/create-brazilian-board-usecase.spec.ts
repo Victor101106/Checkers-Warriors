@@ -1,4 +1,4 @@
-import { CreateBrazilianBoardUseCase } from "./create-brazilian-board-usecase"
+import { createBrazilianBoardUseCase } from "../../factory/create-board-usecase-factory"
 import { Board } from "../../../domain/board/board"
 import { Piece } from "../../../domain/board/piece"
 import { Right } from "../../../shared/either"
@@ -6,7 +6,6 @@ import { describe, expect, it } from "vitest"
 
 describe('Create brazilian board use case', () => {
 
-    const createBrazilianBoardUseCase = new CreateBrazilianBoardUseCase()
     const { columns, rows, pieceCount } = createBrazilianBoardUseCase
 
     it('should be able to create a brazilian board', () => {

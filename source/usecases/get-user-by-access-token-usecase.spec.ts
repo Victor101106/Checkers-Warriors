@@ -1,7 +1,7 @@
 import { InMemoryUserRepository } from "../external/repositories/in-memory/in-memory-user-repository"
-import { JwtAccessTokenService } from "../external/services/adapters/jwt-access-token-service"
-import { BcryptPasswordService } from "../external/services/adapters/bcrypt-password-service"
-import { UuidUniqueIdService } from "../external/services/adapters/uuid-unique-id-service"
+import { jwtAccessTokenService } from "../external/services/factory/access-token-service-factory"
+import { bcryptPasswordService } from "../external/services/factory/password-service-factory"
+import { uuidUniqueIdService } from "../external/services/factory/unique-id-service-factory"
 import { GetUserByAccessTokenUseCase } from "./get-user-by-access-token-usecase"
 import { AuthenticateUserUseCase } from "./authenticate-user-usecase"
 import { CreateUserUseCase } from "./create-user-usecase"
@@ -13,9 +13,6 @@ import { Left, Right } from "../shared/either"
 describe('Get user by access token use case', async () => {
 
     const inMemoryUserRepository = new InMemoryUserRepository()
-    const jwtAccessTokenService = new JwtAccessTokenService()
-    const bcryptPasswordService = new BcryptPasswordService()
-    const uuidUniqueIdService = new UuidUniqueIdService()
 
     const authenticateUserUseCase = new AuthenticateUserUseCase(jwtAccessTokenService, bcryptPasswordService, inMemoryUserRepository)
     const createUserUseCase = new CreateUserUseCase(bcryptPasswordService, uuidUniqueIdService, inMemoryUserRepository)

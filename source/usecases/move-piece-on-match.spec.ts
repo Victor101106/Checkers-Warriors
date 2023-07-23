@@ -1,13 +1,9 @@
 import { InMemoryMatchRepository } from "../external/repositories/in-memory/in-memory-match-repository"
 import { InMemoryUserRepository } from "../external/repositories/in-memory/in-memory-user-repository"
-import { CreateBrazilianBoardUseCase } from "./adapters/create-board/create-brazilian-board-usecase"
-import { FindAllPlayerCorrectMovementsUseCase } from "./find-all-player-correct-movements-usecase"
-import { MoveBrazilianPieceUseCase } from "./adapters/move-piece/move-brazilian-piece-usecase"
-import { BcryptPasswordService } from "../external/services/adapters/bcrypt-password-service"
-import { UuidUniqueIdService } from "../external/services/adapters/uuid-unique-id-service"
-import { FindCorrectMovementUseCase } from "./find-correct-movements-usecase"
-import { CreateMovementTreeUseCase } from "./create-movement-tree-usecase"
-import { CreateTrajectoryUseCase } from "./create-trajectory-usecase"
+import { bcryptPasswordService } from "../external/services/factory/password-service-factory"
+import { uuidUniqueIdService } from "../external/services/factory/unique-id-service-factory"
+import { createBrazilianBoardUseCase } from "./factory/create-board-usecase-factory"
+import { moveBrazilianPieceUseCase } from "./factory/move-piece-usecase-factory"
 import { MovePieceOnMatchUseCase } from "./move-piece-on-match"
 import { Variation } from "../domain/match/types/variation"
 import { CreateMatchUseCase } from "./create-match-usecase"
@@ -17,24 +13,15 @@ import { Left, Right } from "../shared/either"
 import { Match } from "../domain/match/match"
 import { describe, expect, it } from "vitest"
 import { User } from "../domain/user/user"
-import { FindMovementUseCase } from "./find-movement-usecase"
 
 describe('Create match use case', async () => {
 
-    const createBrazilianBoardUseCase = new CreateBrazilianBoardUseCase()
     const inMemoryMatchRepository = new InMemoryMatchRepository()
     const inMemoryUserRepository = new InMemoryUserRepository()
-    const uuidUniqueIdService = new UuidUniqueIdService()
-    const bcryptPasswordService = new BcryptPasswordService()
 
     const createMatchUseCase = new CreateMatchUseCase([ createBrazilianBoardUseCase ], uuidUniqueIdService, inMemoryMatchRepository, inMemoryUserRepository)
     const createUserUseCase = new CreateUserUseCase(bcryptPasswordService, uuidUniqueIdService, inMemoryUserRepository)
-    const createTrajectoryUseCase = new CreateTrajectoryUseCase()
-    const createMovementTreeUseCase = new CreateMovementTreeUseCase(createTrajectoryUseCase)
-    const findMovementUseCase = new FindMovementUseCase()
-    const findCorrectMovementUseCase = new FindCorrectMovementUseCase(findMovementUseCase)
-    const findAllPlayerCorrectMovementsUseCase = new FindAllPlayerCorrectMovementsUseCase(findCorrectMovementUseCase, createMovementTreeUseCase)
-    const moveBrazilianPieceUseCase = new MoveBrazilianPieceUseCase(findAllPlayerCorrectMovementsUseCase)
+    
     const movePieceOnMatchUseCase = new MovePieceOnMatchUseCase([ moveBrazilianPieceUseCase ], inMemoryMatchRepository)
 
     const userOrError = await createUserUseCase.execute({

@@ -1,6 +1,5 @@
-import { CreateBrazilianBoardUseCase } from "./adapters/create-board/create-brazilian-board-usecase"
-import { CreateMovementTreeUseCase } from "./create-movement-tree-usecase"
-import { CreateTrajectoryUseCase } from "./create-trajectory-usecase"
+import { createMovementTreeUseCase } from "./factory/create-movement-tree-usecase-factory"
+import { createBrazilianBoardUseCase } from "./factory/create-board-usecase-factory"
 import { Direction } from "../domain/board/types/direction"
 import { Board } from "../domain/board/board"
 import { describe, it, expect } from "vitest"
@@ -8,10 +7,6 @@ import { Right } from "../shared/either"
 
 describe('Create movement tree use case', () => {
 
-    const createBrazilianBoardUseCase = new CreateBrazilianBoardUseCase()
-    const createTrajectoryUseCase = new CreateTrajectoryUseCase()
-    const createMovementTreeUseCase = new CreateMovementTreeUseCase(createTrajectoryUseCase)
-    
     const boardOrError = createBrazilianBoardUseCase.execute()
 
     expect(boardOrError).instanceOf(Right)

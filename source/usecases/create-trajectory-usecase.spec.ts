@@ -1,5 +1,5 @@
-import { CreateBrazilianBoardUseCase } from "./adapters/create-board/create-brazilian-board-usecase"
-import { CreateTrajectoryUseCase } from "./create-trajectory-usecase"
+import { createTrajectoryUseCase } from "./factory/create-trajectory-usecase-factory"
+import { createBrazilianBoardUseCase } from "./factory/create-board-usecase-factory"
 import { Direction } from "../domain/board/types/direction"
 import { Position } from "../domain/board/types/position"
 import { describe, expect, it } from "vitest"
@@ -8,9 +8,6 @@ import { Right } from "../shared/either"
 
 describe('Create trajectory use case', () => {
     
-    const createBrazilianBoardUseCase = new CreateBrazilianBoardUseCase()
-    const createTrajectoryUseCase = new CreateTrajectoryUseCase()
-
     const boardOrError = createBrazilianBoardUseCase.execute()
 
     expect(boardOrError).instanceOf(Right)

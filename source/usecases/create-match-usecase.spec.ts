@@ -1,24 +1,21 @@
 import { InMemoryMatchRepository } from "../external/repositories/in-memory/in-memory-match-repository"
 import { InMemoryUserRepository } from "../external/repositories/in-memory/in-memory-user-repository"
-import { CreateBrazilianBoardUseCase } from "./adapters/create-board/create-brazilian-board-usecase"
-import { BcryptPasswordService } from "../external/services/adapters/bcrypt-password-service"
-import { UuidUniqueIdService } from "../external/services/adapters/uuid-unique-id-service"
-import { Variation } from "../domain/match/types/variation"
+import { bcryptPasswordService } from "../external/services/factory/password-service-factory"
+import { uuidUniqueIdService } from "../external/services/factory/unique-id-service-factory"
+import { createBrazilianBoardUseCase } from "./factory/create-board-usecase-factory"
+import { VariationNotFound } from "./errors/variation-not-found"
 import { CreateMatchUseCase } from "./create-match-usecase"
+import { Variation } from "../domain/match/types/variation"
 import { CreateUserUseCase } from "./create-user-usecase"
+import { UserNotFound } from "./errors/user-not-found"
 import { Left, Right } from "../shared/either"
 import { describe, expect, it } from "vitest"
 import { User } from "../domain/user/user"
-import { VariationNotFound } from "./errors/variation-not-found"
-import { UserNotFound } from "./errors/user-not-found"
 
 describe('Create match use case', async () => {
 
-    const createBrazilianBoardUseCase = new CreateBrazilianBoardUseCase()
     const inMemoryMatchRepository = new InMemoryMatchRepository()
     const inMemoryUserRepository = new InMemoryUserRepository()
-    const uuidUniqueIdService = new UuidUniqueIdService()
-    const bcryptPasswordService = new BcryptPasswordService()
 
     const createMatchUseCase = new CreateMatchUseCase([ createBrazilianBoardUseCase ], uuidUniqueIdService, inMemoryMatchRepository, inMemoryUserRepository)
     const createUserUseCase = new CreateUserUseCase(bcryptPasswordService, uuidUniqueIdService, inMemoryUserRepository)
