@@ -1,7 +1,7 @@
-import { findCorrectMovementsUseCase } from "./factory/find-correct-movements-usecase-factory"
 import { createMovementTreeUseCase } from "./factory/create-movement-tree-usecase-factory"
+import { findMovementsUseCase } from "./factory/find-movements-usecase-factory"
 import { createBrazilianBoardUseCase } from "./factory/create-board-usecase-factory"
-import { FindMovementResponse } from "./find-movement-usecase"
+import { FindMovementsResponse } from "./find-movements-usecase"
 import { Direction } from "../domain/board/types/direction"
 import { Board } from "../domain/board/board"
 import { describe, it, expect } from "vitest"
@@ -38,7 +38,7 @@ describe('Find movement by quantity rule use case', () => {
 
     it('should be able to find a correct movement in movement tree', () => {
 
-        const correctMovementsOrError = findCorrectMovementsUseCase.execute({
+        const correctMovementsOrError = findMovementsUseCase.execute({
             startsAt: position,
             nodes: movementTree,
             board: board
@@ -46,7 +46,7 @@ describe('Find movement by quantity rule use case', () => {
 
         expect(correctMovementsOrError).instanceOf(Right)
 
-        const correctMovements = correctMovementsOrError.value as FindMovementResponse
+        const correctMovements = correctMovementsOrError.value as FindMovementsResponse
 
         expect(correctMovements.length).toBe(2)
 

@@ -5,21 +5,21 @@ import { Node } from "../domain/board/types/node"
 import { Jump } from "../domain/board/types/jump"
 import { Board } from "../domain/board/board"
 
-export interface FindCorrectMovementsRequest {
+export interface FindMovementsRequest {
     nodes: Array<Node>
     startsAt: Position
     board: Board
 }
 
-export type FindCorrectMovementsResponse = {
+export type FindMovementsResponse = {
     positions: Position[]
     endsAt: Position
     jumps: Jump[]
 }[]
 
-export class FindCorrectMovementsUseCase {
+export class FindMovementsUseCase {
 
-    execute({ startsAt, nodes, board }: FindCorrectMovementsRequest): Either<InvalidPosition, FindCorrectMovementsResponse> {
+    execute({ startsAt, nodes, board }: FindMovementsRequest): Either<InvalidPosition, FindMovementsResponse> {
 
         const pieceOrError = board.getSpot(startsAt)
         
@@ -28,7 +28,7 @@ export class FindCorrectMovementsUseCase {
 
         const piece = pieceOrError.value
 
-        const unfilteredMovements = this.findUnfilteredCorrectMovements(nodes)        
+        const unfilteredMovements = this.findUnfilteredMovements(nodes)        
         const filteredMovements = unfilteredMovements.filter(movement => {
 
             const hasColumnOrientation = movement.positions.length && piece.orientations.column.has((movement.positions[0].column - startsAt.column) < 0 ? -1 : 1)
@@ -42,9 +42,9 @@ export class FindCorrectMovementsUseCase {
 
     }
 
-    private findUnfilteredCorrectMovements(nodes: Array<Node>): FindCorrectMovementsResponse {
+    private findUnfilteredMovements(nodes: Array<Node>): FindMovementsResponse {
         
-        let movements: FindCorrectMovementsResponse = new Array()
+        let movements: FindMovementsResponse = new Array()
         let score: number = 0
 
         for (let node of nodes) {
@@ -55,7 +55,7 @@ export class FindCorrectMovementsUseCase {
                 let endsAt: Position
                 let jumps: Jump[]
 
-                const childs = this.findUnfilteredCorrectMovements(item.nodes)
+                const childs = this.findUnfilteredMovements(item.nodes)
 
                 for (let child of childs) {
 
