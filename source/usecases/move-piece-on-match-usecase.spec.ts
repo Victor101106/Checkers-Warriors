@@ -4,7 +4,7 @@ import { bcryptPasswordService } from "../external/services/factory/password-ser
 import { uuidUniqueIdService } from "../external/services/factory/unique-id-service-factory"
 import { createBrazilianBoardUseCase } from "./factory/create-board-usecase-factory"
 import { moveBrazilianPieceUseCase } from "./factory/move-piece-usecase-factory"
-import { MovePieceOnMatchUseCase } from "./move-piece-on-match"
+import { MovePieceOnMatchUseCase } from "./move-piece-on-match-usecase"
 import { Variation } from "../domain/match/types/variation"
 import { CreateMatchUseCase } from "./create-match-usecase"
 import { CreateUserUseCase } from "./create-user-usecase"
