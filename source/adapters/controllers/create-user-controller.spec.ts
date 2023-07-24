@@ -20,7 +20,6 @@ describe('Create user controller', () => {
                 name: 'Name'
             },
             headers: {},
-            params: {},
             query: {}
         })
 
@@ -36,7 +35,6 @@ describe('Create user controller', () => {
                 name: 'Name'
             },
             headers: {},
-            params: {},
             query: {}
         })
 

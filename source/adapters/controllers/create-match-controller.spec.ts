@@ -48,7 +48,6 @@ describe('Create match controller', async () => {
         const response = await createMatchController.handle({
             headers: { Cookie: `access-token=${accessToken}` },
             body: { variation: 'brazilian' },
-            params: {},
             query: {}
         })
 
@@ -61,7 +60,6 @@ describe('Create match controller', async () => {
 
         const response = await createMatchController.handle({
             headers: { Cookie: `access-token=${accessToken}` },
-            params: {},
             query: {},
             body: {}
         })
@@ -76,7 +74,6 @@ describe('Create match controller', async () => {
         const response = await createMatchController.handle({
             body: { variation: 'brazilian' },
             headers: {},
-            params: {},
             query: {}
         })
 

@@ -28,7 +28,6 @@ describe('Authenticate user controller', async () => {
     const createUserResponse = await createUserController.handle({
         body: createUserRequestBody,
         headers: {},
-        params: {},
         query: {}
     })
 
@@ -42,7 +41,6 @@ describe('Authenticate user controller', async () => {
                 password: 'Password123.'
             },
             headers: {},
-            params: {}, 
             query: {}
         })
 
@@ -60,7 +58,6 @@ describe('Authenticate user controller', async () => {
                 password: 'Password456.'
             },
             headers: {},
-            params: {}, 
             query: {}
         })
 
@@ -76,7 +73,6 @@ describe('Authenticate user controller', async () => {
                 email: 'email@mail.com'
             },
             headers: {},
-            params: {}, 
             query: {}
         })
 
