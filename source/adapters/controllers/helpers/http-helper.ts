@@ -1,6 +1,15 @@
 import { HttpResponseHeader } from "../ports/http-headers"
 import { HttpResponse } from "../ports/http-response"
 
+export const unauthorized = (error: Error, headers?: Array<HttpResponseHeader>): HttpResponse => ({
+    headers: headers,
+    code: 401,
+    body: { 
+        message: error.message, 
+        name: error.name 
+    }
+})
+
 export const badRequest = (error: Error, headers?: Array<HttpResponseHeader>): HttpResponse => ({
     headers: headers,
     code: 400,
