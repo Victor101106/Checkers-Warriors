@@ -1,0 +1,23 @@
+import { HttpResponseHeader } from "../ports/http-headers"
+import { HttpResponse } from "../ports/http-response"
+
+export const badRequest = (error: Error, headers?: Array<HttpResponseHeader>): HttpResponse => ({
+    headers: headers,
+    code: 400,
+    body: { 
+        message: error.message, 
+        name: error.name 
+    }
+})
+
+export const created = (body: any, headers?: Array<HttpResponseHeader>): HttpResponse => ({
+    headers: headers,
+    body: body,
+    code: 201,
+})
+
+export const ok = (body: any, headers?: Array<HttpResponseHeader>): HttpResponse => ({
+    headers: headers,
+    body: body,
+    code: 200,
+})
