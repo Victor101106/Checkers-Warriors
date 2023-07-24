@@ -1,7 +1,7 @@
+import { FindAllBrazilianMovementsUseCase } from "../find-all-movements/find-all-brazilian-movements"
 import { MovePieceRequest, MovePieceResponse, MovePieceUseCase } from "../../move-piece-usecase"
 import { InvalidOrientation } from "../../../domain/board/errors/invalid-orientation"
 import { InvalidPosition } from "../../../domain/board/errors/invalid-position"
-import { FindAllMovementsUseCase } from "../../find-all-movements-usecase"
 import { InvalidRange } from "../../../domain/board/errors/invalid-range"
 import { InvalidMovement } from "../../errors/invalid-movement"
 import { Either, left, right } from "../../../shared/either"
@@ -9,10 +9,10 @@ import { Piece } from "../../../domain/board/piece"
 
 export class MoveBrazilianPieceUseCase implements MovePieceUseCase {
 
-    private readonly findAllMovementsUseCase: FindAllMovementsUseCase
+    private readonly findAllBrazilianMovementsUseCase: FindAllBrazilianMovementsUseCase
 
-    constructor(findAllMovementsUseCase: FindAllMovementsUseCase) {
-        this.findAllMovementsUseCase = findAllMovementsUseCase
+    constructor(findAllBrazilianMovementsUseCase: FindAllBrazilianMovementsUseCase) {
+        this.findAllBrazilianMovementsUseCase = findAllBrazilianMovementsUseCase
     }
 
     execute({ startsAt, endsAt, board }: MovePieceRequest): Either<InvalidPosition | InvalidRange | InvalidOrientation | InvalidMovement, MovePieceResponse> {
@@ -24,17 +24,17 @@ export class MoveBrazilianPieceUseCase implements MovePieceUseCase {
             
         const piece = pieceOrUndefinedOrError.value
 
-        const allCorrectMovementsOrError = this.findAllMovementsUseCase.execute({
+        const allMovementsOrError = this.findAllBrazilianMovementsUseCase.execute({
             player: piece.player,
             board: board
         })
 
-        if (allCorrectMovementsOrError.isLeft())
-            return left(allCorrectMovementsOrError.value)
+        if (allMovementsOrError.isLeft())
+            return left(allMovementsOrError.value)
         
-        const allCorrectMovements = allCorrectMovementsOrError.value
+        const allMovements = allMovementsOrError.value
 
-        const filteredAllCorrectMovements = allCorrectMovements.filter(
+        const filteredAllCorrectMovements = allMovements.filter(
             movement => movement.startsAt.column == startsAt.column && movement.startsAt.row == startsAt.row &&
                         movement.endsAt.column == endsAt.column && movement.endsAt.row == endsAt.row
         )
