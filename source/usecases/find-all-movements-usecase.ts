@@ -1,6 +1,6 @@
-import { FindCorrectMovementsUseCase } from "./find-correct-movements-usecase"
 import { CreateMovementTreeUseCase } from "./create-movement-tree-usecase"
 import { InvalidPosition } from "../domain/board/errors/invalid-position"
+import { FindMovementsUseCase } from "./find-movements-usecase"
 import { Direction } from "../domain/board/types/direction"
 import { Position } from "../domain/board/types/position"
 import { Either, left, right } from "../shared/either"
@@ -8,32 +8,32 @@ import { Player } from "../domain/board/types/player"
 import { Jump } from "../domain/board/types/jump"
 import { Board } from "../domain/board/board"
 
-export interface FindAllPlayerCorrectMovementsRequest {
+export interface FindAllMovementsRequest {
     directions: Array<Direction>
     player: Player
     board: Board
 }
 
-export type FindAllPlayerCorrectMovementsResponse = {
+export type FindAllMovementsResponse = {
     positions: Array<Position>
     jumps: Array<Jump>
     startsAt: Position
     endsAt: Position
 }[]
 
-export class FindAllPlayerCorrectMovementsUseCase {
+export class FindAllMovementsUseCase {
 
-    private readonly findCorrectMovementsUseCase: FindCorrectMovementsUseCase
+    private readonly findMovementsUseCase: FindMovementsUseCase
     private readonly createMovementTreeUseCase: CreateMovementTreeUseCase
 
-    constructor(findCorrectMovementsUseCase: FindCorrectMovementsUseCase, createMovementTreeUseCase: CreateMovementTreeUseCase) {
-        this.findCorrectMovementsUseCase = findCorrectMovementsUseCase
+    constructor(findMovementsUseCase: FindMovementsUseCase, createMovementTreeUseCase: CreateMovementTreeUseCase) {
+        this.findMovementsUseCase = findMovementsUseCase
         this.createMovementTreeUseCase = createMovementTreeUseCase
     }
 
-    execute({ player, board, directions }: FindAllPlayerCorrectMovementsRequest): Either<InvalidPosition, FindAllPlayerCorrectMovementsResponse> {
+    execute({ player, board, directions }: FindAllMovementsRequest): Either<InvalidPosition, FindAllMovementsResponse> {
         
-        let response: FindAllPlayerCorrectMovementsResponse = []
+        let response: FindAllMovementsResponse = []
         let maximumJumps = 0
 
         for (let row = 0; row < board.rows; row++) { 
@@ -56,12 +56,12 @@ export class FindAllPlayerCorrectMovementsUseCase {
 
                     const nodes = nodesOrError.value
 
-                    const correctMovementsOrError = this.findCorrectMovementsUseCase.execute({ startsAt, board, nodes })
+                    const correctMovementsOrError = this.findMovementsUseCase.execute({ startsAt, board, nodes })
 
                     if (correctMovementsOrError.isRight() && correctMovementsOrError.value.length) {
                         
                         const correctMovements = correctMovementsOrError.value
-                        const object: FindAllPlayerCorrectMovementsResponse = []
+                        const object: FindAllMovementsResponse = []
 
                         correctMovements.forEach(
                             movement => object.push({ startsAt, ...movement })

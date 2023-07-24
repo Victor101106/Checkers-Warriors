@@ -5,15 +5,15 @@ import { Piece } from "../../../domain/board/piece"
 import { Direction } from "../../../domain/board/types/direction"
 import { Either, left, right } from "../../../shared/either"
 import { InvalidMovement } from "../../errors/invalid-movement"
-import { FindAllPlayerCorrectMovementsUseCase } from "../../find-all-player-correct-movements-usecase"
+import { FindAllMovementsUseCase } from "../../find-all-movements-usecase"
 import { MovePieceRequest, MovePieceResponse, MovePieceUseCase } from "../../move-piece-usecase"
 
 export class MoveBrazilianPieceUseCase implements MovePieceUseCase {
 
-    private readonly findAllPlayerCorrectMovementsUseCase: FindAllPlayerCorrectMovementsUseCase
+    private readonly findAllMovementsUseCase: FindAllMovementsUseCase
 
-    constructor(findAllPlayerCorrectMovementsUseCase: FindAllPlayerCorrectMovementsUseCase) {
-        this.findAllPlayerCorrectMovementsUseCase = findAllPlayerCorrectMovementsUseCase
+    constructor(findAllMovementsUseCase: FindAllMovementsUseCase) {
+        this.findAllMovementsUseCase = findAllMovementsUseCase
     }
 
     execute({ startsAt, endsAt, board }: MovePieceRequest): Either<InvalidPosition | InvalidRange | InvalidOrientation | InvalidMovement, MovePieceResponse> {
@@ -31,7 +31,7 @@ export class MoveBrazilianPieceUseCase implements MovePieceUseCase {
             { column: -1, row:  1}
         ]
 
-        const allCorrectMovementsOrError = this.findAllPlayerCorrectMovementsUseCase.execute({
+        const allCorrectMovementsOrError = this.findAllMovementsUseCase.execute({
             directions: correctDirections,
             player: piece.player,
             board: board

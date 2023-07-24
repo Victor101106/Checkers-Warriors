@@ -1,5 +1,5 @@
-import { findAllPlayerCorrectMovementsUseCase } from "./factory/find-all-player-correct-movements-usecase-factory"
-import { FindAllPlayerCorrectMovementsResponse } from "./find-all-player-correct-movements-usecase"
+import { findAllMovementsUseCase } from "./factory/find-all-movements-usecase-factory"
+import { FindAllMovementsResponse } from "./find-all-movements-usecase"
 import { createBrazilianBoardUseCase } from "./factory/create-board-usecase-factory"
 import { Direction } from "../domain/board/types/direction"
 import { Board } from "../domain/board/board"
@@ -23,7 +23,7 @@ describe('Find movement by quantity rule use case', () => {
 
     it("should be able to find all player's correct movements tree (player 0)", () => {
 
-        const correctMovementsOrError = findAllPlayerCorrectMovementsUseCase.execute({
+        const correctMovementsOrError = findAllMovementsUseCase.execute({
             directions: diagonalDirections,
             board: board,
             player: 0
@@ -31,7 +31,7 @@ describe('Find movement by quantity rule use case', () => {
 
         expect(correctMovementsOrError).instanceOf(Right)
 
-        const correctMovements = correctMovementsOrError.value as FindAllPlayerCorrectMovementsResponse
+        const correctMovements = correctMovementsOrError.value as FindAllMovementsResponse
 
         expect(correctMovements.length).toBe(7)
 
@@ -39,7 +39,7 @@ describe('Find movement by quantity rule use case', () => {
 
     it("should be able to find all player's correct movements tree (player 1)", () => {
 
-        const correctMovementsOrError = findAllPlayerCorrectMovementsUseCase.execute({
+        const correctMovementsOrError = findAllMovementsUseCase.execute({
             directions: diagonalDirections,
             board: board,
             player: 1
@@ -47,7 +47,7 @@ describe('Find movement by quantity rule use case', () => {
 
         expect(correctMovementsOrError).instanceOf(Right)
 
-        const correctMovements = correctMovementsOrError.value as FindAllPlayerCorrectMovementsResponse
+        const correctMovements = correctMovementsOrError.value as FindAllMovementsResponse
 
         expect(correctMovements.length).toBe(7)
 
