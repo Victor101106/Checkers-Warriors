@@ -1,5 +1,5 @@
-import { FindAllMovementsUseCase } from "../find-all-movements-usecase"
-import { findMovementsUseCase } from "./find-movements-usecase-factory"
+import { FindAllBrazilianMovementsUseCase } from "../adapters/find-all-movements/find-all-brazilian-movements"
 import { createMovementTreeUseCase } from "./create-movement-tree-usecase-factory"
+import { findMovementsUseCase } from "./find-movements-usecase-factory"
 
-export const findAllMovementsUseCase = new FindAllMovementsUseCase(findMovementsUseCase, createMovementTreeUseCase)
+export const findAllBrazilianMovementsUseCase = new FindAllBrazilianMovementsUseCase(findMovementsUseCase, createMovementTreeUseCase)

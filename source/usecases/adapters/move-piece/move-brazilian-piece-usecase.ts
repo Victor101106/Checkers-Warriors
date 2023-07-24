@@ -1,12 +1,11 @@
+import { MovePieceRequest, MovePieceResponse, MovePieceUseCase } from "../../move-piece-usecase"
 import { InvalidOrientation } from "../../../domain/board/errors/invalid-orientation"
 import { InvalidPosition } from "../../../domain/board/errors/invalid-position"
-import { InvalidRange } from "../../../domain/board/errors/invalid-range"
-import { Piece } from "../../../domain/board/piece"
-import { Direction } from "../../../domain/board/types/direction"
-import { Either, left, right } from "../../../shared/either"
-import { InvalidMovement } from "../../errors/invalid-movement"
 import { FindAllMovementsUseCase } from "../../find-all-movements-usecase"
-import { MovePieceRequest, MovePieceResponse, MovePieceUseCase } from "../../move-piece-usecase"
+import { InvalidRange } from "../../../domain/board/errors/invalid-range"
+import { InvalidMovement } from "../../errors/invalid-movement"
+import { Either, left, right } from "../../../shared/either"
+import { Piece } from "../../../domain/board/piece"
 
 export class MoveBrazilianPieceUseCase implements MovePieceUseCase {
 
@@ -24,15 +23,8 @@ export class MoveBrazilianPieceUseCase implements MovePieceUseCase {
             return left(new InvalidPosition())
             
         const piece = pieceOrUndefinedOrError.value
-        const correctDirections: Array<Direction> = [
-            { column:  1, row:  1},
-            { column: -1, row: -1},
-            { column:  1, row: -1},
-            { column: -1, row:  1}
-        ]
 
         const allCorrectMovementsOrError = this.findAllMovementsUseCase.execute({
-            directions: correctDirections,
             player: piece.player,
             board: board
         })
