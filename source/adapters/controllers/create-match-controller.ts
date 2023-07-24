@@ -31,7 +31,7 @@ export class CreateMatchController implements HttpController {
         
         const { variation } = bodyOrError.data
 
-        const cookies = parseCookies(String(request.headers.Cookie))
+        const cookies = parseCookies(String(request.headers.cookie))
         const accessToken = cookies['access-token']
         
         const userOrError = await this.getUserByAccessTokenUseCase.execute({ accessToken })
