@@ -35,10 +35,11 @@ export class AuthenticateUserController implements HttpController {
             return unauthorized(accessTokenOrError.value)
 
         const accessToken = accessTokenOrError.value
+        const year2038Problem = 2147483647000
 
         const cookieHeader =  {
-            name: 'Set-Cookie',
-            value: serializeCookie('access-token', accessToken, { httpOnly: true })
+            value: serializeCookie('access-token', accessToken, { httpOnly: true, expires: new Date(year2038Problem) }),
+            name: 'Set-Cookie'
         }
 
         return ok({ auth: true }, [ cookieHeader ])
