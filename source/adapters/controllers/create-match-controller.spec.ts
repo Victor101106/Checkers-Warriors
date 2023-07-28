@@ -46,7 +46,7 @@ describe('Create match controller', async () => {
     it('should be able to receive a status code 201 to create a match', async () => {
 
         const response = await createMatchController.handle({
-            headers: { Cookie: `access-token=${accessToken}` },
+            headers: { cookie: `access-token=${accessToken}` },
             body: { variation: 'brazilian' },
             query: {}
         })
@@ -59,7 +59,7 @@ describe('Create match controller', async () => {
     it('should be able to receive a status code 400 to create a match with invalid parameters', async () => {
 
         const response = await createMatchController.handle({
-            headers: { Cookie: `access-token=${accessToken}` },
+            headers: { cookie: `access-token=${accessToken}` },
             query: {},
             body: {}
         })
