@@ -2,7 +2,8 @@ import { InMemoryUserRepository } from "../external/repositories/in-memory/in-me
 import { jwtAccessTokenService } from "../external/services/factory/access-token-service-factory"
 import { bcryptPasswordService } from "../external/services/factory/password-service-factory"
 import { uuidUniqueIdService } from "../external/services/factory/unique-id-service-factory"
-import { GetUserByAccessTokenUseCase } from "./get-user-by-access-token-usecase"
+import { GetUserByHttpCookieUseCase } from "./get-user-by-http-cookie-usecase"
+import { InvalidToken } from "../external/services/errors/invalid-token"
 import { AuthenticateUserUseCase } from "./authenticate-user-usecase"
 import { CreateUserUseCase } from "./create-user-usecase"
 import { describe, it, expect, beforeAll } from "vitest"
@@ -10,13 +11,13 @@ import { UserNotFound } from "./errors/user-not-found"
 import { config as configureDotEnv } from "dotenv"
 import { Left, Right } from "../shared/either"
 
-describe('Get user by access token use case', async () => {
+describe('Get user by http cookie use case', async () => {
 
     const inMemoryUserRepository = new InMemoryUserRepository()
 
     const authenticateUserUseCase = new AuthenticateUserUseCase(jwtAccessTokenService, bcryptPasswordService, inMemoryUserRepository)
     const createUserUseCase = new CreateUserUseCase(bcryptPasswordService, uuidUniqueIdService, inMemoryUserRepository)
-    const getUserByAccessTokenUseCase = new GetUserByAccessTokenUseCase(jwtAccessTokenService, inMemoryUserRepository)
+    const getUserByHttpCookieUseCase = new GetUserByHttpCookieUseCase(jwtAccessTokenService, inMemoryUserRepository)
 
     beforeAll(() => { configureDotEnv() })    
 
@@ -38,7 +39,9 @@ describe('Get user by access token use case', async () => {
         expect(accessTokenOrError).instanceOf(Right)
 
         const accessToken = accessTokenOrError.value as string
-        const authenticatedUserOrError = await getUserByAccessTokenUseCase.execute({ accessToken })
+        const authenticatedUserOrError = await getUserByHttpCookieUseCase.execute({ headers: {
+            'cookie': `access-token=${accessToken}`
+        }})
         
         expect(authenticatedUserOrError).instanceOf(Right)
         expect(authenticatedUserOrError.value).toBe(userOrError.value)
@@ -50,10 +53,21 @@ describe('Get user by access token use case', async () => {
         const simulatedUserId: string = 'd02d9324-f819-4ea8-9f51-1115d43b1da2'
         const accessToken = await jwtAccessTokenService.generate(simulatedUserId)
 
-        const authenticatedUserOrError = await getUserByAccessTokenUseCase.execute({ accessToken })
+        const authenticatedUserOrError = await getUserByHttpCookieUseCase.execute({ headers: {
+            'cookie': `access-token=${accessToken}`
+        }})
         
         expect(authenticatedUserOrError).instanceOf(Left)
         expect(authenticatedUserOrError.value).instanceOf(UserNotFound)
+
+    })
+
+    it('should not be able to ensure authentication without http cookie', async () => {
+
+        const authenticatedUserOrError = await getUserByHttpCookieUseCase.execute({ headers: {} })
+        
+        expect(authenticatedUserOrError).instanceOf(Left)
+        expect(authenticatedUserOrError.value).instanceOf(InvalidToken)
 
     })
 

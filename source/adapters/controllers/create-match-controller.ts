@@ -1,9 +1,8 @@
-import { GetUserByAccessTokenUseCase } from "../../usecases/get-user-by-access-token-usecase"
+import { GetUserByHttpCookieUseCase } from "../../usecases/get-user-by-http-cookie-usecase"
 import { badRequest, created, unauthorized } from "./helpers/http-helper"
 import { CreateMatchUseCase } from "../../usecases/create-match-usecase"
 import { InvalidParameters } from "./errors/invalid-parameters"
 import { HttpController } from "./ports/http-controller"
-import { parseCookies } from "./helpers/cookie-helper"
 import { HttpResponse } from "./ports/http-response"
 import { HttpRequest } from "./ports/http-request"
 import { z } from 'zod'
@@ -14,11 +13,11 @@ export const CreateMatchControllerSchema = z.object({
 
 export class CreateMatchController implements HttpController {
 
-    private readonly getUserByAccessTokenUseCase: GetUserByAccessTokenUseCase
+    private readonly getUserByHttpCookieUseCase: GetUserByHttpCookieUseCase
     private readonly createMatchUseCase: CreateMatchUseCase
 
-    constructor(getUserByAccessTokenUseCase: GetUserByAccessTokenUseCase, createMatchUseCase: CreateMatchUseCase) {
-        this.getUserByAccessTokenUseCase = getUserByAccessTokenUseCase
+    constructor(getUserByHttpCookieUseCase: GetUserByHttpCookieUseCase, createMatchUseCase: CreateMatchUseCase) {
+        this.getUserByHttpCookieUseCase = getUserByHttpCookieUseCase
         this.createMatchUseCase = createMatchUseCase
     }
 
@@ -31,10 +30,7 @@ export class CreateMatchController implements HttpController {
         
         const { variation } = bodyOrError.data
 
-        const cookies = parseCookies(String(request.headers.cookie))
-        const accessToken = cookies['access-token']
-        
-        const userOrError = await this.getUserByAccessTokenUseCase.execute({ accessToken })
+        const userOrError = await this.getUserByHttpCookieUseCase.execute(request)
 
         if (userOrError.isLeft())
             return unauthorized(userOrError.value)

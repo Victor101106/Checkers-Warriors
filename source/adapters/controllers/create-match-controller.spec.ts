@@ -4,7 +4,7 @@ import { jwtAccessTokenService } from "../../external/services/factory/access-to
 import { createBrazilianBoardUseCase } from "../../usecases/factory/create-board-usecase-factory"
 import { bcryptPasswordService } from "../../external/services/factory/password-service-factory"
 import { uuidUniqueIdService } from "../../external/services/factory/unique-id-service-factory"
-import { GetUserByAccessTokenUseCase } from "../../usecases/get-user-by-access-token-usecase"
+import { GetUserByHttpCookieUseCase } from "../../usecases/get-user-by-http-cookie-usecase"
 import { AuthenticateUserUseCase } from "../../usecases/authenticate-user-usecase"
 import { CreateMatchUseCase } from "../../usecases/create-match-usecase"
 import { CreateUserUseCase } from "../../usecases/create-user-usecase"
@@ -23,8 +23,8 @@ describe('Create match controller', async () => {
     const createMatchUseCase = new CreateMatchUseCase([ createBrazilianBoardUseCase ], uuidUniqueIdService, inMemoryMatchRepository, inMemoryUserRepository)
     const authenticateUserUseCase = new AuthenticateUserUseCase(jwtAccessTokenService, bcryptPasswordService, inMemoryUserRepository)
     const createUserUseCase = new CreateUserUseCase(bcryptPasswordService, uuidUniqueIdService, inMemoryUserRepository)
-    const getUserByAccessTokenUseCase = new GetUserByAccessTokenUseCase(jwtAccessTokenService, inMemoryUserRepository)
-    const createMatchController = new CreateMatchController(getUserByAccessTokenUseCase, createMatchUseCase)
+    const getUserByHttpCookieUseCase = new GetUserByHttpCookieUseCase(jwtAccessTokenService, inMemoryUserRepository)
+    const createMatchController = new CreateMatchController(getUserByHttpCookieUseCase, createMatchUseCase)
 
     const createdUserOrError = await createUserUseCase.execute({
         password: 'Password123.',
