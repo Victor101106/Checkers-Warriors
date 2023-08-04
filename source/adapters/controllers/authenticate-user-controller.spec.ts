@@ -17,7 +17,7 @@ describe('Authenticate user controller', async () => {
     const authenticateUserUseCase = new AuthenticateUserUseCase(jwtAccessTokenService, bcryptPasswordService, inMemoryUserRepository)
     const authenticateUserController = new AuthenticateUserController(authenticateUserUseCase)
     const createUserUseCase = new CreateUserUseCase(bcryptPasswordService, uuidUniqueIdService, inMemoryUserRepository)
-    const createUserController = new CreateUserController(createUserUseCase)
+    const createUserController = new CreateUserController(authenticateUserUseCase, createUserUseCase)
 
     const createUserRequestBody = {
         password: 'Password123.',
