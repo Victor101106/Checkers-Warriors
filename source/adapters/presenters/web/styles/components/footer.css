@@ -1,0 +1,22 @@
+/* <!-- Footer Style --> */
+
+#footer-container {
+    padding: 1.4rem;
+    margin: auto;
+}
+
+.footer-icon {
+    transition: opacity .25s;
+    margin-right: .4rem;
+    margin-left: .4rem;
+    font-size: 2rem;
+    cursor: pointer;
+    color: #fff;
+    opacity: 0.6;
+}
+
+.footer-icon:hover {
+    opacity: 1;
+}
+
+/* <!--- Final Style ---> */

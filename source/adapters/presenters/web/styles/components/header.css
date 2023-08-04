@@ -1,0 +1,57 @@
+/* <!-- Header Style --> */
+
+#header-container {
+    justify-content: space-around;
+    align-items: center;
+    display: flex;
+    padding: 2rem;
+}
+
+#header-left-wrapper {
+    align-items: center;
+    display: flex;
+    gap: .8rem;
+}
+
+#header-link {
+    height: 3.8rem;
+    width: 3.8rem;
+}
+
+#header-logotype {
+    height: 100%;
+    width: 100%;
+}
+
+#header-menu-toggle {
+    transition: opacity .25s;
+    font-size: 2.4rem;
+    cursor: pointer;
+    display: none;
+    color: #fff;
+    opacity: .6;
+}
+
+#header-menu-toggle:hover {
+    opacity: 1;
+}
+
+/* <!-- Responsive --> */
+
+@media (max-width: 40rem) {
+
+    #header-container {
+        justify-content: space-between;
+    }
+
+    #header-menu-toggle {
+        display: block;
+    }
+
+    #header-nav-wrapper .ghost-button {
+        display: none;
+    }
+
+}
+
+/* <!-- Final Style --> */

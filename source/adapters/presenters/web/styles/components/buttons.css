@@ -1,0 +1,69 @@
+/* <!-- Button Style --> */
+
+.button {
+    transition: background .25s, color .25s;
+    align-items: first baseline;
+    border-radius: 999rem;
+    padding: 1rem 1.8rem;
+    display: inline-flex;
+    font-size: 1.6rem;
+    font-weight: 600;
+    cursor: pointer;
+    gap: 1rem;
+}
+
+/* <!-- Default Style --> */
+
+.default-button {
+    border: #8DC3A7 solid .2rem;
+    background-color: #8DC3A7;
+    color: #0C2C27;
+}
+
+.default-button.button-selected,
+.default-button:hover {
+    background-color: #78B896;
+}
+
+/* <!-- Smooth Style --> */
+
+.smooth-button {
+    background-color: #1E7062;
+    color: #8DC3A7;
+    border: none;
+}
+
+.smooth-button.button-selected,
+.smooth-button:hover {
+    background-color: #8DC3A7;
+    color: #0C2C27;
+}
+
+/* <!-- Ghost Style --> */
+
+.ghost-button {
+    background: none;
+    color: #869693;
+    border: none;
+}
+
+.ghost-button.button-selected, 
+.ghost-button:hover {
+    color: #ffffff;
+}
+
+/* <!-- Outlined Style --> */
+
+.outlined-button {
+    border: #8DC3A7 solid .2rem;
+    background: none;
+    color: #8DC3A7;
+}
+
+.outlined-button.button-selected,
+.outlined-button:hover {
+    background-color: #8DC3A7;
+    color: #0C2C27;
+}
+
+/* <!-- Final Style --> */

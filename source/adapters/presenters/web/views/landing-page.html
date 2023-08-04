@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!-- Meta Tags -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="UTF-8">
+
+    <!-- Link Tags -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="shortcut icon" href="/static/assets/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="/static/styles/components/buttons.css">
+    <link rel="stylesheet" href="/static/styles/components/footer.css">
+    <link rel="stylesheet" href="/static/styles/components/header.css">
+    <link rel="stylesheet" href="/static/styles/components/board.css">
+    <link rel="stylesheet" href="/static/styles/template-page.css">
+    <link rel="stylesheet" href="/static/styles/landing-page.css">
+
+    <!-- Title Tag -->
+    <title>Checkers Warriors • Become a Warrior! </title>
+
+</head>
+<body>
+
+    <!-- Header -->
+    <header id="header-container">
+        <div id="header-left-wrapper">
+            <a id="header-link" href="/"><img id="header-logotype" src="/static/assets/logotype.png" alt="Checkers Warrior Logo"></a>
+            <i id="header-menu-toggle" class="ri-menu-line"></i>
+        </div>
+        <nav id="header-nav-wrapper">
+            <a class="header-nav-link" href="/"><button class="button ghost-button button-selected">Home</button></a>
+            <a class="header-nav-link" href="/about"><button class="button ghost-button">About</button></a>
+            <a class="header-nav-link" href="/contact"><button class="button ghost-button">Contact</button></a>
+            <% if (logged) { %>
+                <a class="header-nav-link" href="/create-match"><button class="button smooth-button">Create Match</button></a>
+            <% } else { %>
+                <a class="header-nav-link" href="/signup"><button class="button smooth-button">Sign Up</button></a>
+            <% }  %>
+        </nav>
+    </header>
+
+    <!-- Main -->
+    <main id="main-container">
+        <section id="main-left-wrapper">
+            <h1 id="main-title">Let's Play<br><span id="main-title-span">Checkers</span>!</h1>
+            <p id="main-text">Checkers is a classic board game, now imagine it with pixelated visuals and some gameplay updates. Well, this is <strong>Checkers Warriors</strong>!</p>
+            <div id="main-buttons">
+                <a href="<%= logged ? '/create-match' : '/signup' %>"><button class="button default-button">Get Started</button></a>
+                <button class="button outlined-button">
+                    <i class="ri-discord-fill"></i>
+                    <span>Join our Discord</span>
+                </button>
+            </div>
+        </section>
+        <section class="board-container" id="main-board">
+            <div class="board-face board-front"></div>
+            <div class="board-face board-right"></div>
+            <div class="board-face board-top"></div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer id="footer-container">
+        <a class="footer-link" href="https://github.com/Victor101106/Checkers-Warriors" target="_blank"><i class="footer-icon ri-github-fill"></i></a>
+        <a class="footer-link" href="https://www.linkedin.com/in/victor101106/" target="_blank"><i class="footer-icon ri-linkedin-fill"></i></a>
+    </footer>
+
+</body>
+</html>
