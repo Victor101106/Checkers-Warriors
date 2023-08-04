@@ -55,7 +55,7 @@ export class CreateUserController implements HttpController {
 
         const cookieHeader =  {
             name: 'Set-Cookie',
-            value: serializeCookie('access-token', accessToken, { httpOnly: true, expires: new Date(year2038Problem) })
+            value: serializeCookie('access-token', accessToken, { httpOnly: true, sameSite: true, expires: new Date(year2038Problem) })
         }
 
         return created({ auth: true }, [ cookieHeader ])
