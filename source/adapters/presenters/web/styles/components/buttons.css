@@ -15,6 +15,13 @@
 
 /* <!-- Modifier Style --> */
 
+.button.button-small {
+    padding: .7rem 1.6rem;
+    font-size: 1.6rem;
+    font-weight: 600;
+    gap: .7rem;
+}
+
 .button.button-full-width {
     width: 100%;
 }

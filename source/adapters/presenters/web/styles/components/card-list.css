@@ -1,0 +1,82 @@
+/* <!-- Card List Style --> */
+
+.card-list {
+    justify-content: center;
+    flex-wrap: wrap;
+    display: flex;
+    gap: 3rem;
+}
+
+.card-list-item {
+    justify-content: space-between;
+    background-color: #ffffff;
+    flex-direction: column;
+    border-radius: .3rem;
+    position: relative;
+    max-width: 50rem;
+    display: flex;
+    padding: 2rem;
+    width: 28rem;
+}
+
+.card-list-item-wrapper {
+    height: fit-content;
+}
+
+.card-list-item-red .card-list-item-image-wrapper {
+    background-color: rgba(255, 0, 0, 0.1);
+}
+
+.card-list-item-green .card-list-item-image-wrapper {
+    background-color: rgba(0, 255, 0, 0.1);
+}
+
+.card-list-item-blue .card-list-item-image-wrapper {
+    background-color: rgba(0, 150, 255, 0.1);
+}
+
+.card-list-item-image-wrapper {
+    background-color: rgba(0, 255, 0, 0.1);
+    margin-bottom: 2rem;
+    border-radius: 2rem;
+    place-items: center;
+    height: fit-content;
+    width: fit-content;
+    padding: 1.8rem;
+    display: grid;
+}
+
+.card-list-item-image {
+    border-radius: .6rem;
+    height: 4rem;
+}
+
+.card-list-item-title {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin-bottom: .4rem;
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+
+.card-list-item-description {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align: justify;
+    margin-bottom: 2rem;
+    height: fit-content;
+    font-size: 1.4rem;
+}
+
+.card-list-item-button {
+    border-color: #8DC3A7;
+    height: fit-content;
+    width: fit-content;
+    color: #1E7062;
+}
+
+@media (max-width: 70rem) {
+    .card-list-item {
+        flex-grow: 1;
+    }
+}
+
+/* <!-- Final Style --> */
