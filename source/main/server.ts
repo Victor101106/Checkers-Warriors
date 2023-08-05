@@ -1,15 +1,18 @@
 import instance from "./configs/instance"
+import './configs/socket'
 import './configs/dotenv'
 
 const PORT = Number(process.env.PORT)
 
-instance.listen({ port: PORT }, (error, address) => {
-    
+instance.ready((error) => {
+
     if (error) {
         console.error(error)
         process.exit(1)
     }
     
-    console.log(`⚡ Listening at PORT ${PORT} (${address})`)
+    instance.server.listen(PORT, () => {
+        console.log(`⚡ Listening at PORT ${PORT}!`)
+    })
 
 })
