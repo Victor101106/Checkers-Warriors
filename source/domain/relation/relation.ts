@@ -3,7 +3,7 @@ import { InvalidId } from "../user/errors/invalid-id"
 import { Id } from "../user/id"
 
 export interface RelationRequest {
-    relationId: string
+    relationId?: string
     matchId: string
     userId: string
 }
