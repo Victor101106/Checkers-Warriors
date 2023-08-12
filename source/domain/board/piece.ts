@@ -10,7 +10,8 @@ export interface PieceRequest {
     orientations: {
         column: Orientation[]
         row: Orientation[]
-    },
+    }
+    promoted?: boolean
     player: Player
     range: number
 }
@@ -18,11 +19,13 @@ export interface PieceRequest {
 export class Piece {
 
     public readonly orientations: Orientations
+    public readonly promoted: boolean
     public readonly player: Player
     public readonly range: Range
 
-    private constructor(orientations: Orientations, player: Player, range: Range) {
+    private constructor(orientations: Orientations, promoted: boolean, player: Player, range: Range) {
         this.orientations = orientations
+        this.promoted = promoted
         this.player = player
         this.range = range
         Object.freeze(this)
@@ -35,6 +38,7 @@ export class Piece {
         if (rangeOrError.isLeft())
             return left(rangeOrError.value)
         
+        const promoted = request.promoted || false
         const range = rangeOrError.value
         const player = request.player
         const orientations = {
@@ -48,7 +52,7 @@ export class Piece {
         if (isInvalidColumnOrientation || isInvalidRowOrientation)
             return left(new InvalidOrientation())
 
-        return right(new Piece(orientations, player, range))
+        return right(new Piece(orientations, promoted, player, range))
 
     }
 

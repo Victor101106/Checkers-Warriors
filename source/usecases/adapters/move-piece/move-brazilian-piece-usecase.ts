@@ -53,7 +53,8 @@ export class MoveBrazilianPieceUseCase implements MovePieceUseCase {
             const promotedPieceOrError = Piece.create({
                 orientations: { column: [-1, 1], row: [-1, 1] },
                 player: piece.player,    
-                range: Infinity
+                range: Infinity,
+                promoted: true
             })
 
             if (promotedPieceOrError.isLeft())
