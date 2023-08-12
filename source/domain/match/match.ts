@@ -4,10 +4,11 @@ import { Player } from "../board/types/player"
 import { Variation } from "./types/variation"
 import { Board } from "../board/board"
 import { Id } from "../user/id"
+import { User } from "../user/user"
 
 export interface MatchRequest {
     variation: Variation
-    players: [ Id, Id? ]
+    players: [ User, User? ]
     createdAt?: Date
     turn?: Player
     board: Board
@@ -17,13 +18,13 @@ export interface MatchRequest {
 export class Match {
 
     public readonly variation: Variation
-    public readonly players: [ Id, Id? ]
+    public readonly players: [ User, User? ]
     public readonly createdAt: Date
     public readonly board: Board
     public          turn: Player
     public readonly id: Id
 
-    private constructor(variation: Variation, createdAt: Date, players: [ Id, Id? ], board: Board, turn: Player, id: Id) {
+    private constructor(variation: Variation, createdAt: Date, players: [ User, User? ], board: Board, turn: Player, id: Id) {
         this.variation = variation
         this.createdAt = createdAt
         this.players = players

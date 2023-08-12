@@ -32,7 +32,7 @@ export class MovePieceOnMatchUseCase {
         
         const match = matchOrUndefined
 
-        if (match.players[match.turn]?.value != userId)
+        if (match.players[match.turn]?.id.value != userId)
             return left(new InvalidTurn())
         
         const formatedVariation = match.variation.charAt(0).toUpperCase() + match.variation.slice(1).toLowerCase()    

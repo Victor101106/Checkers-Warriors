@@ -31,7 +31,7 @@ export class FindAllMovementsOnMatchUseCase {
         const match = matchOrUndefined
         const board = match.board
 
-        const player = match.players.findIndex(player => player?.value == userId)
+        const player = match.players.findIndex(player => player?.id.value == userId)
 
         if (!(player == 0 || player == 1))
             return left(new UserNotFound())

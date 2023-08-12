@@ -60,7 +60,7 @@ export class CreateMatchUseCase {
 
         const matchOrError = Match.create({
             variation: <Variation>variation,
-            players: [ user.id ],
+            players: [ user ],
             board: board,
             id: uniqueId
         })
