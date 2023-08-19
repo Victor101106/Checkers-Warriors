@@ -11,6 +11,7 @@ html, body {
 /* <!-- Canvas Style --> */
 
 #main-canvas {
+    image-rendering: pixelated;
     background-color: #fff;
     height: 100%;
     width: 100%;
