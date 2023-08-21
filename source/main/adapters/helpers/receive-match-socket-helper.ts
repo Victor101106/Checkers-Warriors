@@ -22,6 +22,7 @@ export interface ReceiveMatchSocketResponse {
     }
     players: [ string, string? ]
     spectator: boolean
+    createdAt: number
     indexOf: number
     turn: number
 }
@@ -72,6 +73,7 @@ export class ReceiveMatchSocketHelper {
                 rows: board.rows,
                 spots: spots
             },
+            createdAt: match.createdAt.getTime(),
             players: [
                 match.players[0]?.name.value,
                 match.players[1]?.name.value
