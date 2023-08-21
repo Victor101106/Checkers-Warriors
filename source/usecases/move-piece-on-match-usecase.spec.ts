@@ -45,6 +45,9 @@ describe('Create match use case', async () => {
 
     it('should be able to move a piece brazilian on match in a valid turn', async () => {
         
+        const turn = brazilianMatch.turn
+        const score = brazilianMatch.score[turn]
+
         const confirmOrError = await movePieceOnMatchUseCase.execute({
             startsAt: { column: 1, row: 2 },
             endsAt:   { column: 2, row: 3 },
@@ -52,6 +55,9 @@ describe('Create match use case', async () => {
             userId: user.id.value
         })
         
+        if ((<any>confirmOrError.value).jumps?.length)
+            expect(brazilianMatch.score[turn]).not.toBe(score)
+
         expect(confirmOrError).instanceOf(Right)
 
     })

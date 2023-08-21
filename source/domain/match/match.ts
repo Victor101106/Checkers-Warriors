@@ -9,6 +9,7 @@ import { User } from "../user/user"
 export interface MatchRequest {
     variation: Variation
     players: [ User, User? ]
+    score?: [number, number]
     createdAt?: Date
     turn?: Player
     board: Board
@@ -19,28 +20,30 @@ export class Match {
 
     public readonly variation: Variation
     public readonly players: [ User, User? ]
+    public readonly score: [ number, number ]
     public readonly createdAt: Date
     public readonly board: Board
     public          turn: Player
     public readonly id: Id
 
-    private constructor(variation: Variation, createdAt: Date, players: [ User, User? ], board: Board, turn: Player, id: Id) {
+    private constructor(variation: Variation, createdAt: Date, players: [ User, User? ], score: [number, number], board: Board, turn: Player, id: Id) {
         this.variation = variation
         this.createdAt = createdAt
         this.players = players
+        this.score = score
         this.board = board
         this.turn = turn
         this.id = id
     }
 
-    static create({ variation, createdAt, players, board, turn, id }: MatchRequest): Either<InvalidId, Match> {
+    static create({ variation, createdAt, players, score, board, turn, id }: MatchRequest): Either<InvalidId, Match> {
 
         const idOrError = Id.create(id)
 
         if (idOrError.isLeft())
             return left(idOrError.value)
         
-        return right(new Match(variation, createdAt || new Date(), players, board, turn || 0, idOrError.value))
+        return right(new Match(variation, createdAt || new Date(), players, score || [0, 0], board, turn || 0, idOrError.value))
 
     }
 
