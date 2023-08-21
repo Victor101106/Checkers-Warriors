@@ -30,4 +30,8 @@ export class Config {
         this.events.emit('updated-container', this.container)
     }
 
+    configureTitle(state) {
+        document.title = `${ state.indexOf != 1 ? 'Playing' : 'Watching' } Match • Checkers Warriors` 
+    }
+
 }

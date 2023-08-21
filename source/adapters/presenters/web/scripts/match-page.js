@@ -11,6 +11,7 @@ const socket = new Socket()
 
 socket.events.on('receive-match-accepted', async (event) => {
     config.configureContainer(event)
+    config.configureTitle(event)
     render.configureState(event)
     config.configureCanvas()
 })
