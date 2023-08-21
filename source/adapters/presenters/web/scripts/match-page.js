@@ -24,6 +24,7 @@ config.events.on('updated-container', (container) => {
 })
 
 window.onload = async () => {
+    await render.configureImages()
     socket.receiveMatch(matchId)
     render.configureEffect()
     render.beginRendering()
