@@ -35,7 +35,7 @@ export class JoinMatchUseCase {
         if (!userOrUndefined) 
             return left(new UserNotFound())
         
-        matchOrUndefined.players[1] = userOrUndefined.id
+        matchOrUndefined.players[1] = userOrUndefined
 
         await this.matchRepository.update(matchOrUndefined)
 
