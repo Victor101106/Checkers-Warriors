@@ -20,7 +20,7 @@ export class Config {
     }
     
     configureContainer(state) {
-        this.container = { height: state.board.rows * 16 + 26, width: state.board.columns * 16 + 20 }
+        this.container = { height: state.board.rows * 16 + 30, width: state.board.columns * 16 + 22 }
         this.configurePosition()
     }
 
