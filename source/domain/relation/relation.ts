@@ -14,7 +14,7 @@ export class Relation {
     public readonly matchId: Id
     public readonly userId: Id
 
-    constructor(matchId: Id, userId: Id, relationId: Id) {
+    constructor(relationId: Id, matchId: Id, userId: Id) {
         this.relationId = relationId
         this.matchId = matchId
         this.userId = userId
