@@ -65,7 +65,7 @@ export class Render {
     }
     
     rotateScore() {
-        return this.state.indexOf != 0 ? this.state.score : this.state.score.reverse()
+        return this.state.indexOf != 0 ? this.state.score : [...this.state.score].reverse()
     }
 
     rotateTurn() {
