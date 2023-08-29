@@ -7,11 +7,8 @@ import { AuthenticateUserController } from "./authenticate-user-controller"
 import { CreateUserUseCase } from "../../usecases/create-user-usecase"
 import { CreateUserController } from "./create-user-controller"
 import { describe, expect, it } from "vitest"
-import dotenv from 'dotenv'
 
 describe('Authenticate user controller', async () => {
-
-    dotenv.config()
 
     const inMemoryUserRepository = new InMemoryUserRepository()
     const authenticateUserUseCase = new AuthenticateUserUseCase(jwtAccessTokenService, bcryptPasswordService, inMemoryUserRepository)

@@ -6,11 +6,8 @@ import { AuthenticateUserUseCase } from "../../usecases/authenticate-user-usecas
 import { CreateUserUseCase } from "../../usecases/create-user-usecase"
 import { CreateUserController } from "./create-user-controller"
 import { describe, expect, it } from "vitest"
-import { config } from "dotenv"
 
 describe('Create user controller', () => {
-
-    config()
 
     const inMemoryUserRepository = new InMemoryUserRepository()
     const createUserUseCase = new CreateUserUseCase(bcryptPasswordService, uuidUniqueIdService, inMemoryUserRepository)

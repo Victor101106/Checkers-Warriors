@@ -5,8 +5,7 @@ import { uuidUniqueIdService } from "../external/services/factory/unique-id-serv
 import { IncorrectEmailOrPassword } from "./errors/incorrect-email-or-password"
 import { AuthenticateUserUseCase } from "./authenticate-user-usecase"
 import { CreateUserUseCase } from "./create-user-usecase"
-import { describe, it, expect, beforeAll } from "vitest"
-import { config as configureDotEnv } from "dotenv"
+import { describe, it, expect } from "vitest"
 import { Left, Right } from "../shared/either"
 
 describe('Authenticate user use case', async () => {
@@ -22,7 +21,6 @@ describe('Authenticate user use case', async () => {
     })
     
     expect(userOrError).instanceOf(Right)
-    beforeAll(() => { configureDotEnv() })
 
     it('should be able to authenticate a user', async () => {
         

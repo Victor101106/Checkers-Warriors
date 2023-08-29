@@ -2,7 +2,6 @@ import { JwtAccessTokenService } from "./jwt-access-token-service"
 import { describe, it, expect, beforeAll } from "vitest"
 import { InvalidToken } from "../errors/invalid-token"
 import { Left, Right } from "../../../shared/either"
-import { config as configureDotEnv } from 'dotenv'
 import { sign } from "jsonwebtoken"
 
 describe('Jwt access token token service', () => {
@@ -10,8 +9,6 @@ describe('Jwt access token token service', () => {
     const jwtAccessTokenService = new JwtAccessTokenService()
     const simulatedUserId = '294ab835-4d5cb0fc5ebd'
     
-    beforeAll(() => { configureDotEnv() })
-
     it('should be able to generate and verify a access token', async () => {
 
         const accessToken = await jwtAccessTokenService.generate(simulatedUserId)

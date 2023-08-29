@@ -6,9 +6,8 @@ import { GetUserByHttpCookieUseCase } from "./get-user-by-http-cookie-usecase"
 import { InvalidToken } from "../external/services/errors/invalid-token"
 import { AuthenticateUserUseCase } from "./authenticate-user-usecase"
 import { CreateUserUseCase } from "./create-user-usecase"
-import { describe, it, expect, beforeAll } from "vitest"
+import { describe, it, expect } from "vitest"
 import { UserNotFound } from "./errors/user-not-found"
-import { config as configureDotEnv } from "dotenv"
 import { Left, Right } from "../shared/either"
 
 describe('Get user by http cookie use case', async () => {
@@ -18,8 +17,6 @@ describe('Get user by http cookie use case', async () => {
     const authenticateUserUseCase = new AuthenticateUserUseCase(jwtAccessTokenService, bcryptPasswordService, inMemoryUserRepository)
     const createUserUseCase = new CreateUserUseCase(bcryptPasswordService, uuidUniqueIdService, inMemoryUserRepository)
     const getUserByHttpCookieUseCase = new GetUserByHttpCookieUseCase(jwtAccessTokenService, inMemoryUserRepository)
-
-    beforeAll(() => { configureDotEnv() })    
 
     it('should be able to ensure authentication and get user', async () => {
         

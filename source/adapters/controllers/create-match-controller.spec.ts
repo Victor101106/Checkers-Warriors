@@ -11,11 +11,8 @@ import { CreateUserUseCase } from "../../usecases/create-user-usecase"
 import { CreateMatchController } from "./create-match-controller"
 import { describe, expect, it } from "vitest"
 import { Right } from "../../shared/either"
-import dotenv from 'dotenv'
 
 describe('Create match controller', async () => {
-
-    dotenv.config()
 
     const inMemoryMatchRepository = new InMemoryMatchRepository()
     const inMemoryUserRepository = new InMemoryUserRepository()

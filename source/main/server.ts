@@ -2,7 +2,6 @@ import instance from "./configs/instance"
 
 import './adapters/factories/socket-match-adapter-factory'
 import './configs/socket'
-import './configs/dotenv'
 
 const PORT = Number(process.env.PORT)
 
