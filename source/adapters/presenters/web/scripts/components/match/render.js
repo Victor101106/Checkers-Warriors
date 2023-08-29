@@ -46,6 +46,7 @@ export class Render {
             this.board = { height: this.state.board.rows * 16 + 6, width: this.state.board.columns * 16 }
             this.board.top = this.container.height / 2 - this.board.height / 2
             this.board.left = this.container.width / 2 - this.board.width / 2
+            this.events.emit('updated-board', this.board)
         }
     }
     
