@@ -12,9 +12,16 @@ export class Socket {
         this.socket.emit('receive-match', { matchId })
     }
 
+    joinMatch() {
+        this.socket.emit('join-match')
+    }
+
     eventHandler() {
         this.socket.on('receive-match-accepted', (event) => this.events.emit('receive-match-accepted', event))
         this.socket.on('receive-match-rejected', (event) => this.events.emit('receive-match-rejected', event))
+        this.socket.on('join-match-accepted', (event) => this.events.emit('join-match-accepted', event))
+        this.socket.on('join-match-rejected', (event) => this.events.emit('join-match-rejected', event))
+        this.socket.on('player-joined', (event) => this.events.emit('player-joined', event))
     }
 
 }

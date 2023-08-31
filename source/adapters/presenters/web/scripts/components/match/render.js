@@ -7,7 +7,9 @@ export class Render {
 
     constructor(canvas, context) {
         this.events = new EventEmitter()
+        this.elements = new Object()
         this.effect = { offsetY: 0 }
+        this.showInvite = false
         this.context = context
         this.canvas = canvas
     }
@@ -25,6 +27,7 @@ export class Render {
             'piece-black': await loadImage('../static/assets/game/piece-black.png'),
             'arrow-right': await loadImage('../static/assets/game/arrow-right.png'),
             'arrow-left': await loadImage('../static/assets/game/arrow-left.png'),
+            'separator': await loadImage('../static/assets/game/separator.png'),
             'alphabet': await loadImage('../static/assets/game/alphabet.png'),
             'numerals': await loadImage('../static/assets/game/numerals.png'),
         }
@@ -57,6 +60,35 @@ export class Render {
     
     configureEffect() {
         this.effect.interval = setInterval(() => this.effect.offsetY = this.effect.offsetY ? 0 : 1, 125)
+    }
+
+    configureInviteMenu() {
+
+        const [ AcceptInviteValue, JustWatchValue ] = [ 'Accept Invite', 'Just Watch' ]
+
+        const InviteMenuElements = {
+            AcceptInviteButton: {
+                onclick: () => this.events.emit('request-join-match'),
+                width: AcceptInviteValue.length * 4 - 1,
+                value: AcceptInviteValue,
+                height: 5,
+                left: 0,
+                top: 0,
+            },
+            JustWatchButton: {
+                onclick: () => this.showInvite = false,
+                width: JustWatchValue.length * 4 - 1,
+                value: JustWatchValue,
+                height: 5,
+                left: 0,
+                top: 0,
+            }
+        }
+
+        this.showInvite = this.state.indexOf == -1 && !this.state.players[1]
+
+        Object.assign(this.elements, InviteMenuElements)
+
     }
 
     // <-- Utility Functions --> //
@@ -94,6 +126,11 @@ export class Render {
             this.drawBoard()
         }
 
+        if (this.showInvite) {
+            this.drawTransparentFilter()
+            this.drawInviteMenu()
+        }
+
         if (this.effect.interval) 
             this.drawEffect()
         
@@ -104,6 +141,39 @@ export class Render {
     drawBackground() {
         this.context.fillStyle = '#0d302a'
         this.context.fillRect(0 - this.container?.left, 0 - this.container?.top, this.canvas.width, this.canvas.height)
+    }
+
+    drawTransparentFilter() {
+        this.context.fillStyle = '#0d302a'
+        this.context.globalAlpha = 0.95
+        this.context.fillRect(0 - this.container?.left, 0 - this.container?.top, this.canvas.width, this.canvas.height)
+        this.context.globalAlpha = 1.00
+    }
+
+    drawInviteMenu() {
+
+        const { AcceptInviteButton, JustWatchButton } = this.elements
+
+        const translateX = this.container.width / 2 - AcceptInviteButton.width / 2 | 0
+        const translateY = this.container.height / 2 - (AcceptInviteButton.height + JustWatchButton.height + 7) / 2 | 0
+
+        AcceptInviteButton.left = translateX
+        AcceptInviteButton.top = translateY
+
+        JustWatchButton.left = translateX + AcceptInviteButton.width / 2 - JustWatchButton.width / 2
+        JustWatchButton.top = translateY + AcceptInviteButton.height + 7
+
+        this.context.globalAlpha = 0.60
+        this.context.drawImage(this.images.separator, translateX + AcceptInviteButton.width / 2 - 17 / 2 | 0, translateY + AcceptInviteButton.height + 2 | 0)
+       
+        this.context.globalAlpha = AcceptInviteButton.selected ? 1.00 : 0.60
+        this.drawString(AcceptInviteButton.value, AcceptInviteButton.left, AcceptInviteButton.top)
+       
+        this.context.globalAlpha = JustWatchButton.selected ? 1.00 : 0.60
+        this.drawString(JustWatchButton.value, JustWatchButton.left, JustWatchButton.top)
+
+        this.context.globalAlpha = 1.00
+       
     }
 
     drawBoard() {

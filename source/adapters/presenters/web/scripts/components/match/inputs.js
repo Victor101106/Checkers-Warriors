@@ -2,13 +2,19 @@ import { EventEmitter } from "../event-emitter.js"
 
 export class Inputs {
     
-    constructor(canvas) {
+// <-- Constructor Function --> //
+
+    constructor(canvas, elements) {
         this.events = new EventEmitter()
+        this.elements = elements
         this.canvas = canvas
         this.eventHandler()
     }
 
+    // <-- Event Functions --> //
+
     eventHandler() {
+        this.canvas.onmousemove = (event) => this.onMouseMoveEvent(event)
         this.canvas.onclick = (event) => this.onClickEvent(event)
     }
 
@@ -16,12 +22,29 @@ export class Inputs {
 
         const coordinate = this.coordinateToCanvas(x, y)
 
-        this.events.emit('click', coordinate)
+        for (let element of Object.values(this.elements)) {
+            if (this.intersect(coordinate, element)) {
+                element.onclick && element.onclick()
+            }
+        }
 
-        if (this.board && this.container)
-            this.events.emit('select-spot', this.coordinateToBoard(coordinate.x, coordinate.y))
+        this.events.emit('onclick', coordinate)
 
     }
+
+    onMouseMoveEvent({ x, y }) {
+
+        const coordinate = this.coordinateToCanvas(x, y)
+
+        for (let element of Object.values(this.elements)) {
+            element.selected = this.intersect(coordinate, element)
+        }
+
+        this.events.emit('onhover', coordinate)
+
+    }
+
+    // <-- Configure Functions --> //
 
     configureContainer(container) {
         this.container = container
@@ -30,6 +53,19 @@ export class Inputs {
     configureBoard(board) {
         this.board = board
     }
+
+    // <-- Utility Functions --> //
+
+    intersect(coordinate, element, container = this.container) {
+
+        const intersectX = coordinate.x >= container.left + element.left && coordinate.x < container.left + element.left + element.width
+        const intersectY = coordinate.y >= container.top + element.top && coordinate.y < container.top + element.top + element.height
+
+        return intersectX && intersectY
+
+    }
+
+    // <-- Convert Functions --> //
 
     coordinateToCanvas(x, y) {
         return {
@@ -44,5 +80,7 @@ export class Inputs {
             row: (y - this.container.top - this.board.top) / 16 | 0
         }
     }
+
+    // <-- Final Class --> //
 
 }
