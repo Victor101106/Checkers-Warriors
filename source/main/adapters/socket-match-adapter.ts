@@ -1,5 +1,6 @@
 import { InvalidParameters } from '../../adapters/controllers/errors/invalid-parameters'
 import { HttpRequestHeaders } from '../../adapters/controllers/ports/http-headers'
+import { FindAllMovementsSocketHelper } from './helpers/find-all-movements-socket-helper'
 import { JoinMatchSocketHelper } from './helpers/join-match-socket-helper'
 import { ReceiveMatchSocketHelper } from './helpers/receive-match-socket-helper'
 import { Server, Socket } from 'socket.io'
@@ -7,11 +8,13 @@ import { z } from 'zod'
 
 export class SocketMatchAdapter {
 
+    private readonly findAllMovementsSocketHelper: FindAllMovementsSocketHelper
     private readonly receiveMatchSocketHelper: ReceiveMatchSocketHelper
     private readonly joinMatchSocketHelper: JoinMatchSocketHelper
     private readonly server: Server
 
-    constructor(receiveMatchSocketHelper: ReceiveMatchSocketHelper, joinMatchSocketHelper: JoinMatchSocketHelper, server: Server) {
+    constructor(findAllMovementsSocketHelper: FindAllMovementsSocketHelper, receiveMatchSocketHelper: ReceiveMatchSocketHelper, joinMatchSocketHelper: JoinMatchSocketHelper, server: Server) {
+        this.findAllMovementsSocketHelper = findAllMovementsSocketHelper
         this.receiveMatchSocketHelper = receiveMatchSocketHelper
         this.joinMatchSocketHelper = joinMatchSocketHelper
         this.server = server
@@ -57,6 +60,17 @@ export class SocketMatchAdapter {
 
                 this.server.to(match.id.value).emit('player-joined', { player })
                 socket.emit('join-match-accepted', { indexOf })
+
+            })
+
+            socket.on('find-all-movements', async (event) => {
+
+                const responseOrError = await this.findAllMovementsSocketHelper.execute({ relationId: socket.id })
+
+                if (responseOrError.isLeft())
+                    return socket.emit('find-all-movements-rejected', this.errorToObject(responseOrError.value))
+
+                socket.emit('find-all-movements-accepted', responseOrError.value)
 
             })
 
