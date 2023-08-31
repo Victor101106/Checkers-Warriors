@@ -12,11 +12,17 @@ export class Socket {
         this.socket.emit('receive-match', { matchId })
     }
 
+    findAllMovements() {
+        this.socket.emit('find-all-movements')
+    }
+
     joinMatch() {
         this.socket.emit('join-match')
     }
 
     eventHandler() {
+        this.socket.on('find-all-movements-accepted', (event) => this.events.emit('find-all-movements-accepted', event))
+        this.socket.on('find-all-movements-rejected', (event) => this.events.emit('find-all-movements-rejected', event))
         this.socket.on('receive-match-accepted', (event) => this.events.emit('receive-match-accepted', event))
         this.socket.on('receive-match-rejected', (event) => this.events.emit('receive-match-rejected', event))
         this.socket.on('join-match-accepted', (event) => this.events.emit('join-match-accepted', event))

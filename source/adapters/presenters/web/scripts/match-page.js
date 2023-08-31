@@ -23,6 +23,14 @@ socket.events.on('receive-match-rejected', async (event) => {
     window.location.assign('/')
 })
 
+socket.events.on('find-all-movements-accepted', async (event) => {
+    render.movements = event
+})
+
+socket.events.on('find-all-movements-rejected', async (event) => {
+    console.error(event)
+})
+
 render.events.on('request-join-match', async (event) => {
     socket.joinMatch()
 })
