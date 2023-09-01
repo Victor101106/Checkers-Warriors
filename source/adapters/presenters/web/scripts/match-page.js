@@ -40,9 +40,13 @@ render.events.on('request-join-match', async (event) => {
     socket.joinMatch()
 })
 
+render.events.on('request-move-piece', async (event) => {
+    socket.movePiece(event)
+})
+
 socket.events.on('join-match-accepted', async (event) => {
     
-    render.indexOf = event.indexOf
+    render.state.indexOf = event.indexOf
     
     if (render.state.turn == event.indexOf)
         socket.findAllMovements()
@@ -56,6 +60,22 @@ socket.events.on('join-match-rejected', async (event) => {
 socket.events.on('player-joined', async (event) => {
     render.state.players[1] = event.player
     render.showInvite = false
+})
+
+socket.events.on('move-piece-rejected', async (event) => {
+    console.error(event)
+})
+
+socket.events.on('move-piece', async (event) => {
+    
+    render.movements = undefined
+    render.selection = undefined
+    render.movePiece(event)
+    render.reverseTurn()
+
+    if (render.state.turn == render.state.indexOf)
+        socket.findAllMovements()
+
 })
 
 config.events.on('updated-container', (container) => {

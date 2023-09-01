@@ -115,6 +115,10 @@ export class Render {
         }
     }
 
+    reverseTurn() {
+        this.state.turn = this.state.turn == 0 ? 1 : 0
+    }
+
     // <-- Event Functions --> //
 
     selectSpot(position) {
@@ -127,10 +131,30 @@ export class Render {
         if (positionOutsideBoard || positionAlreadySelected)
             return this.selection = undefined
 
+        if (this.selection && this.movements.find(({ startsAt, endsAt }) => startsAt.column == this.selection.column && startsAt.row == this.selection.row && endsAt.column == rotatedPosition.column && endsAt.row == rotatedPosition.row))
+            return this.events.emit('request-move-piece', { startsAt: this.selection, endsAt: rotatedPosition })
+
         if (!this.movements || !this.movements.find(({ startsAt }) => startsAt.column == rotatedPosition.column && startsAt.row == rotatedPosition.row))
             return this.selection = undefined
 
         this.selection = rotatedPosition
+
+    }
+
+    // <-- Board Functions --> //
+
+    movePiece({ startsAt, endsAt, jumps, promoted }) {
+
+        const piece = this.state.board.spots[startsAt.row][startsAt.column]
+    
+        this.state.board.spots[startsAt.row][startsAt.column] = undefined
+        this.state.board.spots[endsAt.row][endsAt.column] = piece
+        
+        for (let jump of jumps)
+            this.state.board.spots[jump.position.row][jump.position.column] = undefined
+
+        this.state.score[this.state.turn] += jumps.length
+        piece.promoted ||= promoted
 
     }
 
@@ -255,8 +279,10 @@ export class Render {
     
     drawSelection(position) {
 
-        const pieceOrUndefined = this.state.board.spots[position.row][position.column]
-        const image = this.images[pieceOrUndefined ? "selection-piece" : "selection-spot"]
+        const rotatedPosition = this.rotatePosition(position)
+
+        const pieceOrUndefined = this.state.board.spots[rotatedPosition.row][rotatedPosition.column]
+        const image = this.images[pieceOrUndefined ? (pieceOrUndefined.player == this.state.indexOf ? "selection-piece" : "selection-jump") : "selection-spot"]
 
         this.context.drawImage(image, this.board.left + position.column * 16, this.board.top + position.row * 16)
 
@@ -273,6 +299,9 @@ export class Render {
         for (let movement of movements) {
             for (let position of movement.positions) {
                 this.drawSelection(this.rotatePosition(position))
+            }
+            for (let jump of movement.jumps) {
+                this.drawSelection(this.rotatePosition(jump.position))
             }
         }
 
