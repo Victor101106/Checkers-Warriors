@@ -1,8 +1,9 @@
+import { FindAllMovementsSocketHelper } from './helpers/find-all-movements-socket-helper'
 import { InvalidParameters } from '../../adapters/controllers/errors/invalid-parameters'
 import { HttpRequestHeaders } from '../../adapters/controllers/ports/http-headers'
-import { FindAllMovementsSocketHelper } from './helpers/find-all-movements-socket-helper'
-import { JoinMatchSocketHelper } from './helpers/join-match-socket-helper'
 import { ReceiveMatchSocketHelper } from './helpers/receive-match-socket-helper'
+import { MovePieceSocketHelper } from './helpers/move-piece-socket-helper'
+import { JoinMatchSocketHelper } from './helpers/join-match-socket-helper'
 import { Server, Socket } from 'socket.io'
 import { z } from 'zod'
 
@@ -10,12 +11,14 @@ export class SocketMatchAdapter {
 
     private readonly findAllMovementsSocketHelper: FindAllMovementsSocketHelper
     private readonly receiveMatchSocketHelper: ReceiveMatchSocketHelper
+    private readonly movePieceSocketHelper: MovePieceSocketHelper
     private readonly joinMatchSocketHelper: JoinMatchSocketHelper
     private readonly server: Server
 
-    constructor(findAllMovementsSocketHelper: FindAllMovementsSocketHelper, receiveMatchSocketHelper: ReceiveMatchSocketHelper, joinMatchSocketHelper: JoinMatchSocketHelper, server: Server) {
+    constructor(findAllMovementsSocketHelper: FindAllMovementsSocketHelper, receiveMatchSocketHelper: ReceiveMatchSocketHelper, movePieceSocketHelper: MovePieceSocketHelper, joinMatchSocketHelper: JoinMatchSocketHelper, server: Server) {
         this.findAllMovementsSocketHelper = findAllMovementsSocketHelper
         this.receiveMatchSocketHelper = receiveMatchSocketHelper
+        this.movePieceSocketHelper = movePieceSocketHelper
         this.joinMatchSocketHelper = joinMatchSocketHelper
         this.server = server
         this.eventHandler()
@@ -71,6 +74,37 @@ export class SocketMatchAdapter {
                     return socket.emit('find-all-movements-rejected', this.errorToObject(responseOrError.value))
 
                 socket.emit('find-all-movements-accepted', responseOrError.value)
+
+            })
+            
+            socket.on('move-piece', async (event) => {
+
+                const positionSchema = z.object({ column: z.number(), row: z.number() })
+
+                const startsAtSafeParse = positionSchema.safeParse(event.startsAt)
+                const endsAtSafeParse = positionSchema.safeParse(event.endsAt)
+
+                if (!startsAtSafeParse.success || !endsAtSafeParse.success)
+                    return socket.emit('move-piece-rejected', this.errorToObject(new InvalidParameters()))
+
+                const responseOrError = await this.movePieceSocketHelper.execute({
+                    startsAt: startsAtSafeParse.data,
+                    endsAt: endsAtSafeParse.data,
+                    relationId: socket.id
+                })
+
+                if (responseOrError.isLeft())
+                    return socket.emit('move-piece-rejected', this.errorToObject(responseOrError.value))
+
+                const response = responseOrError.value
+
+                this.server.to(response.matchId.value).emit('move-piece', {
+                    positions: response.positions,
+                    promoted: response.promoted,
+                    startsAt: response.startsAt,
+                    endsAt: response.endsAt,
+                    jumps: response.jumps
+                })
 
             })
 
