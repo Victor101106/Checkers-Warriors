@@ -12,11 +12,16 @@ const config = new Config(canvas)
 const socket = new Socket()
 
 socket.events.on('receive-match-accepted', async (event) => {
+    
     config.configureContainer(event)
     config.configureTitle(event)
     render.configureState(event)
     render.configureInviteMenu()
     config.configureCanvas()
+
+    if (event.turn == event.indexOf)
+        socket.findAllMovements()
+
 })
 
 socket.events.on('receive-match-rejected', async (event) => {
@@ -36,7 +41,12 @@ render.events.on('request-join-match', async (event) => {
 })
 
 socket.events.on('join-match-accepted', async (event) => {
+    
     render.indexOf = event.indexOf
+    
+    if (render.state.turn == event.indexOf)
+        socket.findAllMovements()
+
 })
 
 socket.events.on('join-match-rejected', async (event) => {
@@ -55,6 +65,10 @@ config.events.on('updated-container', (container) => {
 
 render.events.on('updated-board', (board) => {
     inputs.configureBoard(board)
+})
+
+inputs.events.on('onclick', (coordinate, position) => {
+    render.selectSpot(position)
 })
 
 window.onload = async () => {

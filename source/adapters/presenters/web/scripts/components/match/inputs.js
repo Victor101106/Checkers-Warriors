@@ -21,6 +21,7 @@ export class Inputs {
     onClickEvent({ x, y }) {
 
         const coordinate = this.coordinateToCanvas(x, y)
+        const position = this.coordinateToBoard(coordinate.x, coordinate.y)
 
         for (let element of Object.values(this.elements)) {
             if (this.intersect(coordinate, element)) {
@@ -28,7 +29,7 @@ export class Inputs {
             }
         }
 
-        this.events.emit('onclick', coordinate)
+        this.events.emit('onclick', coordinate, position)
 
     }
 
@@ -76,8 +77,8 @@ export class Inputs {
 
     coordinateToBoard(x, y) {
         return {
-            column: (x - this.container.left - this.board.left) / 16 | 0,
-            row: (y - this.container.top - this.board.top) / 16 | 0
+            column: Math.floor((x - this.container.left - this.board.left) / 16),
+            row: Math.floor((y - this.container.top - this.board.top) / 16)
         }
     }
 

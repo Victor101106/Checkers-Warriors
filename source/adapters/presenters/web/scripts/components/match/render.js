@@ -22,6 +22,9 @@ export class Render {
             'character-colon': await loadImage('../static/assets/game/character-colon.png'),
             'character-lines': await loadImage('../static/assets/game/character-lines.png'),
             'profile-picture': await loadImage('../static/assets/game/profile-picture.png'),
+            'selection-piece': await loadImage('../static/assets/game/selection-piece.png'),
+            'selection-jump': await loadImage('../static/assets/game/selection-jump.png'),
+            'selection-spot': await loadImage('../static/assets/game/selection-spot.png'),
             'piece-crown': await loadImage('../static/assets/game/piece-crown.png'),
             'piece-white': await loadImage('../static/assets/game/piece-white.png'),
             'piece-black': await loadImage('../static/assets/game/piece-black.png'),
@@ -112,6 +115,25 @@ export class Render {
         }
     }
 
+    // <-- Event Functions --> //
+
+    selectSpot(position) {
+
+        const rotatedPosition = this.rotatePosition(position)
+
+        const positionAlreadySelected = this.selection && this.selection.column == rotatedPosition.column && this.selection.row == rotatedPosition.row
+        const positionOutsideBoard = position.column < 0 || position.row < 0 || position.column >= this.state.board.columns || position.row >= this.state.board.rows
+
+        if (positionOutsideBoard || positionAlreadySelected)
+            return this.selection = undefined
+
+        if (!this.movements || !this.movements.find(({ startsAt }) => startsAt.column == rotatedPosition.column && startsAt.row == rotatedPosition.row))
+            return this.selection = undefined
+
+        this.selection = rotatedPosition
+
+    }
+
     // <-- Draw Functions --> //
 
     beginRendering() {
@@ -179,6 +201,8 @@ export class Render {
     drawBoard() {
         this.drawOutline()
         this.drawSpots()
+        this.selection && this.drawSelection(this.rotatePosition(this.selection))
+        this.movements && this.drawMovements()
         this.drawPieces()
     }
     
@@ -229,6 +253,31 @@ export class Render {
         this.context.drawImage(this.images['piece-crown'], this.board.left + position.column * 16 + 3, this.board.top + position.row * 16 - 2)
     }
     
+    drawSelection(position) {
+
+        const pieceOrUndefined = this.state.board.spots[position.row][position.column]
+        const image = this.images[pieceOrUndefined ? "selection-piece" : "selection-spot"]
+
+        this.context.drawImage(image, this.board.left + position.column * 16, this.board.top + position.row * 16)
+
+    }
+
+    drawMovements() {
+
+        if (!this.selection)
+            return this.movements.forEach(movement => this.drawSelection(this.rotatePosition(movement.startsAt)))        
+
+        const movementFilter = (movement) => movement.startsAt.column == this.selection.column && movement.startsAt.row == this.selection.row
+        const movements = this.movements.filter(movementFilter)
+
+        for (let movement of movements) {
+            for (let position of movement.positions) {
+                this.drawSelection(this.rotatePosition(position))
+            }
+        }
+
+    }
+
     drawExtraBoard() {
         this.drawOptionsButton()
         this.drawPlayerDown()
