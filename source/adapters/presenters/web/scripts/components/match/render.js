@@ -9,7 +9,13 @@ export class Render {
         this.events = new EventEmitter()
         this.elements = new Object()
         this.effect = { offsetY: 0 }
+        this.showOptions = false
         this.showInvite = false
+        this.options = {
+            enableAnimations: true,
+            enableRotation: true,
+            enableEffects: true
+        }
         this.context = context
         this.canvas = canvas
     }
@@ -30,6 +36,8 @@ export class Render {
             'piece-black': await loadImage('../static/assets/game/piece-black.png'),
             'arrow-right': await loadImage('../static/assets/game/arrow-right.png'),
             'arrow-left': await loadImage('../static/assets/game/arrow-left.png'),
+            'toggle-off': await loadImage('../static/assets/game/toggle-off.png'),
+            'toggle-on': await loadImage('../static/assets/game/toggle-on.png'),
             'separator': await loadImage('../static/assets/game/separator.png'),
             'alphabet': await loadImage('../static/assets/game/alphabet.png'),
             'numerals': await loadImage('../static/assets/game/numerals.png'),
@@ -71,7 +79,7 @@ export class Render {
 
         const InviteMenuElements = {
             AcceptInviteButton: {
-                onclick: () => this.events.emit('request-join-match'),
+                onclick: () => { if (this.showInvite) this.events.emit('request-join-match') },
                 width: AcceptInviteValue.length * 4 - 1,
                 value: AcceptInviteValue,
                 height: 5,
@@ -94,24 +102,88 @@ export class Render {
 
     }
 
+    configureOptionsMenu() {
+
+        const [ EnableAnimationsValue, EnableRotationValue, EnableEffectsValue, OptionsButtonValue, GiveUpValue, CloseValue ] = [ 'Enable Animations', 'Enable Rotation', 'Enable Effects', 'Options', 'Give Up', 'Close' ]
+        
+        const middleX = (EnableAnimationsValue.length * 4 + 6) / 2
+
+        const translateX = this.container.width / 2 - middleX | 0
+        const translateY = this.container.height / 2 - 38 / 2 | 0
+
+        const OptionsMenuElements = {
+            OptionsButton: {
+                top: this.board.top + this.board.height + 4,
+                width: OptionsButtonValue.length * 4 + 5,
+                onclick: () => this.showOptions = true,
+                value: OptionsButtonValue,
+                left: this.board.left,
+                height: 5,
+            },
+            EnableAnimationsToggle: {
+                onclick: () => { if (this.showOptions) this.options.enableAnimations = !this.options.enableAnimations },
+                width: EnableAnimationsValue.length * 4 + 6,
+                value: EnableAnimationsValue,
+                left: translateX,
+                top: translateY,
+                height: 5
+            },
+            EnableRotationToggle: {
+                onclick: () => { if (this.showOptions) this.options.enableRotation = !this.options.enableRotation },
+                left: translateX + middleX - (EnableRotationValue.length * 4 + 6) / 2 | 0,
+                width: EnableRotationValue.length * 4 + 6,
+                value: EnableRotationValue,
+                top: translateY + 1 * 7,
+                height: 5
+            },
+            EnableEffectsToggle: {
+                onclick: () => { if (this.showOptions) this.options.enableEffects = !this.options.enableEffects },
+                left: translateX + middleX - (EnableEffectsValue.length * 4 + 6) / 2 | 0,
+                width: EnableEffectsValue.length * 4 + 6,
+                value: EnableEffectsValue,
+                top: translateY + 2 * 7,
+                height: 5
+            },
+            GiveUpToggle: {
+                onclick: () => { if (this.showOptions) this.events.emit('request-give-up') },
+                left: translateX + middleX - (GiveUpValue.length * 4 - 1) / 2 | 0,
+                width: GiveUpValue.length * 4 - 1,
+                top: translateY + 5 + 3 * 7,
+                value: GiveUpValue,
+                height: 5
+            },
+            CloseToggle: {
+                onclick: () => { if (this.showOptions) this.showOptions = false },
+                left: translateX + middleX - (CloseValue.length * 4 - 1) / 2 | 0,
+                width: CloseValue.length * 4 - 1,
+                top: translateY + 5 + 4 * 7,
+                value: CloseValue,
+                height: 5
+            }
+        }
+
+        Object.assign(this.elements, OptionsMenuElements)
+
+    }
+
     // <-- Utility Functions --> //
 
     rotatePlayers() {
-        return this.state.indexOf != 0 ? this.state.players : [...this.state.players].reverse()
+        return this.state.indexOf == 0 && this.options.enableRotation ? [...this.state.players].reverse() : this.state.players
     }
     
     rotateScore() {
-        return this.state.indexOf != 0 ? this.state.score : [...this.state.score].reverse()
+        return this.state.indexOf == 0 && this.options.enableRotation ? [...this.state.score].reverse() : this.state.score
     }
 
     rotateTurn() {
-        return this.state.indexOf != 0 ? this.state.turn : 1 - this.state.turn
+        return this.state.indexOf == 0 && this.options.enableRotation ? 1 - this.state.turn : this.state.turn
     }
 
     rotatePosition(position) {   
         return { 
-            column: this.state.indexOf != 0 ? position.column : this.state.board.columns - position.column - 1,
-            row: this.state.indexOf != 0 ? position.row : this.state.board.rows - position.row - 1
+            column: this.state.indexOf == 0 && this.options.enableRotation ? this.state.board.columns - position.column - 1  : position.column,
+            row: this.state.indexOf == 0 && this.options.enableRotation ? this.state.board.rows - position.row - 1 : position.row
         }
     }
 
@@ -122,6 +194,9 @@ export class Render {
     // <-- Event Functions --> //
 
     selectSpot(position) {
+
+        if (this.showOptions)
+            return
 
         const rotatedPosition = this.rotatePosition(position)
 
@@ -172,12 +247,17 @@ export class Render {
             this.drawBoard()
         }
 
+        if (this.showOptions) {
+            this.drawTransparentFilter()
+            this.drawOptions()
+        }
+
         if (this.showInvite) {
             this.drawTransparentFilter()
             this.drawInviteMenu()
         }
 
-        if (this.effect.interval) 
+        if (this.options.enableEffects) 
             this.drawEffect()
         
         requestAnimationFrame(() => this.beginRendering())
@@ -194,6 +274,35 @@ export class Render {
         this.context.globalAlpha = 0.95
         this.context.fillRect(0 - this.container?.left, 0 - this.container?.top, this.canvas.width, this.canvas.height)
         this.context.globalAlpha = 1.00
+    }
+
+    drawOptions() {
+        
+        const { EnableAnimationsToggle, EnableRotationToggle, EnableEffectsToggle, GiveUpToggle, CloseToggle } = this.elements
+
+        this.context.globalAlpha = EnableAnimationsToggle.selected ? 1.00 : 0.60
+        this.context.drawImage(this.images[this.options.enableAnimations ? "toggle-on" : "toggle-off"], EnableAnimationsToggle.left, EnableAnimationsToggle.top)
+        this.drawString(EnableAnimationsToggle.value, 7 + EnableAnimationsToggle.left, EnableAnimationsToggle.top)
+        
+        this.context.globalAlpha = EnableRotationToggle.selected ? 1.00 : 0.60
+        this.context.drawImage(this.images[this.options.enableRotation ? "toggle-on" : "toggle-off"], EnableRotationToggle.left, EnableRotationToggle.top)
+        this.drawString(EnableRotationToggle.value, 7 + EnableRotationToggle.left, EnableRotationToggle.top)
+
+        this.context.globalAlpha = EnableEffectsToggle.selected ? 1.00 : 0.60
+        this.context.drawImage(this.images[this.options.enableEffects ? "toggle-on" : "toggle-off"], EnableEffectsToggle.left, EnableEffectsToggle.top)
+        this.drawString(EnableEffectsToggle.value, 7 + EnableEffectsToggle.left, EnableEffectsToggle.top)
+        
+        this.context.globalAlpha = 0.60
+        this.context.drawImage(this.images.separator, EnableAnimationsToggle.left + EnableAnimationsToggle.width / 2 - 17 / 2 | 0, EnableEffectsToggle.top + EnableEffectsToggle.height + 2 | 0)
+
+        this.context.globalAlpha = GiveUpToggle.selected ? 1.00 : 0.60
+        this.drawString(GiveUpToggle.value, GiveUpToggle.left, GiveUpToggle.top)
+
+        this.context.globalAlpha = CloseToggle.selected ? 1.00 : 0.60
+        this.drawString(CloseToggle.value, CloseToggle.left, CloseToggle.top)
+
+        this.context.globalAlpha = 1.00
+
     }
 
     drawInviteMenu() {
@@ -356,7 +465,8 @@ export class Render {
         
         const [ left, top ] = [ this.board.left, this.board.top + this.board.height + 4 ]
         
-        this.context.globalAlpha = 0.60
+        if (!this.elements.OptionsButton?.selected)
+            this.context.globalAlpha = 0.60
         
         this.context.drawImage(this.images["character-lines"], left, top)
         

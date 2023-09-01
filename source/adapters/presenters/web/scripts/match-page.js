@@ -16,6 +16,7 @@ socket.events.on('receive-match-accepted', async (event) => {
     config.configureContainer(event)
     config.configureTitle(event)
     render.configureState(event)
+    render.configureOptionsMenu()
     render.configureInviteMenu()
     config.configureCanvas()
 
