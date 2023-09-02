@@ -10,8 +10,16 @@
 
 ## Content Table
 - [Content Table](#content-table)
+- [Environment](#environment)
 - [License](#license)
 - [Contact](#contact)
+
+## Environment
+To use environment variables in your project, create an .env file in the project root. <br> Make sure you have all the necessary variables, as described below:
+| Key                      | Type          |
+| ------------------------ | ------------- |
+| ACCESS_TOKEN_SECRET_KEY  | String        |
+| PORT                     | Number        |
 
 ## License
 Distributed under the GPL v3.0 license. See [`LICENSE`](LICENSE.md) for more information.
