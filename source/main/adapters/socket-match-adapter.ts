@@ -4,6 +4,7 @@ import { HttpRequestHeaders } from '../../adapters/controllers/ports/http-header
 import { ReceiveMatchSocketHelper } from './helpers/receive-match-socket-helper'
 import { MovePieceSocketHelper } from './helpers/move-piece-socket-helper'
 import { JoinMatchSocketHelper } from './helpers/join-match-socket-helper'
+import { GiveUpSocketHelper } from './helpers/give-up-socket-helper'
 import { Server, Socket } from 'socket.io'
 import { z } from 'zod'
 
@@ -13,13 +14,15 @@ export class SocketMatchAdapter {
     private readonly receiveMatchSocketHelper: ReceiveMatchSocketHelper
     private readonly movePieceSocketHelper: MovePieceSocketHelper
     private readonly joinMatchSocketHelper: JoinMatchSocketHelper
+    private readonly giveUpSocketHelper: GiveUpSocketHelper
     private readonly server: Server
 
-    constructor(findAllMovementsSocketHelper: FindAllMovementsSocketHelper, receiveMatchSocketHelper: ReceiveMatchSocketHelper, movePieceSocketHelper: MovePieceSocketHelper, joinMatchSocketHelper: JoinMatchSocketHelper, server: Server) {
+    constructor(findAllMovementsSocketHelper: FindAllMovementsSocketHelper, receiveMatchSocketHelper: ReceiveMatchSocketHelper, movePieceSocketHelper: MovePieceSocketHelper, joinMatchSocketHelper: JoinMatchSocketHelper, giveUpSocketHelper: GiveUpSocketHelper, server: Server) {
         this.findAllMovementsSocketHelper = findAllMovementsSocketHelper
         this.receiveMatchSocketHelper = receiveMatchSocketHelper
         this.movePieceSocketHelper = movePieceSocketHelper
         this.joinMatchSocketHelper = joinMatchSocketHelper
+        this.giveUpSocketHelper = giveUpSocketHelper
         this.server = server
         this.eventHandler()
     }
@@ -105,6 +108,23 @@ export class SocketMatchAdapter {
                     winner: response.winner,
                     endsAt: response.endsAt,
                     jumps: response.jumps
+                })
+
+            })
+
+            socket.on('give-up', async (event) => {
+
+                const responseOrError = await this.giveUpSocketHelper.execute({
+                    relationId: socket.id
+                })
+
+                if (responseOrError.isLeft())
+                    return socket.emit('give-up-rejected', this.errorToObject(responseOrError.value))
+
+                const response = responseOrError.value
+
+                this.server.to(response.matchId.value).emit('abandoned-match', {
+                    winner: response.winner
                 })
 
             })
