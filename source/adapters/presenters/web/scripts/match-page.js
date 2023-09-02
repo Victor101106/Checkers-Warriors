@@ -79,6 +79,19 @@ socket.events.on('move-piece', async (event) => {
 
 })
 
+render.events.on('request-give-up', (event) => {
+    socket.giveUp()
+})
+
+socket.events.on('abandoned-match', (event) => {
+    render.state.winner = event.winner
+    render.showOptions = false
+}) 
+
+socket.events.on('give-up-rejected', (event) => {
+    console.error(event)
+})
+
 config.events.on('updated-container', (container) => {
     render.configureContainer(container)
     inputs.configureContainer(container)
