@@ -73,11 +73,23 @@ export class MoveBrazilianPieceUseCase implements MovePieceUseCase {
         if (confirmSwap.isLeft())
             return left(confirmSwap.value)
 
+        const allEnemyMovementsOrError = this.findAllBrazilianMovementsUseCase.execute({
+            player: piece.player ? 0 : 1,
+            board: board
+        })
+
+        if (allEnemyMovementsOrError.isLeft())
+            return left(allEnemyMovementsOrError.value)
+
+        const allEnemyMovements = allEnemyMovementsOrError.value
+        const winner = allEnemyMovements.length == 0
+
         return right({
             positions: firstCorrectMovement.positions,
             jumps: firstCorrectMovement.jumps,
             promoted: isPromoted,
             startsAt: startsAt,
+            winner: winner,
             endsAt: endsAt
         })
         

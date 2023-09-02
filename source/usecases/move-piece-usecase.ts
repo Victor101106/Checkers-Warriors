@@ -18,6 +18,7 @@ export interface MovePieceResponse {
     startsAt: Position
     promoted: boolean
     endsAt: Position
+    winner: boolean
     jumps: Array<Jump>
 }
 

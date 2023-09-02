@@ -52,6 +52,9 @@ export class MovePieceOnMatchUseCase {
         if (responseOrError.isLeft())
             return left(responseOrError.value)
 
+        if (responseOrError.value.winner)
+            match.winner = match.turn
+
         match.score[match.turn] += responseOrError.value.jumps.length
         match.reverseTurn()
 

@@ -25,6 +25,7 @@ export interface ReceiveMatchSocketResponse {
     spectator: boolean
     createdAt: number
     indexOf: number
+    winner?: number
     turn: number
 }
 
@@ -81,6 +82,7 @@ export class ReceiveMatchSocketHelper {
                 match.players[1]?.name.value
             ],
             spectator: indexOf < 0,
+            winner: match.winner,
             indexOf: indexOf,
             turn: match.turn
         }

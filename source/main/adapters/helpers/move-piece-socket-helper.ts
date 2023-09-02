@@ -19,6 +19,7 @@ export interface MovePieceSocketResponse {
     startsAt: Position
     promoted: boolean
     endsAt: Position
+    winner: boolean
     jumps: Array<Jump>
     matchId: Id
 }

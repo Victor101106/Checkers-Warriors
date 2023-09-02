@@ -102,6 +102,7 @@ export class SocketMatchAdapter {
                     positions: response.positions,
                     promoted: response.promoted,
                     startsAt: response.startsAt,
+                    winner: response.winner,
                     endsAt: response.endsAt,
                     jumps: response.jumps
                 })
