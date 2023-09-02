@@ -24,6 +24,8 @@ export class Render {
 
     async configureImages() {
         this.images = {
+            'won-broken-white': await loadImage('../static/assets/game/won-broken-white.png'),
+            'won-broken-black': await loadImage('../static/assets/game/won-broken-black.png'),
             'character-cross': await loadImage('../static/assets/game/character-cross.png'),
             'character-colon': await loadImage('../static/assets/game/character-colon.png'),
             'character-lines': await loadImage('../static/assets/game/character-lines.png'),
@@ -37,6 +39,8 @@ export class Render {
             'arrow-right': await loadImage('../static/assets/game/arrow-right.png'),
             'arrow-left': await loadImage('../static/assets/game/arrow-left.png'),
             'toggle-off': await loadImage('../static/assets/game/toggle-off.png'),
+            'won-white': await loadImage('../static/assets/game/won-white.png'),
+            'won-black': await loadImage('../static/assets/game/won-black.png'),
             'toggle-on': await loadImage('../static/assets/game/toggle-on.png'),
             'separator': await loadImage('../static/assets/game/separator.png'),
             'alphabet': await loadImage('../static/assets/game/alphabet.png'),
@@ -113,9 +117,9 @@ export class Render {
 
         const OptionsMenuElements = {
             OptionsButton: {
+                onclick: () => { if ( this.state?.winner == undefined) this.showOptions = true },
                 top: this.board.top + this.board.height + 4,
                 width: OptionsButtonValue.length * 4 + 5,
-                onclick: () => this.showOptions = true,
                 value: OptionsButtonValue,
                 left: this.board.left,
                 height: 5,
@@ -218,7 +222,7 @@ export class Render {
 
     // <-- Board Functions --> //
 
-    movePiece({ startsAt, endsAt, jumps, promoted }) {
+    movePiece({ startsAt, endsAt, jumps, promoted, winner }) {
 
         const piece = this.state.board.spots[startsAt.row][startsAt.column]
     
@@ -227,6 +231,9 @@ export class Render {
         
         for (let jump of jumps)
             this.state.board.spots[jump.position.row][jump.position.column] = undefined
+
+        if (winner)
+            this.state.winner = piece.player
 
         this.state.score[this.state.turn] += jumps.length
         piece.promoted ||= promoted
@@ -245,16 +252,21 @@ export class Render {
         if (this.state) {
             this.drawExtraBoard()
             this.drawBoard()
+            this.drawWinnerIndicator()
         }
 
-        if (this.showOptions) {
-            this.drawTransparentFilter()
-            this.drawOptions()
-        }
+        if (this.state?.winner == undefined) {
 
-        if (this.showInvite) {
-            this.drawTransparentFilter()
-            this.drawInviteMenu()
+            if (this.showOptions) {
+                this.drawTransparentGreenFilter()
+                this.drawOptions()
+            }
+    
+            if (this.showInvite) {
+                this.drawTransparentGreenFilter()
+                this.drawInviteMenu()
+            }
+
         }
 
         if (this.options.enableEffects) 
@@ -269,11 +281,34 @@ export class Render {
         this.context.fillRect(0 - this.container?.left, 0 - this.container?.top, this.canvas.width, this.canvas.height)
     }
 
-    drawTransparentFilter() {
+    drawTransparentGreenFilter() {
         this.context.fillStyle = '#0d302a'
         this.context.globalAlpha = 0.95
         this.context.fillRect(0 - this.container?.left, 0 - this.container?.top, this.canvas.width, this.canvas.height)
         this.context.globalAlpha = 1.00
+    }
+
+    drawTransparentRedFilter() {
+        this.context.fillStyle = '#570303'
+        this.context.globalAlpha = 0.95
+        this.context.fillRect(0 - this.container?.left, 0 - this.container?.top, this.canvas.width, this.canvas.height)
+        this.context.globalAlpha = 1.00
+    }
+    
+    drawWinnerIndicator() {
+
+        if (this.state?.winner == undefined)
+            return
+
+        if (this.state.winner == this.state.indexOf)
+            this.drawTransparentGreenFilter()
+        else
+            this.drawTransparentRedFilter()
+                
+        const image = this.images[(this.state.winner == this.state.indexOf ? 'won-' : 'won-broken-') + (this.state.winner == 0 ? "white" : "black") ]
+
+        this.context.drawImage(image, this.container.width / 2 - image.width / 2 | 0, this.container.height / 2 - image.height / 2 | 0)
+
     }
 
     drawOptions() {
