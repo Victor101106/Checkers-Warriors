@@ -107,6 +107,7 @@ inputs.events.on('onclick', (coordinate, position) => {
 
 window.onload = async () => {
     await render.configureImages()
+    await render.configureSounds()
     socket.receiveMatch(matchId)
     render.configureEffect()
     render.beginRendering()

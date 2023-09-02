@@ -1,4 +1,5 @@
 import { EventEmitter } from "../event-emitter.js"
+import { loadAudio } from "../load-audio.js"
 import { loadImage } from "../load-image.js"
 
 export class Render {
@@ -14,7 +15,8 @@ export class Render {
         this.options = {
             enableAnimations: true,
             enableRotation: true,
-            enableEffects: true
+            enableEffects: true,
+            enableSounds: true
         }
         this.context = context
         this.canvas = canvas
@@ -46,6 +48,17 @@ export class Render {
             'alphabet': await loadImage('../static/assets/game/alphabet.png'),
             'numerals': await loadImage('../static/assets/game/numerals.png'),
         }
+    }
+
+    async configureSounds() {
+        this.sounds = {
+            'button-click': await loadAudio('../static/assets/sounds/button-click-sound.mp3'),
+            'background': await loadAudio('../static/assets/sounds/background-sound.mp3'),
+            'move-piece': await loadAudio('../static/assets/sounds/move-piece-sound.mp3')
+        }
+        this.sounds.background.volume = 0.2
+        this.sounds.background.loop = true
+        this.sounds.background.play()
     }
 
     configureContainer(container) {
@@ -83,7 +96,7 @@ export class Render {
 
         const InviteMenuElements = {
             AcceptInviteButton: {
-                onclick: () => { if (this.showInvite) this.events.emit('request-join-match') },
+                onclick: () => { if (this.showInvite) { this.events.emit('request-join-match'); this.sounds["button-click"].play() } },
                 width: AcceptInviteValue.length * 4 - 1,
                 value: AcceptInviteValue,
                 height: 5,
@@ -91,7 +104,7 @@ export class Render {
                 top: 0,
             },
             JustWatchButton: {
-                onclick: () => this.showInvite = false,
+                onclick: () => { this.showInvite = false; this.sounds["button-click"].play() },
                 width: JustWatchValue.length * 4 - 1,
                 value: JustWatchValue,
                 height: 5,
@@ -108,16 +121,16 @@ export class Render {
 
     configureOptionsMenu() {
 
-        const [ EnableAnimationsValue, EnableRotationValue, EnableEffectsValue, OptionsButtonValue, GiveUpValue, CloseValue ] = [ 'Enable Animations', 'Enable Rotation', 'Enable Effects', 'Options', 'Give Up', 'Close' ]
+        const [ EnableAnimationsValue, EnableRotationValue, EnableEffectsValue, OptionsButtonValue, EnableSoundsValue, GiveUpValue, CloseValue ] = [ 'Enable Animations', 'Enable Rotation', 'Enable Effects', 'Options', 'Enable Sounds', 'Give Up', 'Close' ]
         
         const middleX = (EnableAnimationsValue.length * 4 + 6) / 2
 
         const translateX = this.container.width / 2 - middleX | 0
-        const translateY = this.container.height / 2 - 38 / 2 | 0
+        const translateY = this.container.height / 2 - 44 / 2 | 0
 
         const OptionsMenuElements = {
             OptionsButton: {
-                onclick: () => { if ( this.state?.winner == undefined) this.showOptions = true },
+                onclick: () => { if ( this.state?.winner == undefined) this.toggleOptions() },
                 top: this.board.top + this.board.height + 4,
                 width: OptionsButtonValue.length * 4 + 5,
                 value: OptionsButtonValue,
@@ -125,7 +138,7 @@ export class Render {
                 height: 5,
             },
             EnableAnimationsToggle: {
-                onclick: () => { if (this.showOptions) this.options.enableAnimations = !this.options.enableAnimations },
+                onclick: () => { if (this.showOptions) this.toggleAnimations() },
                 width: EnableAnimationsValue.length * 4 + 6,
                 value: EnableAnimationsValue,
                 left: translateX,
@@ -133,7 +146,7 @@ export class Render {
                 height: 5
             },
             EnableRotationToggle: {
-                onclick: () => { if (this.showOptions) this.options.enableRotation = !this.options.enableRotation },
+                onclick: () => { if (this.showOptions) this.toggleRotation() },
                 left: translateX + middleX - (EnableRotationValue.length * 4 + 6) / 2 | 0,
                 width: EnableRotationValue.length * 4 + 6,
                 value: EnableRotationValue,
@@ -141,26 +154,34 @@ export class Render {
                 height: 5
             },
             EnableEffectsToggle: {
-                onclick: () => { if (this.showOptions) this.options.enableEffects = !this.options.enableEffects },
+                onclick: () => { if (this.showOptions) this.toggleEffects() },
                 left: translateX + middleX - (EnableEffectsValue.length * 4 + 6) / 2 | 0,
                 width: EnableEffectsValue.length * 4 + 6,
                 value: EnableEffectsValue,
                 top: translateY + 2 * 7,
                 height: 5
             },
+            EnableSoundsToggle: {
+                onclick: () => { if (this.showOptions) this.toggleSound() },
+                left: translateX + middleX - (EnableSoundsValue.length * 4 + 6) / 2 | 0,
+                width: EnableSoundsValue.length * 4 + 6,
+                value: EnableSoundsValue,
+                top: translateY + 3 * 7,
+                height: 5
+            },
             GiveUpToggle: {
-                onclick: () => { if (this.showOptions) this.events.emit('request-give-up') },
+                onclick: () => { if (this.showOptions) this.toggleGiveUp() },
                 left: translateX + middleX - (GiveUpValue.length * 4 - 1) / 2 | 0,
                 width: GiveUpValue.length * 4 - 1,
-                top: translateY + 5 + 3 * 7,
+                top: translateY + 5 + 4 * 7,
                 value: GiveUpValue,
                 height: 5
             },
             CloseToggle: {
-                onclick: () => { if (this.showOptions) this.showOptions = false },
+                onclick: () => { if (this.showOptions) this.toggleOptions() },
                 left: translateX + middleX - (CloseValue.length * 4 - 1) / 2 | 0,
                 width: CloseValue.length * 4 - 1,
-                top: translateY + 5 + 4 * 7,
+                top: translateY + 5 + 5 * 7,
                 value: CloseValue,
                 height: 5
             }
@@ -171,6 +192,37 @@ export class Render {
     }
 
     // <-- Utility Functions --> //
+
+    toggleAnimations() {
+        this.options.enableAnimations = !this.options.enableAnimations
+        this.sounds["button-click"].play()
+    }
+
+    toggleRotation() {
+        this.options.enableRotation = !this.options.enableRotation
+        this.sounds["button-click"].play()
+    }
+
+    toggleEffects() {
+        this.options.enableEffects = !this.options.enableEffects
+        this.sounds["button-click"].play()
+    }
+
+    toggleOptions() {
+        this.showOptions = !this.showOptions
+        this.sounds["button-click"].play()
+    }
+    
+    toggleGiveUp() {
+        this.events.emit('request-give-up')
+        this.sounds["button-click"].play()
+    }
+
+    toggleSound() {
+        this.options.enableSounds = !this.options.enableSounds
+        this.options.enableSounds ? this.sounds.background.play() : this.sounds.background.pause()
+        this.sounds["button-click"].play()
+    }
 
     rotatePlayers() {
         return this.state.indexOf == 0 && this.options.enableRotation ? [...this.state.players].reverse() : this.state.players
@@ -237,6 +289,8 @@ export class Render {
 
         this.state.score[this.state.turn] += jumps.length
         piece.promoted ||= promoted
+
+        this.sounds["move-piece"].play()
 
     }
 
@@ -313,7 +367,7 @@ export class Render {
 
     drawOptions() {
         
-        const { EnableAnimationsToggle, EnableRotationToggle, EnableEffectsToggle, GiveUpToggle, CloseToggle } = this.elements
+        const { EnableAnimationsToggle, EnableRotationToggle, EnableEffectsToggle, EnableSoundsToggle, GiveUpToggle, CloseToggle } = this.elements
 
         this.context.globalAlpha = EnableAnimationsToggle.selected ? 1.00 : 0.60
         this.context.drawImage(this.images[this.options.enableAnimations ? "toggle-on" : "toggle-off"], EnableAnimationsToggle.left, EnableAnimationsToggle.top)
@@ -326,9 +380,13 @@ export class Render {
         this.context.globalAlpha = EnableEffectsToggle.selected ? 1.00 : 0.60
         this.context.drawImage(this.images[this.options.enableEffects ? "toggle-on" : "toggle-off"], EnableEffectsToggle.left, EnableEffectsToggle.top)
         this.drawString(EnableEffectsToggle.value, 7 + EnableEffectsToggle.left, EnableEffectsToggle.top)
+
+        this.context.globalAlpha = EnableSoundsToggle.selected ? 1.00 : 0.60
+        this.context.drawImage(this.images[this.options.enableSounds ? "toggle-on" : "toggle-off"], EnableSoundsToggle.left, EnableSoundsToggle.top)
+        this.drawString(EnableSoundsToggle.value, 7 + EnableSoundsToggle.left, EnableSoundsToggle.top)
         
         this.context.globalAlpha = 0.60
-        this.context.drawImage(this.images.separator, EnableAnimationsToggle.left + EnableAnimationsToggle.width / 2 - 17 / 2 | 0, EnableEffectsToggle.top + EnableEffectsToggle.height + 2 | 0)
+        this.context.drawImage(this.images.separator, EnableAnimationsToggle.left + EnableAnimationsToggle.width / 2 - 17 / 2 | 0, EnableSoundsToggle.top + EnableSoundsToggle.height + 2 | 0)
 
         this.context.globalAlpha = GiveUpToggle.selected ? 1.00 : 0.60
         this.drawString(GiveUpToggle.value, GiveUpToggle.left, GiveUpToggle.top)
