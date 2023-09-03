@@ -53,8 +53,11 @@ export class Render {
     async configureSounds() {
         this.sounds = {
             'button-click': await loadAudio('../static/assets/sounds/button-click-sound.mp3'),
+            'move-piece': await loadAudio('../static/assets/sounds/move-piece-sound.mp3'),
             'background': await loadAudio('../static/assets/sounds/background-sound.mp3'),
-            'move-piece': await loadAudio('../static/assets/sounds/move-piece-sound.mp3')
+            'victory': await loadAudio('../static/assets/sounds/victory-sound.mp3'),
+            'defeat': await loadAudio('../static/assets/sounds/defeat-sound.mp3'),
+            'queen': await loadAudio('../static/assets/sounds/queen-sound.mp3')
         }
         this.sounds.background.volume = 0.2
         this.sounds.background.loop = true
@@ -80,10 +83,27 @@ export class Render {
             this.events.emit('updated-board', this.board)
         }
     }
+
+    configureWinner(winner) {
+        
+        this.sounds.background.pause()
+        this.state.winner = winner
+
+        if (this.state.winner == this.state.indexOf)
+            this.sounds.victory.play()
+        else
+            this.sounds.defeat.play()
+
+    }
     
     configureState(state) {
+        
         this.state = state
         this.configureBoard()
+        
+        if (state.winner != undefined) 
+            this.configureWinner(state.winner)
+        
     }
     
     configureEffect() {
@@ -285,12 +305,15 @@ export class Render {
             this.state.board.spots[jump.position.row][jump.position.column] = undefined
 
         if (winner)
-            this.state.winner = piece.player
+            this.configureWinner(piece.player)
 
         this.state.score[this.state.turn] += jumps.length
         piece.promoted ||= promoted
 
-        this.sounds["move-piece"].play()
+        if (promoted && this.options.enableSounds)
+            this.sounds.queen.play()
+        else
+            this.sounds["move-piece"].play()
 
     }
 

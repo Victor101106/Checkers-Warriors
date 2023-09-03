@@ -84,7 +84,7 @@ render.events.on('request-give-up', (event) => {
 })
 
 socket.events.on('abandoned-match', (event) => {
-    render.state.winner = event.winner
+    render.configureWinner(event.winner)
     render.showOptions = false
 }) 
 
