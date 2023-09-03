@@ -42,7 +42,7 @@ export class MoveBrazilianPieceUseCase implements MovePieceUseCase {
         if (filteredAllCorrectMovements.length == 0)
             return left(new InvalidMovement())
 
-        const isPromoted = (piece.player == 0 && endsAt.row == board.rows - 1) || (piece.player == 1 && endsAt.row == 0)
+        const isPromoted = !piece.promoted && (piece.player == 0 && endsAt.row == board.rows - 1) || (piece.player == 1 && endsAt.row == 0)
         const firstCorrectMovement = filteredAllCorrectMovements[0]
 
         for (let jump of firstCorrectMovement.jumps) 
