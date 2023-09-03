@@ -3,11 +3,30 @@
   "version": "0.0.1",
   "scripts": {
     "start:dev": "tsx watch --require dotenv/config source/main/server.ts",
+    "start": "node -r dotenv/config dist/main/server.js",
     "start:test": "vitest",
     "build": "tsup source"
   },
-  "keywords": [],
-  "author": "Victor101106",
+  "keywords": [
+    "clean architecture",
+    "multiplayer",
+    "online game",
+    "typescript",
+    "clean code",
+    "pixelart",
+    "checkers",
+    "solid",
+    "game"
+  ],
+  "author": {
+    "name": "Victor Gabriel",
+    "email": "victorgabriel101106+github@gmail.com",
+    "url": "https://github.com/Victor101106"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Victor101106/Checkers-Warriors.git"
+  },
   "config": {
     "commitizen": {
       "path": "cz-conventional-changelog"
@@ -41,5 +60,8 @@
     "socket.io": "^4.7.2",
     "uuid": "^9.0.0",
     "zod": "^3.21.4"
+  },
+  "engines": {
+    "node": "18.x"
   }
 }
