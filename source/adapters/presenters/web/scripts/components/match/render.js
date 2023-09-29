@@ -569,6 +569,7 @@ export class Render {
         if (animation.distance.column < 0 || animation.distance.row < 0) {
             this.state.board.spots[animation.endsAt.row][animation.endsAt.column] = animation.piece
             animation.position = animation.endsAt
+            this.sounds["move-piece"].play()
             this.animations.shift()
         } 
 
