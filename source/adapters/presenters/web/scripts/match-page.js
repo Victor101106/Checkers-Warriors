@@ -68,15 +68,15 @@ socket.events.on('move-piece-rejected', async (event) => {
 })
 
 socket.events.on('move-piece', async (event) => {
-    
     render.movements = undefined
     render.selection = undefined
     render.movePiece(event)
-    render.reverseTurn()
+})
 
-    if (render.state.turn == render.state.indexOf)
+render.events.on('reverse-turn', () => {
+    if (render.state.turn == render.state.indexOf) {
         socket.findAllMovements()
-
+    }
 })
 
 render.events.on('request-give-up', (event) => {

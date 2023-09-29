@@ -8,6 +8,7 @@ export class Render {
 
     constructor(canvas, context) {
         this.events = new EventEmitter()
+        this.animations = new Array()
         this.elements = new Object()
         this.effect = { offsetY: 0 }
         this.showOptions = false
@@ -328,26 +329,36 @@ export class Render {
 
     // <-- Board Functions --> //
 
-    movePiece({ startsAt, endsAt, jumps, promoted, winner }) {
+    movePiece({ startsAt, endsAt, positions, jumps, promoted, winner }) {
 
-        const piece = this.state.board.spots[startsAt.row][startsAt.column]
-    
-        this.state.board.spots[startsAt.row][startsAt.column] = undefined
-        this.state.board.spots[endsAt.row][endsAt.column] = piece
+        for (let index = 0; index < positions.length; index++) {
+            
+            this.animations.push({
+                startsAt: positions[index - 1] || startsAt,
+                endsAt: positions[index],
+                type: 'move-piece'
+            })
+
+            jumps.length && this.animations.push({
+                jump: jumps.shift(),
+                type: 'jump-piece'
+            })
+            
+        }
+
+        if (promoted) this.animations.push({
+            type: 'promotion',
+            position: endsAt,
+        })
         
-        for (let jump of jumps)
-            this.state.board.spots[jump.position.row][jump.position.column] = undefined
+        if (winner) this.animations.push({
+            position: endsAt,
+            type: 'winner',
+        })
 
-        if (winner)
-            this.configureWinner(piece.player)
-
-        this.state.score[this.state.turn] += jumps.length
-        piece.promoted ||= promoted
-
-        if (promoted && this.options.enableSounds)
-            this.sounds.queen.play()
-        else
-            this.sounds["move-piece"].play()
+        this.animations.push({
+            type: 'reverse-turn'
+        })
 
     }
 
@@ -494,6 +505,115 @@ export class Render {
         this.selection && this.drawSelection(this.rotatePosition(this.selection))
         this.movements && this.drawMovements()
         this.drawPieces()
+        this.drawAnimations()
+    }
+
+    drawAnimations() {
+        
+        const animation =  this.animations.at(0)
+
+        if (!animation)
+            return
+        
+        if (animation.type == 'move-piece')
+            return this.drawMovePieceAnimation(animation)
+
+        if (animation.type == 'jump-piece')
+            return this.drawJumpPieceAnimation(animation)
+
+        if (animation.type == 'promotion')
+            return this.drawPromotionAnimation(animation)
+
+        if (animation.type == 'winner')
+            return this.drawWinnerAnimation(animation)
+
+        if (animation.type == 'reverse-turn')
+            return this.drawReverseTurnAnimation(animation)
+
+    }
+
+    drawMovePieceAnimation(animation) {
+
+        if (!animation.started) {
+            
+            animation.piece = this.state.board.spots[animation.startsAt.row][animation.startsAt.column]
+            animation.position = { ...animation.startsAt }
+            animation.started = true
+
+            const differenceX = animation.endsAt.column - animation.startsAt.column
+            const differenceY = animation.endsAt.row - animation.startsAt.row
+
+            animation.distance = {
+                column: Math.abs(differenceX),
+                row: Math.abs(differenceY)
+            }
+
+            animation.direction = {
+                column: differenceX > 0 ? 1 : differenceX < 0 ? -1 : 0,
+                row: differenceY > 0 ? 1 : differenceY < 0 ? -1 : 0
+            }
+
+            this.state.board.spots[animation.startsAt.row][animation.startsAt.column] = undefined
+
+        }
+
+        const distanceX = 10 * this.deltatime * animation.direction.column
+        const distanceY = 10 * this.deltatime * animation.direction.row
+
+        animation.distance.column -= Math.abs(distanceX)
+        animation.distance.row -= Math.abs(distanceY)
+
+        animation.position.column += distanceX
+        animation.position.row += distanceY
+
+        if (animation.distance.column < 0 || animation.distance.row < 0) {
+            this.state.board.spots[animation.endsAt.row][animation.endsAt.column] = animation.piece
+            animation.position = animation.endsAt
+            this.animations.shift()
+        } 
+
+        this.drawPiece(animation.position, animation.piece)
+
+    }
+
+    drawJumpPieceAnimation(animation) {
+        
+        const piece = this.state.board.spots[animation.jump.position.row][animation.jump.position.column]
+
+        this.state.board.spots[animation.jump.position.row][animation.jump.position.column] = undefined
+        this.state.score[piece.player ? 0 : 1]++
+        this.animations.shift()
+
+    }
+    
+    drawPromotionAnimation(animation) {
+        
+        this.state.board.spots[animation.position.row][animation.position.column].promoted = true
+
+        if (this.options.enableSounds) {
+            this.sounds.queen.play()
+        }
+
+        this.animations.shift()
+        
+    }
+    
+    drawWinnerAnimation(animation) {
+        this.configureWinner(this.state.board.spots[animation.position.row][animation.position.column].player)
+        this.animations.shift()
+    }
+
+    drawReverseTurnAnimation() {
+        
+        this.animations.shift()
+        this.reverseTurn()
+
+        const hasNotAnotherReverseTurnAnimation = !this.animations.find(animation => animation.type == 'reverse-turn')
+        
+        if (hasNotAnotherReverseTurnAnimation) {
+            this.events.emit('reverse-turn')
+        }
+
     }
     
     drawOutline() {
@@ -533,7 +653,7 @@ export class Render {
         const image = piece.player ? this.images['piece-black'] : this.images['piece-white']
         const rotated = this.rotatePosition(position)
 
-        this.context.drawImage(image, this.board.left + rotated.column * 16 + 2, this.board.top + rotated.row * 16 + 2)
+        this.context.drawImage(image, Math.round(this.board.left + rotated.column * 16 + 2), Math.round(this.board.top + rotated.row * 16 + 2))
 
         if (piece.promoted) this.drawCrown(rotated)
 
