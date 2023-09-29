@@ -66,6 +66,7 @@ export class Render {
 
     configureContainer(container) {
         this.container = container
+        this.configureWinnerScreen()
         this.configureTranslate()
         this.configureBoard()
     }
@@ -108,6 +109,31 @@ export class Render {
     
     configureEffect() {
         this.effect.interval = setInterval(() => this.effect.offsetY = this.effect.offsetY ? 0 : 1, 125)
+    }
+
+    configureWinnerScreen() {
+
+        const CaptionValue = 'Click anywhere to return to home'
+
+        const WinnerScreenElements = {
+            winnerScreenHiddenButton: {
+                onclick: () => { if (this.state.winner) window.location.assign('/') },
+                height: this.canvas.height,
+                width: this.canvas.width,
+                left: -this.container.left,
+                top: -this.container.top,
+            },
+            winnerScreenCaption: {
+                left: Math.floor(this.container.width / 2 - (CaptionValue.length * 4 - 1) / 2),
+                width: CaptionValue.length * 4 - 1,
+                top: this.container.height - 7,
+                value: CaptionValue,
+                height: 5
+            }
+        }
+
+        Object.assign(this.elements, WinnerScreenElements)
+
     }
 
     configureInviteMenu() {
@@ -391,8 +417,12 @@ export class Render {
             this.drawTransparentRedFilter()
                 
         const image = this.images[(this.state.winner == this.state.indexOf ? 'won-' : 'won-broken-') + (this.state.winner == 0 ? "white" : "black") ]
+        const winnerScreenCaption = this.elements.winnerScreenCaption
 
         this.context.drawImage(image, this.container.width / 2 - image.width / 2 | 0, this.container.height / 2 - image.height / 2 | 0)
+
+        this.context.globalAlpha = winnerScreenCaption.selected ? 1.00 : 0.75
+        this.drawString(winnerScreenCaption.value, winnerScreenCaption.left, winnerScreenCaption.top)
 
     }
 
