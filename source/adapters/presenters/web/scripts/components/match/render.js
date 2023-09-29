@@ -118,7 +118,7 @@ export class Render {
 
         const WinnerScreenElements = {
             winnerScreenHiddenButton: {
-                onclick: () => { if (this.state.winner) window.location.assign('/') },
+                onclick: () => { if (this.state.winner != undefined) window.location.assign('/') },
                 height: this.canvas.height,
                 width: this.canvas.width,
                 left: -this.container.left,
