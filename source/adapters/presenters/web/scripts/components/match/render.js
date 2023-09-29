@@ -141,12 +141,12 @@ export class Render {
 
     configureOptionsMenu() {
 
-        const [ EnableAnimationsValue, EnableRotationValue, EnableEffectsValue, OptionsButtonValue, EnableSoundsValue, GiveUpValue, CloseValue ] = [ 'Enable Animations', 'Enable Rotation', 'Enable Effects', 'Options', 'Enable Sounds', 'Give Up', 'Close' ]
+        const [ EnableAnimationsValue, EnableRotationValue, EnableEffectsValue, OptionsButtonValue, EnableSoundsValue, ExitToHomeValue, GiveUpValue, CloseValue ] = [ 'Enable Animations', 'Enable Rotation', 'Enable Effects', 'Options', 'Enable Sounds', 'Exit To Home', 'Give Up', 'Close' ]
         
         const middleX = (EnableAnimationsValue.length * 4 + 6) / 2
 
         const translateX = this.container.width / 2 - middleX | 0
-        const translateY = this.container.height / 2 - 44 / 2 | 0
+        const translateY = this.container.height / 2 - 51 / 2 | 0
 
         const OptionsMenuElements = {
             OptionsButton: {
@@ -189,11 +189,19 @@ export class Render {
                 top: translateY + 3 * 7,
                 height: 5
             },
+            ExitToHomeToggle: {
+                onclick: () => { if (this.showOptions) window.location.assign('/') },
+                left: translateX + middleX - (ExitToHomeValue.length * 4 - 1) / 2 | 0,
+                width: ExitToHomeValue.length * 4 - 1,
+                top: translateY + 5 + 4 * 7,
+                value: ExitToHomeValue,
+                height: 5
+            },
             GiveUpToggle: {
                 onclick: () => { if (this.showOptions) this.toggleGiveUp() },
                 left: translateX + middleX - (GiveUpValue.length * 4 - 1) / 2 | 0,
                 width: GiveUpValue.length * 4 - 1,
-                top: translateY + 5 + 4 * 7,
+                top: translateY + 5 + 5 * 7,
                 value: GiveUpValue,
                 height: 5
             },
@@ -201,7 +209,7 @@ export class Render {
                 onclick: () => { if (this.showOptions) this.toggleOptions() },
                 left: translateX + middleX - (CloseValue.length * 4 - 1) / 2 | 0,
                 width: CloseValue.length * 4 - 1,
-                top: translateY + 5 + 5 * 7,
+                top: translateY + 5 + 6 * 7,
                 value: CloseValue,
                 height: 5
             }
@@ -390,7 +398,7 @@ export class Render {
 
     drawOptions() {
         
-        const { EnableAnimationsToggle, EnableRotationToggle, EnableEffectsToggle, EnableSoundsToggle, GiveUpToggle, CloseToggle } = this.elements
+        const { EnableAnimationsToggle, EnableRotationToggle, EnableEffectsToggle, EnableSoundsToggle, ExitToHomeToggle, GiveUpToggle, CloseToggle } = this.elements
 
         this.context.globalAlpha = EnableAnimationsToggle.selected ? 1.00 : 0.60
         this.context.drawImage(this.images[this.options.enableAnimations ? "toggle-on" : "toggle-off"], EnableAnimationsToggle.left, EnableAnimationsToggle.top)
@@ -410,6 +418,9 @@ export class Render {
         
         this.context.globalAlpha = 0.60
         this.context.drawImage(this.images.separator, EnableAnimationsToggle.left + EnableAnimationsToggle.width / 2 - 17 / 2 | 0, EnableSoundsToggle.top + EnableSoundsToggle.height + 2 | 0)
+
+        this.context.globalAlpha = ExitToHomeToggle.selected ? 1.00 : 0.60
+        this.drawString(ExitToHomeToggle.value, ExitToHomeToggle.left, ExitToHomeToggle.top)
 
         this.context.globalAlpha = GiveUpToggle.selected ? 1.00 : 0.60
         this.drawString(GiveUpToggle.value, GiveUpToggle.left, GiveUpToggle.top)
