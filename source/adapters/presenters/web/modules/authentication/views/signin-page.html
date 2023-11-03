@@ -10,7 +10,8 @@
     <!-- Link Tags -->
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="shortcut icon" href="/static/shared/assets/favicon.png" type="image/x-icon">
-    <link rel="stylesheet" href="/static/modules/authentication/styles/signup-signin-page.css">
+    <link rel="stylesheet" href="/static/modules/authentication/styles/components/form.css">
+    <link rel="stylesheet" href="/static/modules/authentication/styles/signin-page.css">
     <link rel="stylesheet" href="/static/shared/styles/components/buttons.css">
     <link rel="stylesheet" href="/static/shared/styles/components/footer.css">
     <link rel="stylesheet" href="/static/shared/styles/components/header.css">
@@ -38,26 +39,28 @@
 
     <!-- Main -->
     <main id="main-container">
-        <section id="main-section">
-            <h1 id="main-title">Welcome back</h1>
-            <h2 id="main-subtitle">Please warrior, enter your details!</h2>
-            <div id="main-error">
-                <i id="main-error-icon" class="ri-error-warning-line"></i>
-                <span id="main-error-text">Lorem ipsum dolor sit amet consectetur adipisicing elit.</span>
+        <form id="form">
+            <div id="form-header">
+                <h1 id="form-title">Welcome back</h1>
+                <h2 id="form-subtitle">Please warrior, enter your details!</h2>
             </div>
-            <form id="main-form">
-                <div id="main-email-field" class="main-form-field">
-                    <input type="email" name="email" id="main-email-input" placeholder="Email">
-                    <p class="main-field-error" id="main-email-error">Please enter a valid email (example@mail.com)</p>
+            <div id="form-error">
+                <i id="form-error-icon" class="ri-error-warning-line"></i>
+                <span id="form-error-text">Lorem ipsum dolor sit amet consectetur adipisicing elit.</span>
+            </div>
+            <div id="form-inputs">
+                <div id="form-email-field" class="form-field">
+                    <input type="email" name="email" id="form-email-input" placeholder="Email">
+                    <p class="form-field-error" id="form-email-error">Please enter a valid email (example@mail.com)</p>
                 </div>
-                <div id="main-password-field" class="main-form-field">
-                    <input type="password" name="password" id="main-password-input" placeholder="Password">
-                    <p class="main-field-error" id="main-password-error">Please enter a strong password with at least 8 characters</p>
+                <div id="form-password-field" class="form-field">
+                    <input type="password" name="password" id="form-password-input" placeholder="Password">
+                    <p class="form-field-error" id="form-password-error">Please enter a strong password with at least 8 characters</p>
                 </div>
-                <button class="button default-button button-full-width" id="main-form-button">Sign In</button>
-            </form>
-            <p id="main-signin-redirect">Don't have an account? <a href="/signup">Sign Up</a></p>
-        </section>
+                <button class="button default-button button-full-width" id="form-button">Sign In</button>
+            </div>
+            <p id="form-signup-redirect">Don't have an account? <a href="/signup">Sign Up</a></p>
+        </form>
     </main>
     
     <!-- Footer -->

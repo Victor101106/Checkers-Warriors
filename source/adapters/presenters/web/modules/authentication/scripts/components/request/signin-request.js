@@ -1,4 +1,4 @@
-export function authenticateUserRequest({ password, email }) {
+export function signinRequest({ password, email }) {
     return fetch('/signin', {
         headers: {
             'Content-Type': 'application/json',

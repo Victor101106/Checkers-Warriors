@@ -1,4 +1,4 @@
-export function createUserRequest({ password, email, name }) {
+export function signupRequest({ password, email, name }) {
     return fetch('/signup', {
         headers: {
             'Content-Type': 'application/json',

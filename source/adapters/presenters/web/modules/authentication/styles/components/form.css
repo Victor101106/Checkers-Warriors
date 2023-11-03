@@ -1,39 +1,29 @@
 /* <!-- General Style --> */
 
-html, body {
-    grid-template-rows: min-content 1fr min-content;
-    background-size: 6rem;
-    display: grid;
-}
-
-/* <!-- Main Style --> */
-
-#main-container {
-    place-items: center;
-    padding: 1.6rem;
-    display: grid;
-}
-
-#main-section {
+#form {
     background-color: #ffffff;
     border-radius: .3rem;
     padding: 3.3rem 2.4em;
     max-width: 36rem;
 }
 
-#main-title {
+/* <!-- Header Style --> */
+
+#form-title {
     font-size: min(3.6rem, 8.6vw);
     margin-bottom: .7rem;
 }
 
-#main-subtitle {
+#form-subtitle {
     font-size: min(1.8rem, 4.8vw);
     color: rgb(91, 91, 91);
     margin-bottom: 3.6rem;
     font-weight: 500;
 }
 
-#main-error {
+/* <!-- Error Style --> */
+
+#form-error {
     background-color: rgb(255, 226, 226);
     border: rgb(255, 80, 80) solid .1rem;
     align-items: first baseline;
@@ -50,17 +40,19 @@ html, body {
     gap: 1.2rem;
 }
 
-.main-error-visible {
+.form-error-visible {
     display: inline-flex !important;
 }
 
-#main-form {
+/* <!-- Inputs Style --> */
+
+#form-inputs {
     flex-direction: column;
     display: flex;
     gap: 3.5rem;
 }
 
-.main-form-field input {
+.form-field input {
     transition: border-color .2s;
     padding-bottom: .4rem;
     margin-bottom: .6rem;
@@ -71,22 +63,22 @@ html, body {
     border-bottom: #d0d0d0 .1rem solid;
 }
 
-.main-form-field input:focus {
+.form-field input:focus {
     border-color: #000000;
 }
 
-.main-form-field input::placeholder {
+.form-field input::placeholder {
     color: #2e2e2e;
 }
 
-.main-field-error {
+.form-field-error {
     color: rgb(255, 80, 80);
     font-size: 1.2rem;
     font-weight: 600;
     display: none;
 }
 
-.field-error .main-field-error {
+.field-error .form-field-error {
     display: block;
 }
 
@@ -98,7 +90,10 @@ html, body {
     color: rgb(255, 80, 80);
 }
 
-#main-signin-redirect {
+/* <!-- Redirect Style --> */
+
+#form-signin-redirect,
+#form-signup-redirect {
     color: rgb(82, 82, 82);
     margin-top: 1.3rem;
     text-align: center;
@@ -106,7 +101,8 @@ html, body {
     font-weight: 600;
 }
 
-#main-signin-redirect a {
+#form-signin-redirect a,
+#form-signup-redirect a {
     color: #0C2C27;
 }
 

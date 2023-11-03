@@ -1,46 +1,62 @@
-import { authenticateUserRequest } from './components/request/authenticate-user-request.js'
 import { statusHandler } from '../../../shared/scripts/components/status-handler.js'
-import InputValidation from './components/validate-input.js'
+import { signinRequest } from './components/request/signin-request.js'
+import InputValidation from './components/form/input-validation.js'
 
-const [ passwordInput, emailInput, formButton, formError ] = [
-    document.querySelector('#main-password-input'),
-    document.querySelector('#main-email-input'),
-    document.querySelector('#main-form-button'),
-    document.querySelector('#main-error')
+const [ passwordInput, emailInput, submitButton, formError ] = [
+    document.querySelector('#form-password-input'),
+    document.querySelector('#form-email-input'),
+    document.querySelector('#form-button'),
+    document.querySelector('#form-error')
 ]
 
-InputValidation.password(passwordInput)
-InputValidation.email(emailInput)
+let alreadySentRequest = false
 
-let hasWaitingResponse = false
+passwordInput.onchange = function () {
+    InputValidation.password(passwordInput)
+}
 
-async function makeAuthenticateUserRequest() {
+emailInput.onchange = function () {
+    InputValidation.email(emailInput)
+}
 
-    if (hasWaitingResponse)
+submitButton.onclick = async (event) => {
+    
+    event.preventDefault()
+
+    if (alreadySentRequest)
         return
 
-    formError.classList.remove('main-error-visible')
-    hasWaitingResponse = true
+    formError.classList.remove('form-error-visible')
 
-    const createUserPromise = authenticateUserRequest({
+    const [ passwordValidation, emailValidation ] = [ 
+        InputValidation.password(passwordInput),
+        InputValidation.email(emailInput)
+    ]
+
+    if (!passwordValidation || !emailValidation)
+        return
+
+    alreadySentRequest = true
+
+    const signinPromise = signinRequest({
         password: passwordInput.value,
         email: emailInput.value
     })
 
-    await statusHandler(createUserPromise, {
+    await statusHandler(signinPromise, {
         
         200: async function (response) {
             window.location.assign('/')
         },
 
         400: async function (response) {
-            formError.classList.add('main-error-visible')
-            formError.querySelector('#main-error-text').innerHTML = (await response.json())?.message || 'Unexpected error.'
+            formError.classList.add('form-error-visible')
+            formError.querySelector('#form-error-text').innerHTML = (await response.json())?.message || 'Unexpected error.'
         },
 
         401: async function (response) {
-            formError.classList.add('main-error-visible')
-            formError.querySelector('#main-error-text').innerHTML = (await response.json())?.message || 'Unexpected error.'
+            formError.classList.add('form-error-visible')
+            formError.querySelector('#form-error-text').innerHTML = (await response.json())?.message || 'Unexpected error.'
         },
 
         500: async function (response) {
@@ -49,11 +65,6 @@ async function makeAuthenticateUserRequest() {
 
     })
 
-    hasWaitingResponse = false
+    alreadySentRequest = false
 
-}
-
-formButton.onclick = (event) => {
-    makeAuthenticateUserRequest()
-    event.preventDefault()
 }

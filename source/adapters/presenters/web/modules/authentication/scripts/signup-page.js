@@ -1,44 +1,64 @@
-import { createUserRequest } from './components/request/create-user-request.js'
 import { statusHandler } from '../../../shared/scripts/components/status-handler.js'
-import InputValidation from './components/validate-input.js'
+import { signupRequest } from './components/request/signup-request.js'
+import InputValidation from './components/form/input-validation.js'
 
-const [ passwordInput, emailInput, nameInput, formButton, formError ] = [
-    document.querySelector('#main-password-input'),
-    document.querySelector('#main-email-input'),
-    document.querySelector('#main-name-input'),
-    document.querySelector('#main-form-button'),
-    document.querySelector('#main-error')
+const [ passwordInput, emailInput, nameInput, submitButton, formError ] = [
+    document.querySelector('#form-password-input'),
+    document.querySelector('#form-email-input'),
+    document.querySelector('#form-name-input'),
+    document.querySelector('#form-button'),
+    document.querySelector('#form-error')
 ]
 
-InputValidation.password(passwordInput)
-InputValidation.email(emailInput)
-InputValidation.name(nameInput)
+let alreadySentRequest = false
 
-let hasWaitingResponse = false
+passwordInput.onchange = function () {
+    InputValidation.password(passwordInput)
+}
 
-async function makeCreateUserRequest() {
+emailInput.onchange = function () {
+    InputValidation.email(emailInput)
+}
 
-    if (hasWaitingResponse)
+nameInput.onchange = function () {
+    InputValidation.name(nameInput)
+}
+
+submitButton.onclick = async (event) => {
+    
+    event.preventDefault()
+    
+    if (alreadySentRequest)
         return
 
-    formError.classList.remove('main-error-visible')
-    hasWaitingResponse = true
+    formError.classList.remove('form-error-visible')
 
-    const createUserPromise = createUserRequest({
+    const [ passwordValidation, emailValidation, nameValidation ] = [ 
+        InputValidation.password(passwordInput),
+        InputValidation.email(emailInput),
+        InputValidation.name(nameInput)
+    ]
+
+    if (!passwordValidation || !emailValidation || !nameValidation)
+        return
+
+    alreadySentRequest = true
+
+    const signupPromise = signupRequest({
         password: passwordInput.value,
         email: emailInput.value,
         name: nameInput.value,
     })
 
-    await statusHandler(createUserPromise, {
+    await statusHandler(signupPromise, {
         
         201: async function (response) {
             window.location.assign('/')
         },
 
         400: async function (response) {
-            formError.classList.add('main-error-visible')
-            formError.querySelector('#main-error-text').innerHTML = (await response.json())?.message || 'Unexpected error.'
+            formError.classList.add('form-error-visible')
+            formError.querySelector('#form-error-text').innerHTML = (await response.json())?.message || 'Unexpected error.'
         },
 
         500: async function (response) {
@@ -47,11 +67,6 @@ async function makeCreateUserRequest() {
 
     })
 
-    hasWaitingResponse = false
+    alreadySentRequest = false
 
-}
-
-formButton.onclick = (event) => {
-    makeCreateUserRequest()
-    event.preventDefault()
 }

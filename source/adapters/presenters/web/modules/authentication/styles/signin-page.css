@@ -1,0 +1,17 @@
+/* <!-- General Style --> */
+
+html, body {
+    grid-template-rows: min-content 1fr min-content;
+    background-size: 6rem;
+    display: grid;
+}
+
+/* <!-- Main Style --> */
+
+#main-container {
+    place-items: center;
+    padding: 1.6rem;
+    display: grid;
+}
+
+/* <!-- Final Style --> */
