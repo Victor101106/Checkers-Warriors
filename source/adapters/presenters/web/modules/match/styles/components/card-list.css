@@ -3,59 +3,49 @@
 .card-list {
     justify-content: center;
     flex-wrap: wrap;
+    min-width: 0rem;
     display: flex;
     gap: 3rem;
 }
 
+/* <!-- Card Item Style --> */
+
 .card-list-item {
-    justify-content: space-between;
     background-color: #ffffff;
-    flex-direction: column;
     border-radius: .3rem;
-    position: relative;
     max-width: 50rem;
-    display: flex;
-    padding: 2rem;
+    overflow: hidden;
     width: 28rem;
 }
 
-.card-list-item-wrapper {
-    height: fit-content;
-}
+/* <!-- Banner Style --> */
 
-.card-list-item-red .card-list-item-image-wrapper {
-    background-color: rgba(255, 0, 0, 0.1);
-}
-
-.card-list-item-green .card-list-item-image-wrapper {
-    background-color: rgba(0, 255, 0, 0.1);
-}
-
-.card-list-item-blue .card-list-item-image-wrapper {
-    background-color: rgba(0, 150, 255, 0.1);
-}
-
-.card-list-item-image-wrapper {
-    background-color: rgba(0, 255, 0, 0.1);
-    margin-bottom: 2rem;
-    border-radius: 2rem;
+.card-list-banner {
+    background-color: #8DC3A7;
     place-items: center;
-    height: fit-content;
-    width: fit-content;
-    padding: 1.8rem;
+    height: 14rem;
     display: grid;
 }
 
-.card-list-item-image {
-    border-radius: .6rem;
-    height: 4rem;
+.card-list-banner-image {
+    border-radius: .3rem;
+    height: 4.8rem;
+}
+
+/* <!-- Content Style --> */
+
+.card-list-content {
+    justify-content: space-between;
+    flex-direction: column;
+    display: flex;
+    padding: 2rem;
 }
 
 .card-list-item-title {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin-bottom: .4rem;
-    font-size: 1.8rem;
+    margin-bottom: .6rem;
     font-weight: 600;
+    font-size: 2rem;
 }
 
 .card-list-item-description {
@@ -73,7 +63,9 @@
     color: #1E7062;
 }
 
-@media (max-width: 70rem) {
+/* <!-- Responsive Style --> */
+
+@media (max-width: 26rem) {
     .card-list-item {
         flex-grow: 1;
     }
