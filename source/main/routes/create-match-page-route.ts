@@ -9,6 +9,6 @@ module.exports = (instance: FastifyInstance) => instance.get('/create-match', (r
     if (!hasAccessToken)
         return reply.redirect('/')
 
-    reply.view('create-match-page.html')
+    reply.view('match/views/create-match-page.html')
 
 })

@@ -1,0 +1,79 @@
+/* <!-- General Style --> */
+
+html, body {
+    grid-template-rows: min-content 1fr min-content;
+    background-size: 6rem;
+    display: grid;
+}
+
+/* <!-- Main Style --> */
+
+#main-container {
+    justify-content: space-around;
+    align-items: center;
+    display: flex;
+    padding: 4rem;
+    margin: auto;
+    width: 100vw;
+    gap: 4rem;
+}
+
+#main-left-wrapper {
+    height: fit-content;
+    width: min-content;
+}
+
+#main-title {
+    text-transform: capitalize;
+    font-size: min(14vw, 8rem);
+    margin-bottom: .8rem;
+    width: max-content;
+    cursor: default;
+    color: white;
+}
+
+#main-title-span {
+    border-bottom: min(.4rem, 2vw) dashed #8DC3A7;
+    transition: color .25s, border .25s;
+    font-size: min(17vw, 8.5rem);
+}
+
+#main-title-span:hover {
+    color: #8DC3A7;
+}
+
+#main-text {
+    font-size: min(4.5vw, 1.8rem);
+    margin-bottom: 2.2rem;
+    cursor: default;
+    color: white;
+}
+
+#main-buttons {
+    align-items: center;
+    display: flex;
+    gap: 1rem;
+}
+
+#main-board {
+    max-width: 48rem;
+    min-width: 10rem;
+    width: 100%;
+}
+
+@media (max-width: 38rem) {
+    
+    #main-buttons .outlined-button span {
+        display: none;
+    }
+
+    #main-container {
+        flex-direction: column;
+        width: min-content;
+        padding-top: 15vh;
+        gap: 14vh;
+    }
+    
+}
+
+/* <!-- Final Style --> */

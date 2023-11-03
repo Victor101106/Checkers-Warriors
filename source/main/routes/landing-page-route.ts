@@ -6,6 +6,6 @@ module.exports = (instance: FastifyInstance) => instance.get('/', (request, repl
     const cookies = parseCookies(request.headers.cookie || '')
     const hasAccessToken = !!cookies['access-token']
 
-    reply.view('landing-page.html', { logged: hasAccessToken })
+    reply.view('presentation/views/landing-page.html', { logged: hasAccessToken })
 
 })

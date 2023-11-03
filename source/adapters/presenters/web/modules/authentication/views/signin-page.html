@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!-- Meta Tags -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="UTF-8">
+    
+    <!-- Link Tags -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="shortcut icon" href="/static/shared/assets/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="/static/modules/authentication/styles/signup-signin-page.css">
+    <link rel="stylesheet" href="/static/shared/styles/components/buttons.css">
+    <link rel="stylesheet" href="/static/shared/styles/components/footer.css">
+    <link rel="stylesheet" href="/static/shared/styles/components/header.css">
+    <link rel="stylesheet" href="/static/shared/styles/template-page.css">
+    
+    <!-- Title Tag -->
+    <title>Sign In  • Checkers Warriors</title>
+
+</head>
+<body>
+
+    <!-- Header -->
+    <header id="header-container">
+        <div id="header-left-wrapper">
+            <a id="header-link" href="/"><img id="header-logotype" src="/static/shared/assets/logotype.png" alt="Checkers Warrior Logo"></a>
+            <i id="header-menu-toggle" class="ri-menu-line"></i>
+        </div>
+        <nav id="header-nav-wrapper">
+            <a class="header-nav-link" href="/"><button class="button ghost-button">Home</button></a>
+            <a class="header-nav-link" href="/about"><button class="button ghost-button">About</button></a>
+            <a class="header-nav-link" href="https://github.com/Victor101106/Checkers-Warriors"><button class="button ghost-button">Repository</button></a>
+            <a class="header-nav-link" href="/signup"><button class="button smooth-button">Sign Up</button></a>
+        </nav>
+    </header>
+
+    <!-- Main -->
+    <main id="main-container">
+        <section id="main-section">
+            <h1 id="main-title">Welcome back</h1>
+            <h2 id="main-subtitle">Please warrior, enter your details!</h2>
+            <div id="main-error">
+                <i id="main-error-icon" class="ri-error-warning-line"></i>
+                <span id="main-error-text">Lorem ipsum dolor sit amet consectetur adipisicing elit.</span>
+            </div>
+            <form id="main-form">
+                <div id="main-email-field" class="main-form-field">
+                    <input type="email" name="email" id="main-email-input" placeholder="Email">
+                    <p class="main-field-error" id="main-email-error">Please enter a valid email (example@mail.com)</p>
+                </div>
+                <div id="main-password-field" class="main-form-field">
+                    <input type="password" name="password" id="main-password-input" placeholder="Password">
+                    <p class="main-field-error" id="main-password-error">Please enter a strong password with at least 8 characters</p>
+                </div>
+                <button class="button default-button button-full-width" id="main-form-button">Sign In</button>
+            </form>
+            <p id="main-signin-redirect">Don't have an account? <a href="/signup">Sign Up</a></p>
+        </section>
+    </main>
+    
+    <!-- Footer -->
+    <footer id="footer-container">
+        <a class="footer-link" href="https://github.com/Victor101106/Checkers-Warriors" target="_blank"><i class="footer-icon ri-github-fill"></i></a>
+        <a class="footer-link" href="https://www.linkedin.com/in/victor101106/" target="_blank"><i class="footer-icon ri-linkedin-fill"></i></a>
+    </footer>
+
+    <!-- Scripts -->
+    <script type="module" src="/static/modules/authentication/scripts/signin-page.js"></script>
+
+</body>
+</html>

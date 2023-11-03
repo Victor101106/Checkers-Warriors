@@ -1,0 +1,24 @@
+/* <!-- Root Style --> */
+
+:root {
+    font-size: 62.5%;
+}
+
+/* <!-- General Style --> */
+
+* {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    box-sizing: border-box;
+    padding: 0rem;
+    margin: 0rem;
+}
+
+html, body {
+    background-image: url('/static/shared/assets/background.gif');
+    height: 100vh;
+    height: 100dvh;
+    width: 100vw;
+    width: 100dvw;
+}
+
+/* <!-- Final Style --> */
