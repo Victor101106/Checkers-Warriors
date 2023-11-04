@@ -5,6 +5,8 @@ import { Render } from "./components/render.js"
 import { Config } from "./components/config.js"
 import { Inputs } from "./components/inputs.js"
 
+import language from "./components/langua.js"
+
 // --> Statements
 
 const canvas  = document.querySelector('canvas')
@@ -117,6 +119,13 @@ render.events.on('request-join-match', (event) => {
 
 render.events.on('request-give-up', (event) => {
     socket.giveUp()
+})
+
+// --> Language Events
+
+language.events.on('update-language', (event) => {
+    config.configureTitle(render.state)
+    render.configureElements()
 })
 
 // --> Window Events

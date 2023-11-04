@@ -1,3 +1,5 @@
+import language from "../langua.js"
+
 export class BoardScreen {
 
     // --> Constructor Function
@@ -11,8 +13,12 @@ export class BoardScreen {
     // --> Configure Functions
 
     configureElements() {
-        this.parent.createElement("options-button", this.parent.board.left, this.parent.board.top + this.parent.board.height + 4, 'Options'.length * 4 + 5, 5, 'Options', (event) => { return this._optionsButtonClickEvent(event) }, this)
+
+        const optionsButtonCaption = language.getCaption(5)
+
+        this.parent.createElement("options-button", this.parent.board.left, this.parent.board.top + this.parent.board.height + 4, optionsButtonCaption.length * 4 + 5, 5, optionsButtonCaption, (event) => { return this._optionsButtonClickEvent(event) }, this)
         this.parent.createElement("board", this.parent.board.left, this.parent.board.top, this.parent.board.width, this.parent.board.height, undefined, (event) => { return this._boardClickEvent(event) }, this)
+
     }
 
     // --> Event Functions
@@ -240,15 +246,15 @@ export class BoardScreen {
 
     _renderOptionsButton() {
         
-        const [ left, top ] = [ this.parent.board.left, this.parent.board.top + this.parent.board.height + 4 ]
+        const optionsButton = this.parent.getElement('options-button')
         const characters = this.parent.images.charactersGreen
         
-        if (!this.parent.getElement('options-button')?.hovering)
+        if (!optionsButton.hovering)
             this.context.globalAlpha = 0.60
         
-        this.context.drawImage(this.parent.images.characterLines, left, top)
+        this.context.drawImage(this.parent.images.characterLines, optionsButton.left, optionsButton.top)
         
-        this.parent._renderString('Options', left + 6, top, characters)
+        this.parent._renderString(optionsButton.caption, optionsButton.left + 6, optionsButton.top, characters)
 
         this.context.globalAlpha = 1.00
 

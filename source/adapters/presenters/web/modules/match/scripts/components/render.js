@@ -34,6 +34,7 @@ export class Render {
     async loadImages() {
         this.images.sectionSeparator = await loadImage('../static/modules/match/assets/images/section-separator.png')
         this.images.charactersGreen = await loadImage('../static/modules/match/assets/images/characters-green.png')
+        this.images.languageSwitch = await loadImage('../static/modules/match/assets/images/language-switch.png')
         this.images.characterColon = await loadImage('../static/modules/match/assets/images/character-colon.png')
         this.images.characterCross = await loadImage('../static/modules/match/assets/images/character-cross.png')
         this.images.characterLines = await loadImage('../static/modules/match/assets/images/character-lines.png')
@@ -94,6 +95,7 @@ export class Render {
     }
 
     configureElements() {
+        this.elements = new Object()
         this.screens.optionsScreen.configureElements()
         this.screens.winnerScreen.configureElements()
         this.screens.inviteScreen.configureElements()

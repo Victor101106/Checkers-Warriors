@@ -1,4 +1,5 @@
 import { EventEmitter } from "../../../../shared/scripts/components/event-emitter.js"
+import language from "./langua.js"
 
 export class Config {
     
@@ -44,7 +45,7 @@ export class Config {
     }
 
     configureTitle(state) {
-        document.title = `${ state.indexOf != 1 ? 'Playing' : 'Watching' } Match • Checkers Warriors` 
+        document.title = state.indexOf == -1 ? language.getCaption(1) : language.getCaption(2)
     }
 
     // --> Final Class
