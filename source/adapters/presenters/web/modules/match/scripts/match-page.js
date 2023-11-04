@@ -1,24 +1,36 @@
+// --> Imports
+
 import { Socket } from "./components/socket.js"
 import { Render } from "./components/render.js"
 import { Config } from "./components/config.js"
 import { Inputs } from "./components/inputs.js"
 
+// --> Statements
+
 const canvas  = document.querySelector('canvas')
 const context = canvas.getContext('2d')
 
 const render = new Render(canvas, context)
-const inputs = new Inputs(canvas, render.elements)
+const inputs = new Inputs(canvas, render)
 const config = new Config(canvas)
 const socket = new Socket()
 
+// --> Socket Events
+
 socket.events.on('receive-match-accepted', async (event) => {
-    
+
+    await render.loadScreens()
+    await render.loadImages()
+    await render.loadAudios()
+
     config.configureContainer(event)
+    config.configureBoard(event)
     config.configureTitle(event)
-    render.configureState(event)
-    render.configureOptionsMenu()
-    render.configureInviteMenu()
     config.configureCanvas()
+
+    render.receiveState(event)
+    render.configureElements()
+    render.beginRendering()
 
     if (event.turn == event.indexOf)
         socket.findAllMovements()
@@ -30,28 +42,38 @@ socket.events.on('receive-match-rejected', async (event) => {
 })
 
 socket.events.on('find-all-movements-accepted', async (event) => {
-    render.movements = event
+    render.screens.boardScreen.movements = event
 })
 
 socket.events.on('find-all-movements-rejected', async (event) => {
     console.error(event)
 })
 
-render.events.on('request-join-match', async (event) => {
-    socket.joinMatch()
+socket.events.on('move-piece', async (event) => {
+    
+    render.screens.boardScreen._movePieceEvent(event)
+    render.reverseTurn()
+    
+    if (event.winner) 
+        return render.configureWinner(event.winner)
+
+    if (render.state.turn == render.state.indexOf)
+        socket.findAllMovements()
+
 })
 
-render.events.on('request-move-piece', async (event) => {
-    socket.movePiece(event)
+socket.events.on('move-piece-rejected', async (event) => {
+    console.error(event)
 })
 
 socket.events.on('join-match-accepted', async (event) => {
     
+    render.currentScreen = render.screens.boardScreen
     render.state.indexOf = event.indexOf
     
     if (render.state.turn == event.indexOf)
         socket.findAllMovements()
-
+    
 })
 
 socket.events.on('join-match-rejected', async (event) => {
@@ -59,60 +81,53 @@ socket.events.on('join-match-rejected', async (event) => {
 })
 
 socket.events.on('player-joined', async (event) => {
+    
+    if (render.currentScreen == render.screens.inviteScreen)
+        render.currentScreen = render.screens.boardScreen
+    
     render.state.players[1] = event.player
-    render.showInvite = false
+
 })
 
-socket.events.on('move-piece-rejected', async (event) => {
+socket.events.on('abandoned-match', async (event) => {
+    render.currentScreen = render.screens.boardScreen
+    render.configureWinner(event.winner)
+})
+
+socket.events.on('give-up-rejected', async (event) => {
     console.error(event)
 })
 
-socket.events.on('move-piece', async (event) => {
-    render.movements = undefined
-    render.selection = undefined
-    render.movePiece(event)
+// --> Config Events
+
+config.events.on('configure-container', (container, board) => {
+    render.receiveContainer(container, board)
+    inputs.receiveContainer(container, board)
 })
 
-render.events.on('reverse-turn', () => {
-    if (render.state.turn == render.state.indexOf) {
-        socket.findAllMovements()
-    }
+// --> Render Events
+
+render.events.on('request-move-piece', (event) => {
+    socket.movePiece(event)
+})
+
+render.events.on('request-join-match', (event) => {
+    socket.joinMatch()
 })
 
 render.events.on('request-give-up', (event) => {
     socket.giveUp()
 })
 
-socket.events.on('abandoned-match', (event) => {
-    render.configureWinner(event.winner)
-    render.showOptions = false
-}) 
+// --> Window Events
 
-socket.events.on('give-up-rejected', (event) => {
-    console.error(event)
-})
-
-config.events.on('updated-container', (container) => {
-    render.configureContainer(container)
-    inputs.configureContainer(container)
-})
-
-render.events.on('updated-board', (board) => {
-    inputs.configureBoard(board)
-})
-
-inputs.events.on('onclick', (coordinate, position) => {
-    render.selectSpot(position)
-})
-
-window.onload = async () => {
-    await render.configureImages()
-    await render.configureSounds()
+window.onload = function () {
     socket.receiveMatch(matchId)
-    render.configureEffect()
-    render.beginRendering()
+    inputs.configureHandler()
 }
 
-window.onresize = () => {
+window.onresize = function () {
     config.configureCanvas()
 }
+
+// --> Final File

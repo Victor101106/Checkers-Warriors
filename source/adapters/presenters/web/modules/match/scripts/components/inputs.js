@@ -2,60 +2,59 @@ import { EventEmitter } from "../../../../shared/scripts/components/event-emitte
 
 export class Inputs {
     
-// <-- Constructor Function --> //
-
-    constructor(canvas, elements) {
+    // --> Constructor Function
+    
+    constructor(canvas, render) {
         this.events = new EventEmitter()
-        this.elements = elements
+        this.render = render
         this.canvas = canvas
-        this.eventHandler()
+        this.configureHandler()
     }
 
-    // <-- Event Functions --> //
+    // --> Event Handler Function
 
-    eventHandler() {
-        this.canvas.onmousemove = (event) => this.onMouseMoveEvent(event)
-        this.canvas.onclick = (event) => this.onClickEvent(event)
+    configureHandler() {
+        this.canvas.onmousemove = (event) => this.container && this._mouseMoveEvent(event)
+        this.canvas.onclick = (event) => this.container && this._canvasClickEvent(event)
     }
 
-    onClickEvent({ x, y }) {
+    // --> Event Functions
 
-        const coordinate = this.coordinateToCanvas(x, y)
-        const position = this.coordinateToBoard(coordinate.x, coordinate.y)
+    _canvasClickEvent(event) {
 
-        for (let element of Object.values(this.elements)) {
-            if (this.intersect(coordinate, element)) {
-                element.onclick && element.onclick()
+        const coordinate = this.mousePositionToCoordinate(event.x, event.y)
+
+        for (let element of Object.values(this.render.elements)) {
+            if (this.intersect(coordinate, element) && element.onclick && element.screen == this.render.currentScreen) {
+                if (!element.onclick(coordinate) && this.render.screens.optionsScreen.options.enableSounds)
+                    this.render.sounds.mouseClickSound.play()
             }
         }
 
-        this.events.emit('onclick', coordinate, position)
+        this.events.emit('onclick', coordinate)
 
     }
 
-    onMouseMoveEvent({ x, y }) {
+    _mouseMoveEvent(event) {
 
-        const coordinate = this.coordinateToCanvas(x, y)
+        const coordinate = this.mousePositionToCoordinate(event.x, event.y)
 
-        for (let element of Object.values(this.elements)) {
-            element.selected = this.intersect(coordinate, element)
+        for (let element of Object.values(this.render.elements)) {
+            element.hovering = element.screen == this.render.currentScreen && this.intersect(coordinate, element)
         }
 
         this.events.emit('onhover', coordinate)
 
     }
 
-    // <-- Configure Functions --> //
+    // --> Receive Functions
 
-    configureContainer(container) {
+    receiveContainer(container, board) {
         this.container = container
-    }
-
-    configureBoard(board) {
         this.board = board
     }
 
-    // <-- Utility Functions --> //
+    // --> Auxiliary Functions
 
     intersect(coordinate, element, container = this.container) {
 
@@ -66,22 +65,15 @@ export class Inputs {
 
     }
 
-    // <-- Convert Functions --> //
+    // --> Convertion Functions
 
-    coordinateToCanvas(x, y) {
+    mousePositionToCoordinate(x, y) {
         return {
             y: y * this.canvas.height / this.canvas.clientHeight | 0,
             x: x * this.canvas.width / this.canvas.clientWidth | 0
         }
     }
 
-    coordinateToBoard(x, y) {
-        return {
-            column: Math.floor((x - this.container.left - this.board.left) / 16),
-            row: Math.floor((y - this.container.top - this.board.top) / 16)
-        }
-    }
-
-    // <-- Final Class --> //
-
+    // --> Final Class
+    
 }

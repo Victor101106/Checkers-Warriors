@@ -1,300 +1,138 @@
 import { EventEmitter } from "../../../../shared/scripts/components/event-emitter.js"
-import { loadAudio } from "./loading/load-audio.js"
+import { OptionsScreen } from "./rendering/options-screen.js"
+import { InviteScreen } from "./rendering/invite-screen.js"
+import { WinnerScreen } from "./rendering/winner-screen.js"
+import { BoardScreen } from "./rendering/board-screen.js"
 import { loadImage } from "./loading/load-image.js"
+import { loadAudio } from "./loading/load-audio.js"
 
 export class Render {
- 
-    // <-- Constructor Function --> //
+
+    // --> Constructor Function
 
     constructor(canvas, context) {
+        this.effect = { top: 0, time: new Date().getTime() }
         this.events = new EventEmitter()
-        this.animations = new Array()
+        this.currentScreen = undefined
         this.elements = new Object()
-        this.effect = { offsetY: 0 }
-        this.showOptions = false
-        this.showInvite = false
-        this.options = {
-            enableAnimations: true,
-            enableRotation: true,
-            enableEffects: true,
-            enableSounds: true
-        }
+        this.screens = new Object()
+        this.sounds = new Object()
+        this.images = new Object()
         this.context = context
         this.canvas = canvas
     }
 
-    // <-- Configure Functions --> //
+    // --> Load Functions
 
-    async configureImages() {
-        this.images = {
-            'won-broken-white': await loadImage('../static/modules/match/assets/images/won-broken-white.png'),
-            'won-broken-black': await loadImage('../static/modules/match/assets/images/won-broken-black.png'),
-            'character-cross': await loadImage('../static/modules/match/assets/images/character-cross.png'),
-            'character-colon': await loadImage('../static/modules/match/assets/images/character-colon.png'),
-            'character-lines': await loadImage('../static/modules/match/assets/images/character-lines.png'),
-            'profile-picture': await loadImage('../static/modules/match/assets/images/profile-picture.png'),
-            'selection-piece': await loadImage('../static/modules/match/assets/images/selection-piece.png'),
-            'selection-jump': await loadImage('../static/modules/match/assets/images/selection-jump.png'),
-            'selection-spot': await loadImage('../static/modules/match/assets/images/selection-spot.png'),
-            'piece-crown': await loadImage('../static/modules/match/assets/images/piece-crown.png'),
-            'piece-white': await loadImage('../static/modules/match/assets/images/piece-white.png'),
-            'piece-black': await loadImage('../static/modules/match/assets/images/piece-black.png'),
-            'arrow-right': await loadImage('../static/modules/match/assets/images/arrow-right.png'),
-            'arrow-left': await loadImage('../static/modules/match/assets/images/arrow-left.png'),
-            'toggle-off': await loadImage('../static/modules/match/assets/images/toggle-off.png'),
-            'won-white': await loadImage('../static/modules/match/assets/images/won-white.png'),
-            'won-black': await loadImage('../static/modules/match/assets/images/won-black.png'),
-            'toggle-on': await loadImage('../static/modules/match/assets/images/toggle-on.png'),
-            'separator': await loadImage('../static/modules/match/assets/images/separator.png'),
-            'alphabet': await loadImage('../static/modules/match/assets/images/alphabet.png'),
-            'numerals': await loadImage('../static/modules/match/assets/images/numerals.png'),
-        }
+    async loadScreens() {
+        this.screens.optionsScreen = new OptionsScreen(this.canvas, this.context, this)
+        this.screens.winnerScreen = new WinnerScreen(this.canvas, this.context, this)
+        this.screens.inviteScreen = new InviteScreen(this.canvas, this.context, this)
+        this.screens.boardScreen = new BoardScreen(this.canvas, this.context, this)
     }
 
-    async configureSounds() {
-        this.sounds = {
-            'button-click': await loadAudio('../static/modules/match/assets/sounds/button-click-sound.mp3'),
-            'move-piece': await loadAudio('../static/modules/match/assets/sounds/move-piece-sound.mp3'),
-            'background': await loadAudio('../static/modules/match/assets/sounds/background-sound.mp3'),
-            'victory': await loadAudio('../static/modules/match/assets/sounds/victory-sound.mp3'),
-            'defeat': await loadAudio('../static/modules/match/assets/sounds/defeat-sound.mp3'),
-            'queen': await loadAudio('../static/modules/match/assets/sounds/queen-sound.mp3')
-        }
-        this.sounds.background.volume = 0.2
-        this.sounds.background.loop = true
-        this.sounds.background.play()
+    async loadImages() {
+        this.images.sectionSeparator = await loadImage('../static/modules/match/assets/images/section-separator.png')
+        this.images.charactersGreen = await loadImage('../static/modules/match/assets/images/characters-green.png')
+        this.images.characterColon = await loadImage('../static/modules/match/assets/images/character-colon.png')
+        this.images.characterCross = await loadImage('../static/modules/match/assets/images/character-cross.png')
+        this.images.characterLines = await loadImage('../static/modules/match/assets/images/character-lines.png')
+        this.images.indicatorRight = await loadImage('../static/modules/match/assets/images/indicator-right.png')
+        this.images.profilePicture = await loadImage('../static/modules/match/assets/images/profile-picture.png')
+        this.images.selectionPiece = await loadImage('../static/modules/match/assets/images/selection-piece.png')
+        this.images.lossTextBlack = await loadImage('../static/modules/match/assets/images/loss-text-black.png')
+        this.images.lossTextWhite = await loadImage('../static/modules/match/assets/images/loss-text-white.png')
+        this.images.charactersRed = await loadImage('../static/modules/match/assets/images/characters-red.png')
+        this.images.indicatorLeft = await loadImage('../static/modules/match/assets/images/indicator-left.png')
+        this.images.selectionJump = await loadImage('../static/modules/match/assets/images/selection-jump.png')
+        this.images.selectionSpot = await loadImage('../static/modules/match/assets/images/selection-spot.png')
+        this.images.wonTextWhite = await loadImage('../static/modules/match/assets/images/won-text-white.png')
+        this.images.wonTextBlack = await loadImage('../static/modules/match/assets/images/won-text-black.png')
+        this.images.checkBoxOff = await loadImage('../static/modules/match/assets/images/check-box-off.png')
+        this.images.checkBoxOn = await loadImage('../static/modules/match/assets/images/check-box-on.png')
+        this.images.pieceCrown = await loadImage('../static/modules/match/assets/images/piece-crown.png')
+        this.images.pieceBlack = await loadImage('../static/modules/match/assets/images/piece-black.png')
+        this.images.pieceWhite = await loadImage('../static/modules/match/assets/images/piece-white.png')
     }
 
-    configureContainer(container) {
+    async loadAudios() {
+        this.sounds.mouseClickSound = await loadAudio('../static/modules/match/assets/sounds/mouse-click-sound.mp3')
+        this.sounds.backgroundSound = await loadAudio('../static/modules/match/assets/sounds/background-sound.mp3')
+        this.sounds.movePieceSound = await loadAudio('../static/modules/match/assets/sounds/move-piece-sound.mp3')
+        this.sounds.promotionSound = await loadAudio('../static/modules/match/assets/sounds/promotion-sound.mp3')
+        this.sounds.victorySound = await loadAudio('../static/modules/match/assets/sounds/victory-sound.mp3')
+        this.sounds.defeatSound = await loadAudio('../static/modules/match/assets/sounds/defeat-sound.mp3')
+    }
+
+    // --> Receive Functions
+
+    receiveContainer(container, board) {
         this.container = container
-        this.configureWinnerScreen()
         this.configureTranslate()
-        this.configureBoard()
+        this.board = board
     }
-    
+
+    receiveState(state) {
+
+        this.state = state
+
+        if (state.winner != undefined)
+            return this.configureWinner(state.winner)
+
+        if (this.state.indexOf == -1 && !this.state.players[1])
+            return this.currentScreen = this.screens.inviteScreen
+
+        this.currentScreen = this.screens.boardScreen
+
+    }
+
+    // --> Configure Functions
+
     configureTranslate() {
         this.context.reset()
         this.context.translate(this.container.left, this.container.top)
     }
 
-    configureBoard() {
-        if (this.state && this.container) {
-            this.board = { height: this.state.board.rows * 16 + 6, width: this.state.board.columns * 16 }
-            this.board.top = this.container.height / 2 - this.board.height / 2
-            this.board.left = this.container.width / 2 - this.board.width / 2
-            this.events.emit('updated-board', this.board)
-        }
+    configureElements() {
+        this.screens.optionsScreen.configureElements()
+        this.screens.winnerScreen.configureElements()
+        this.screens.inviteScreen.configureElements()
+        this.screens.boardScreen.configureElements()
     }
 
     configureWinner(winner) {
         
-        this.sounds.background.pause()
+        this.currentScreen = this.screens.winnerScreen
         this.state.winner = winner
 
-        if (this.state.winner == this.state.indexOf)
-            this.sounds.victory.play()
+        if (!this.screens.optionsScreen.options.enableSounds)
+            return
+
+        if (this.state.indexOf == -1 || this.state.winner == this.state.indexOf)
+            this.sounds.victorySound.play()
         else
-            this.sounds.defeat.play()
-
-    }
-    
-    configureState(state) {
-        
-        this.state = state
-        this.configureBoard()
-        
-        if (state.winner != undefined) 
-            this.configureWinner(state.winner)
-        
-    }
-    
-    configureEffect() {
-        this.effect.interval = setInterval(() => this.effect.offsetY = this.effect.offsetY ? 0 : 1, 125)
-    }
-
-    configureWinnerScreen() {
-
-        const CaptionValue = 'Click anywhere to return to home'
-
-        const WinnerScreenElements = {
-            winnerScreenHiddenButton: {
-                onclick: () => { if (this.state.winner != undefined) window.location.assign('/') },
-                height: this.canvas.height,
-                width: this.canvas.width,
-                left: -this.container.left,
-                top: -this.container.top,
-            },
-            winnerScreenCaption: {
-                left: Math.floor(this.container.width / 2 - (CaptionValue.length * 4 - 1) / 2),
-                width: CaptionValue.length * 4 - 1,
-                top: this.container.height - 7,
-                value: CaptionValue,
-                height: 5
-            }
-        }
-
-        Object.assign(this.elements, WinnerScreenElements)
+            this.sounds.defeatSound.play()
 
     }
 
-    configureInviteMenu() {
-
-        const [ AcceptInviteValue, JustWatchValue ] = [ 'Accept Invite', 'Just Watch' ]
-
-        const InviteMenuElements = {
-            AcceptInviteButton: {
-                onclick: () => { if (this.showInvite) { this.events.emit('request-join-match'); this.sounds["button-click"].play() } },
-                width: AcceptInviteValue.length * 4 - 1,
-                value: AcceptInviteValue,
-                height: 5,
-                left: 0,
-                top: 0,
-            },
-            JustWatchButton: {
-                onclick: () => { this.showInvite = false; this.sounds["button-click"].play() },
-                width: JustWatchValue.length * 4 - 1,
-                value: JustWatchValue,
-                height: 5,
-                left: 0,
-                top: 0,
-            }
-        }
-
-        this.showInvite = this.state.indexOf == -1 && !this.state.players[1]
-
-        Object.assign(this.elements, InviteMenuElements)
-
-    }
-
-    configureOptionsMenu() {
-
-        const [ EnableAnimationsValue, EnableRotationValue, EnableEffectsValue, OptionsButtonValue, EnableSoundsValue, ExitToHomeValue, GiveUpValue, CloseValue ] = [ 'Enable Animations', 'Enable Rotation', 'Enable Effects', 'Options', 'Enable Sounds', 'Exit To Home', 'Give Up', 'Close' ]
-        
-        const middleX = (EnableAnimationsValue.length * 4 + 6) / 2
-
-        const translateX = this.container.width / 2 - middleX | 0
-        const translateY = this.container.height / 2 - 51 / 2 | 0
-
-        const OptionsMenuElements = {
-            OptionsButton: {
-                onclick: () => { if ( this.state?.winner == undefined) this.toggleOptions() },
-                top: this.board.top + this.board.height + 4,
-                width: OptionsButtonValue.length * 4 + 5,
-                value: OptionsButtonValue,
-                left: this.board.left,
-                height: 5,
-            },
-            EnableAnimationsToggle: {
-                onclick: () => { if (this.showOptions) this.toggleAnimations() },
-                width: EnableAnimationsValue.length * 4 + 6,
-                value: EnableAnimationsValue,
-                left: translateX,
-                top: translateY,
-                height: 5
-            },
-            EnableRotationToggle: {
-                onclick: () => { if (this.showOptions) this.toggleRotation() },
-                left: translateX + middleX - (EnableRotationValue.length * 4 + 6) / 2 | 0,
-                width: EnableRotationValue.length * 4 + 6,
-                value: EnableRotationValue,
-                top: translateY + 1 * 7,
-                height: 5
-            },
-            EnableEffectsToggle: {
-                onclick: () => { if (this.showOptions) this.toggleEffects() },
-                left: translateX + middleX - (EnableEffectsValue.length * 4 + 6) / 2 | 0,
-                width: EnableEffectsValue.length * 4 + 6,
-                value: EnableEffectsValue,
-                top: translateY + 2 * 7,
-                height: 5
-            },
-            EnableSoundsToggle: {
-                onclick: () => { if (this.showOptions) this.toggleSound() },
-                left: translateX + middleX - (EnableSoundsValue.length * 4 + 6) / 2 | 0,
-                width: EnableSoundsValue.length * 4 + 6,
-                value: EnableSoundsValue,
-                top: translateY + 3 * 7,
-                height: 5
-            },
-            ExitToHomeToggle: {
-                onclick: () => { if (this.showOptions) window.location.assign('/') },
-                left: translateX + middleX - (ExitToHomeValue.length * 4 - 1) / 2 | 0,
-                width: ExitToHomeValue.length * 4 - 1,
-                top: translateY + 5 + 4 * 7,
-                value: ExitToHomeValue,
-                height: 5
-            },
-            GiveUpToggle: {
-                onclick: () => { if (this.showOptions) this.toggleGiveUp() },
-                left: translateX + middleX - (GiveUpValue.length * 4 - 1) / 2 | 0,
-                width: GiveUpValue.length * 4 - 1,
-                top: translateY + 5 + 5 * 7,
-                value: GiveUpValue,
-                height: 5
-            },
-            CloseToggle: {
-                onclick: () => { if (this.showOptions) this.toggleOptions() },
-                left: translateX + middleX - (CloseValue.length * 4 - 1) / 2 | 0,
-                width: CloseValue.length * 4 - 1,
-                top: translateY + 5 + 6 * 7,
-                value: CloseValue,
-                height: 5
-            }
-        }
-
-        Object.assign(this.elements, OptionsMenuElements)
-
-    }
-
-    // <-- Utility Functions --> //
-
-    toggleAnimations() {
-        this.options.enableAnimations = !this.options.enableAnimations
-        this.sounds["button-click"].play()
-    }
-
-    toggleRotation() {
-        this.options.enableRotation = !this.options.enableRotation
-        this.sounds["button-click"].play()
-    }
-
-    toggleEffects() {
-        this.options.enableEffects = !this.options.enableEffects
-        this.sounds["button-click"].play()
-    }
-
-    toggleOptions() {
-        this.showOptions = !this.showOptions
-        this.sounds["button-click"].play()
-    }
-    
-    toggleGiveUp() {
-        this.events.emit('request-give-up')
-        this.sounds["button-click"].play()
-    }
-
-    toggleSound() {
-        this.options.enableSounds = !this.options.enableSounds
-        this.options.enableSounds ? this.sounds.background.play() : this.sounds.background.pause()
-        this.sounds["button-click"].play()
-    }
+    // --> Auxiliary Functions
 
     rotatePlayers() {
-        return this.state.indexOf == 0 && this.options.enableRotation ? [...this.state.players].reverse() : this.state.players
+        return this.state.indexOf == 0 && this.screens.optionsScreen.options.enableRotation ? [...this.state.players].reverse() : this.state.players
     }
     
     rotateScore() {
-        return this.state.indexOf == 0 && this.options.enableRotation ? [...this.state.score].reverse() : this.state.score
+        return this.state.indexOf == 0 && this.screens.optionsScreen.options.enableRotation ? [...this.state.score].reverse() : this.state.score
     }
 
     rotateTurn() {
-        return this.state.indexOf == 0 && this.options.enableRotation ? 1 - this.state.turn : this.state.turn
+        return this.state.indexOf == 0 && this.screens.optionsScreen.options.enableRotation ? 1 - this.state.turn : this.state.turn
     }
 
     rotatePosition(position) {   
-        return { 
-            column: this.state.indexOf == 0 && this.options.enableRotation ? this.state.board.columns - position.column - 1  : position.column,
-            row: this.state.indexOf == 0 && this.options.enableRotation ? this.state.board.rows - position.row - 1 : position.row
+        return {
+            column: this.state.indexOf == 0 && this.screens.optionsScreen.options.enableRotation ? this.state.board.columns - position.column - 1  : position.column,
+            row: this.state.indexOf == 0 && this.screens.optionsScreen.options.enableRotation ? this.state.board.rows - position.row - 1 : position.row
         }
     }
 
@@ -302,512 +140,82 @@ export class Render {
         this.state.turn = this.state.turn == 0 ? 1 : 0
     }
 
-    // <-- Event Functions --> //
+    // --> Element Functions
 
-    selectSpot(position) {
-
-        if (this.showOptions)
-            return
-
-        const rotatedPosition = this.rotatePosition(position)
-
-        const positionAlreadySelected = this.selection && this.selection.column == rotatedPosition.column && this.selection.row == rotatedPosition.row
-        const positionOutsideBoard = position.column < 0 || position.row < 0 || position.column >= this.state.board.columns || position.row >= this.state.board.rows
-
-        if (positionOutsideBoard || positionAlreadySelected)
-            return this.selection = undefined
-
-        if (this.selection && this.movements.find(({ startsAt, endsAt }) => startsAt.column == this.selection.column && startsAt.row == this.selection.row && endsAt.column == rotatedPosition.column && endsAt.row == rotatedPosition.row))
-            return this.events.emit('request-move-piece', { startsAt: this.selection, endsAt: rotatedPosition })
-
-        if (!this.movements || !this.movements.find(({ startsAt }) => startsAt.column == rotatedPosition.column && startsAt.row == rotatedPosition.row))
-            return this.selection = undefined
-
-        this.selection = rotatedPosition
-
+    createElement(id, left, top, width, height, caption, onclick, screen) {
+        return this.elements[id] = { id, left, top, width, height, caption, onclick, screen }
     }
 
-    // <-- Board Functions --> //
-
-    movePiece({ startsAt, endsAt, positions, jumps, promoted, winner }) {
-
-        for (let index = 0; index < positions.length; index++) {
-            
-            this.animations.push({
-                startsAt: positions[index - 1] || startsAt,
-                endsAt: positions[index],
-                type: 'move-piece'
-            })
-
-            jumps.length && this.animations.push({
-                jump: jumps.shift(),
-                type: 'jump-piece'
-            })
-            
-        }
-
-        if (promoted) this.animations.push({
-            type: 'promotion',
-            position: endsAt,
-        })
-        
-        if (winner) this.animations.push({
-            position: endsAt,
-            type: 'winner',
-        })
-
-        this.animations.push({
-            type: 'reverse-turn'
-        })
-
+    deleteElement(id) {
+        delete this.elements[id]
     }
 
-    // <-- Draw Functions --> //
+    getElement(id) {
+        return this.elements[id]
+    }
+
+    // --> Rendering Functions
 
     beginRendering() {
-        
+
         this.deltatime = (new Date().getTime() - this.deltatime0) / 1000 || 0
         this.deltatime0 = new Date().getTime()
-
-        this.drawBackground()
-
-        if (this.state) {
-            this.drawExtraBoard()
-            this.drawBoard()
-            this.drawWinnerIndicator()
-        }
-
-        if (this.state?.winner == undefined) {
-
-            if (this.showOptions) {
-                this.drawTransparentGreenFilter()
-                this.drawOptions()
-            }
-    
-            if (this.showInvite) {
-                this.drawTransparentGreenFilter()
-                this.drawInviteMenu()
-            }
-
-        }
-
-        if (this.options.enableEffects) 
-            this.drawEffect()
+        
+        this._renderBackground()
+        this._renderScreen()
+        this._renderEffects()
         
         requestAnimationFrame(() => this.beginRendering())
 
     }
 
-    drawBackground() {
+    // --> Render Functions
+
+    _renderBackground() {
         this.context.fillStyle = '#0d302a'
         this.context.fillRect(0 - this.container?.left, 0 - this.container?.top, this.canvas.width, this.canvas.height)
     }
 
-    drawTransparentGreenFilter() {
-        this.context.fillStyle = '#0d302a'
-        this.context.globalAlpha = 0.95
-        this.context.fillRect(0 - this.container?.left, 0 - this.container?.top, this.canvas.width, this.canvas.height)
-        this.context.globalAlpha = 1.00
+    _renderScreen() {
+        this.currentScreen?.render && this.currentScreen.render(this.deltatime)
     }
 
-    drawTransparentRedFilter() {
-        this.context.fillStyle = '#570303'
-        this.context.globalAlpha = 0.95
-        this.context.fillRect(0 - this.container?.left, 0 - this.container?.top, this.canvas.width, this.canvas.height)
-        this.context.globalAlpha = 1.00
-    }
-    
-    drawWinnerIndicator() {
+    _renderEffects() {
 
-        if (this.state?.winner == undefined)
-            return
-
-        if (this.state.winner == this.state.indexOf)
-            this.drawTransparentGreenFilter()
-        else
-            this.drawTransparentRedFilter()
-                
-        const image = this.images[(this.state.winner == this.state.indexOf ? 'won-' : 'won-broken-') + (this.state.winner == 0 ? "white" : "black") ]
-        const winnerScreenCaption = this.elements.winnerScreenCaption
-
-        this.context.drawImage(image, this.container.width / 2 - image.width / 2 | 0, this.container.height / 2 - image.height / 2 | 0)
-
-        this.context.globalAlpha = winnerScreenCaption.selected ? 1.00 : 0.75
-        this.drawString(winnerScreenCaption.value, winnerScreenCaption.left, winnerScreenCaption.top)
-
-    }
-
-    drawOptions() {
-        
-        const { EnableAnimationsToggle, EnableRotationToggle, EnableEffectsToggle, EnableSoundsToggle, ExitToHomeToggle, GiveUpToggle, CloseToggle } = this.elements
-
-        this.context.globalAlpha = EnableAnimationsToggle.selected ? 1.00 : 0.60
-        this.context.drawImage(this.images[this.options.enableAnimations ? "toggle-on" : "toggle-off"], EnableAnimationsToggle.left, EnableAnimationsToggle.top)
-        this.drawString(EnableAnimationsToggle.value, 7 + EnableAnimationsToggle.left, EnableAnimationsToggle.top)
-        
-        this.context.globalAlpha = EnableRotationToggle.selected ? 1.00 : 0.60
-        this.context.drawImage(this.images[this.options.enableRotation ? "toggle-on" : "toggle-off"], EnableRotationToggle.left, EnableRotationToggle.top)
-        this.drawString(EnableRotationToggle.value, 7 + EnableRotationToggle.left, EnableRotationToggle.top)
-
-        this.context.globalAlpha = EnableEffectsToggle.selected ? 1.00 : 0.60
-        this.context.drawImage(this.images[this.options.enableEffects ? "toggle-on" : "toggle-off"], EnableEffectsToggle.left, EnableEffectsToggle.top)
-        this.drawString(EnableEffectsToggle.value, 7 + EnableEffectsToggle.left, EnableEffectsToggle.top)
-
-        this.context.globalAlpha = EnableSoundsToggle.selected ? 1.00 : 0.60
-        this.context.drawImage(this.images[this.options.enableSounds ? "toggle-on" : "toggle-off"], EnableSoundsToggle.left, EnableSoundsToggle.top)
-        this.drawString(EnableSoundsToggle.value, 7 + EnableSoundsToggle.left, EnableSoundsToggle.top)
-        
-        this.context.globalAlpha = 0.60
-        this.context.drawImage(this.images.separator, EnableAnimationsToggle.left + EnableAnimationsToggle.width / 2 - 17 / 2 | 0, EnableSoundsToggle.top + EnableSoundsToggle.height + 2 | 0)
-
-        this.context.globalAlpha = ExitToHomeToggle.selected ? 1.00 : 0.60
-        this.drawString(ExitToHomeToggle.value, ExitToHomeToggle.left, ExitToHomeToggle.top)
-
-        this.context.globalAlpha = GiveUpToggle.selected ? 1.00 : 0.60
-        this.drawString(GiveUpToggle.value, GiveUpToggle.left, GiveUpToggle.top)
-
-        this.context.globalAlpha = CloseToggle.selected ? 1.00 : 0.60
-        this.drawString(CloseToggle.value, CloseToggle.left, CloseToggle.top)
-
-        this.context.globalAlpha = 1.00
-
-    }
-
-    drawInviteMenu() {
-
-        const { AcceptInviteButton, JustWatchButton } = this.elements
-
-        const translateX = this.container.width / 2 - AcceptInviteButton.width / 2 | 0
-        const translateY = this.container.height / 2 - (AcceptInviteButton.height + JustWatchButton.height + 7) / 2 | 0
-
-        AcceptInviteButton.left = translateX
-        AcceptInviteButton.top = translateY
-
-        JustWatchButton.left = translateX + AcceptInviteButton.width / 2 - JustWatchButton.width / 2
-        JustWatchButton.top = translateY + AcceptInviteButton.height + 7
-
-        this.context.globalAlpha = 0.60
-        this.context.drawImage(this.images.separator, translateX + AcceptInviteButton.width / 2 - 17 / 2 | 0, translateY + AcceptInviteButton.height + 2 | 0)
-       
-        this.context.globalAlpha = AcceptInviteButton.selected ? 1.00 : 0.60
-        this.drawString(AcceptInviteButton.value, AcceptInviteButton.left, AcceptInviteButton.top)
-       
-        this.context.globalAlpha = JustWatchButton.selected ? 1.00 : 0.60
-        this.drawString(JustWatchButton.value, JustWatchButton.left, JustWatchButton.top)
-
-        this.context.globalAlpha = 1.00
-       
-    }
-
-    drawBoard() {
-        this.drawOutline()
-        this.drawSpots()
-        this.selection && this.drawSelection(this.rotatePosition(this.selection))
-        this.movements && this.drawMovements()
-        this.drawPieces()
-        this.drawAnimations()
-    }
-
-    drawAnimations() {
-        
-        const animation =  this.animations.at(0)
-
-        if (!animation)
+        if (!this.screens.optionsScreen.options.enableEffects)
             return
         
-        if (animation.type == 'move-piece')
-            return this.drawMovePieceAnimation(animation)
+        this.context.fillStyle = '#000000'
+        this.context.globalAlpha = 0.1
+        
+        for (let top = this.effect.top; top < this.canvas.height; top += 2)
+            this.context.fillRect(0 - this.container?.left, top - this.container?.top, this.canvas.width, 1)
 
-        if (animation.type == 'jump-piece')
-            return this.drawJumpPieceAnimation(animation)
+        const currentDate = new Date().getTime()
 
-        if (animation.type == 'promotion')
-            return this.drawPromotionAnimation(animation)
-
-        if (animation.type == 'winner')
-            return this.drawWinnerAnimation(animation)
-
-        if (animation.type == 'reverse-turn')
-            return this.drawReverseTurnAnimation(animation)
-
-    }
-
-    drawMovePieceAnimation(animation) {
-
-        if (!animation.started) {
-            
-            animation.piece = this.state.board.spots[animation.startsAt.row][animation.startsAt.column]
-            animation.position = { ...animation.startsAt }
-            animation.started = true
-
-            const differenceX = animation.endsAt.column - animation.startsAt.column
-            const differenceY = animation.endsAt.row - animation.startsAt.row
-
-            animation.distance = {
-                column: Math.abs(differenceX),
-                row: Math.abs(differenceY)
-            }
-
-            animation.direction = {
-                column: differenceX > 0 ? 1 : differenceX < 0 ? -1 : 0,
-                row: differenceY > 0 ? 1 : differenceY < 0 ? -1 : 0
-            }
-
-            this.state.board.spots[animation.startsAt.row][animation.startsAt.column] = undefined
-
-        }
-
-        const distanceX = 10 * this.deltatime * animation.direction.column
-        const distanceY = 10 * this.deltatime * animation.direction.row
-
-        animation.distance.column -= Math.abs(distanceX)
-        animation.distance.row -= Math.abs(distanceY)
-
-        animation.position.column += distanceX
-        animation.position.row += distanceY
-
-        if (animation.distance.column < 0 || animation.distance.row < 0) {
-            this.state.board.spots[animation.endsAt.row][animation.endsAt.column] = animation.piece
-            animation.position = animation.endsAt
-            this.sounds["move-piece"].play()
-            this.animations.shift()
+        if (currentDate - this.effect.time >= 125) {
+            this.effect.top  = this.effect.top ? 0 : 1
+            this.effect.time = currentDate
         } 
 
-        this.drawPiece(animation.position, animation.piece)
+        this.context.globalAlpha = 1.0
 
     }
 
-    drawJumpPieceAnimation(animation) {
-        
-        const piece = this.state.board.spots[animation.jump.position.row][animation.jump.position.column]
-
-        this.state.board.spots[animation.jump.position.row][animation.jump.position.column] = undefined
-        this.state.score[piece.player ? 0 : 1]++
-        this.animations.shift()
-
-    }
-    
-    drawPromotionAnimation(animation) {
-        
-        this.state.board.spots[animation.position.row][animation.position.column].promoted = true
-
-        if (this.options.enableSounds) {
-            this.sounds.queen.play()
-        }
-
-        this.animations.shift()
-        
-    }
-    
-    drawWinnerAnimation(animation) {
-        this.configureWinner(this.state.board.spots[animation.position.row][animation.position.column].player)
-        this.animations.shift()
-    }
-
-    drawReverseTurnAnimation() {
-        
-        this.animations.shift()
-        this.reverseTurn()
-
-        const hasNotAnotherReverseTurnAnimation = !this.animations.find(animation => animation.type == 'reverse-turn')
-        
-        if (hasNotAnotherReverseTurnAnimation) {
-            this.events.emit('reverse-turn')
-        }
-
-    }
-    
-    drawOutline() {
-        this.context.fillStyle = '#071916'
-        this.context.fillRect(this.board.left - 1, this.board.top - 1, this.board.width + 2, this.board.height + 2)
-    }
-
-    drawSpots() {
-        for (let row = 0; row < this.state.board.rows + 1; row++) {
-            for (let column = 0; column < this.state.board.columns; column++) {
-                this.drawSpot({ column, row })
-            }
-        }
-    }
-    
-    drawSpot(position) {
-
-        const isLastSpot = position.row == this.state.board.rows
-        const palettes = isLastSpot ? ['#dfeae2', '#207567'] : ['#f8fffa', '#8dc3a7']
-
-        this.context.fillStyle = (position.column + position.row) % 2 == (isLastSpot ? 1 : 0) ? palettes[0] : palettes[1]
-        this.context.fillRect(this.board.left + 16 * position.column, this.board.top + 16 * position.row, 16, isLastSpot ? 6 : 16)
-
-    }
-
-    drawPieces() {
-        for (let row = 0; row < this.state.board.rows; row++) {
-            for (let column = 0; column < this.state.board.columns; column++) {
-                const piece = this.state.board.spots[row][column]
-                if (piece) this.drawPiece({ column, row }, piece)
-            }
-        }
-    }
-
-    drawPiece(position, piece) {
-
-        const image = piece.player ? this.images['piece-black'] : this.images['piece-white']
-        const rotated = this.rotatePosition(position)
-
-        this.context.drawImage(image, Math.round(this.board.left + rotated.column * 16 + 2), Math.round(this.board.top + rotated.row * 16 + 2))
-
-        if (piece.promoted) this.drawCrown(rotated)
-
-    }
-    
-    drawCrown(position) {
-        this.context.drawImage(this.images['piece-crown'], this.board.left + position.column * 16 + 3, this.board.top + position.row * 16 - 2)
-    }
-    
-    drawSelection(position) {
-
-        const rotatedPosition = this.rotatePosition(position)
-
-        const pieceOrUndefined = this.state.board.spots[rotatedPosition.row][rotatedPosition.column]
-        const image = this.images[pieceOrUndefined ? (pieceOrUndefined.player == this.state.indexOf ? "selection-piece" : "selection-jump") : "selection-spot"]
-
-        this.context.drawImage(image, this.board.left + position.column * 16, this.board.top + position.row * 16)
-
-    }
-
-    drawMovements() {
-
-        if (!this.selection)
-            return this.movements.forEach(movement => this.drawSelection(this.rotatePosition(movement.startsAt)))        
-
-        const movementFilter = (movement) => movement.startsAt.column == this.selection.column && movement.startsAt.row == this.selection.row
-        const movements = this.movements.filter(movementFilter)
-
-        for (let movement of movements) {
-            for (let position of movement.positions) {
-                this.drawSelection(this.rotatePosition(position))
-            }
-            for (let jump of movement.jumps) {
-                this.drawSelection(this.rotatePosition(jump.position))
-            }
-        }
-
-    }
-
-    drawExtraBoard() {
-        this.drawOptionsButton()
-        this.drawPlayerDown()
-        this.drawPlayerUp()
-        this.drawScore()
-        this.drawTimer()
-    }
-    
-    drawPlayerDown() {
-
-        const players = this.rotatePlayers().map(player => player || '???')
-        const left = this.board.left + this.board.width - 7
-        const top = this.board.top + this.board.height + 3
-
-        if (this.rotateTurn() == 1)
-            this.context.drawImage(this.images['arrow-right'], left - players[1].length * 4 - 11, top + 1)
-        else
-            this.context.globalAlpha = 0.60
-
-        this.context.drawImage(this.images['profile-picture'], left, top)
-        
-        this.drawString(players[1].split('').reverse().join(''), left - 5, top + 1, 14, -1)
-
-        this.context.globalAlpha = 1.00
-
-    }
-
-    drawPlayerUp() {
-        
-        const players = this.rotatePlayers().map(player => player || '???')
-        const [ left, top ] = [ this.board.left, 2 ]
-        
-        if (this.rotateTurn() == 0)
-            this.context.drawImage(this.images['arrow-left'], left + 10 + Math.min(players[0].length, 14) * 4, top + 1)
-        else
-            this.context.globalAlpha = 0.60  
-
-        this.context.drawImage(this.images['profile-picture'], left, top)
-
-        this.drawString(players[0], left + 9, top + 1, 14)
-
-        this.context.globalAlpha = 1.00
-        
-    }
-    
-    drawOptionsButton() {
-        
-        const [ left, top ] = [ this.board.left, this.board.top + this.board.height + 4 ]
-        
-        if (!this.elements.OptionsButton?.selected)
-            this.context.globalAlpha = 0.60
-        
-        this.context.drawImage(this.images["character-lines"], left, top)
-        
-        this.drawString('Options', left + 6, top)
-
-        this.context.globalAlpha = 1.00
-
-    }
-
-    drawTimer() {
-        
-        const difference = (new Date().getTime() - this.state.createdAt) / 1000
-        const minutes = String(Math.floor(difference / 60))
-        const seconds = String(Math.floor(difference - minutes * 60))
-
-        const [ left, top ] = [ this.board.left + this.board.width, 3 ]
-
-        this.context.globalAlpha = 0.60
-
-        this.drawString(seconds.length == 1 ? '0'.concat(seconds) : seconds, left - 7, top, 2)
-        
-        this.context.drawImage(this.images['character-colon'], left - 10, top)
-        
-        this.drawString(minutes.length == 1 ? '0'.concat(minutes) : minutes, left - 17, top, 2)
-
-        this.context.globalAlpha = 1.00
-
-    }   
-
-    drawScore() {
-
-        const [ left, top ] = [ this.board.left - 3, this.board.top + Math.floor((this.board.height - 6) / 2 - 7) ]
-        const score = this.rotateScore()
-
-        this.context.globalAlpha = 0.60
-
-        this.drawString(String(score[0]).split('').reverse().join(''), left - 3, top, Infinity, -1)
-        
-        this.context.drawImage(this.images['character-cross'], left - 3, top + 6)
-        
-        this.drawString(String(score[1]).split('').reverse().join(''), left - 3, top + 10, Infinity, -1)
-
-        this.context.globalAlpha = 1.00
-
-    }
-
-    drawString(string, left, top, length = Infinity, increment = 1) {
-                
-        const { alphabet, numerals } = this.images
+    _renderString(string, left, top, characters, length = Infinity, increment = 1) {
 
         for (let character of string.toLowerCase()) {
-            
+
             if (length == 0)
                 return
 
-            const charCode  = character.charCodeAt(0) - 97
-            const charIndex = charCode < 0 || charCode > 25 ? 26 : charCode
-    
-            const numCode  = character.charCodeAt(0) - 48
-            const numIndex = numCode < 0 || numCode > 9 ? 10 : numCode
+            const characterCode  = character.charCodeAt(0) - 97
+            const characterIndex = characterCode < 0 || characterCode > 25 ? 26 : characterCode
+
+            const parsedInteger = Number.parseInt(character)
 
             if (character != ' ')
-                this.context.drawImage(numIndex != 10 ? numerals : alphabet, (numIndex != 10 ? numIndex : charIndex) * 3, 0, 3, 5, left, top, 3, 5)
+                this.context.drawImage(characters, (isNaN(parsedInteger) ? characterIndex : 27 + parsedInteger) * 3, 0, 3, 5, left, top, 3, 5)
             
             left   += 4 * increment
             length -= 1
@@ -816,15 +224,6 @@ export class Render {
 
     }
 
-    drawEffect() {
-        this.context.fillStyle = '#000000'
-        this.context.globalAlpha = 0.1
-        for (let y = this.effect.offsetY; y < this.canvas.height; y += 2) {
-            this.context.fillRect(0 - this.container?.left, y - this.container?.top, this.canvas.width, 1)
-        }
-        this.context.globalAlpha = 1.0
-    }
-
-    // <-- Final Class --> //
+    // --> Final Class
 
 }
