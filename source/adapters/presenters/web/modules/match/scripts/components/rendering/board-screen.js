@@ -68,7 +68,9 @@ export class BoardScreen {
             this.parent.sounds.promotionSound.play()
         else
             this.parent.sounds.movePieceSound.play()
-        
+
+        if (winner)
+            this.parent.configureWinner(pieceOrUndefined.player)
 
     }
 

@@ -54,10 +54,11 @@ socket.events.on('find-all-movements-rejected', async (event) => {
 socket.events.on('move-piece', async (event) => {
     
     render.screens.boardScreen._movePieceEvent(event)
-    render.reverseTurn()
     
     if (event.winner) 
-        return render.configureWinner(event.winner)
+        return 
+
+    render.reverseTurn()
 
     if (render.state.turn == render.state.indexOf)
         socket.findAllMovements()
