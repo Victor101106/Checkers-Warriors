@@ -14,6 +14,7 @@ export class Render {
         this.effect = { top: 0, time: new Date().getTime() }
         this.events = new EventEmitter()
         this.currentScreen = undefined
+        this.animations = new Array()
         this.elements = new Object()
         this.screens = new Object()
         this.sounds = new Object()
@@ -41,6 +42,8 @@ export class Render {
         this.images.indicatorRight = await loadImage('../static/modules/match/assets/images/indicator-right.png')
         this.images.profilePicture = await loadImage('../static/modules/match/assets/images/profile-picture.png')
         this.images.selectionPiece = await loadImage('../static/modules/match/assets/images/selection-piece.png')
+        this.images.selectionQueen = await loadImage('../static/modules/match/assets/images/selection-queen.png')
+        this.images.selectionCrown = await loadImage('../static/modules/match/assets/images/selection-crown.png')
         this.images.lossTextBlack = await loadImage('../static/modules/match/assets/images/loss-text-black.png')
         this.images.lossTextWhite = await loadImage('../static/modules/match/assets/images/loss-text-white.png')
         this.images.charactersRed = await loadImage('../static/modules/match/assets/images/characters-red.png')
@@ -54,6 +57,11 @@ export class Render {
         this.images.pieceCrown = await loadImage('../static/modules/match/assets/images/piece-crown.png')
         this.images.pieceBlack = await loadImage('../static/modules/match/assets/images/piece-black.png')
         this.images.pieceWhite = await loadImage('../static/modules/match/assets/images/piece-white.png')
+        this.images.particle01 = await loadImage('../static/modules/match/assets/images/particle-01.png')
+        this.images.particle02 = await loadImage('../static/modules/match/assets/images/particle-02.png')
+        this.images.particle03 = await loadImage('../static/modules/match/assets/images/particle-03.png')
+        this.images.particle04 = await loadImage('../static/modules/match/assets/images/particle-04.png')
+        this.images.particle05 = await loadImage('../static/modules/match/assets/images/particle-05.png')
     }
 
     async loadAudios() {
@@ -156,6 +164,25 @@ export class Render {
         return this.elements[id]
     }
 
+    // --> Animation Functions
+
+    _calculteAnimation() {
+        
+        const animation =  this.animations.at(0)
+
+        if (animation)
+            animation.callback(animation.data)
+
+    }
+
+    enqueueAnimation(data, callback) {
+        this.animations.push({ data, callback })
+    }
+
+    dequeueAnimation() {
+        this.animations.shift()
+    }
+
     // --> Rendering Functions
 
     beginRendering() {
@@ -163,6 +190,7 @@ export class Render {
         this.deltatime = (new Date().getTime() - this.deltatime0) / 1000 || 0
         this.deltatime0 = new Date().getTime()
         
+        this._calculteAnimation()
         this._renderBackground()
         this._renderScreen()
         this._renderEffects()

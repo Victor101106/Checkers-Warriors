@@ -52,17 +52,7 @@ socket.events.on('find-all-movements-rejected', async (event) => {
 })
 
 socket.events.on('move-piece', async (event) => {
-    
     render.screens.boardScreen._movePieceEvent(event)
-    
-    if (event.winner) 
-        return 
-
-    render.reverseTurn()
-
-    if (render.state.turn == render.state.indexOf)
-        socket.findAllMovements()
-
 })
 
 socket.events.on('move-piece-rejected', async (event) => {
@@ -109,6 +99,11 @@ config.events.on('configure-container', (container, board) => {
 })
 
 // --> Render Events
+
+
+render.events.on('request-find-all-movements', (event) => {
+    socket.findAllMovements()
+})
 
 render.events.on('request-move-piece', (event) => {
     socket.movePiece(event)

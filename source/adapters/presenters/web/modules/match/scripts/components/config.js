@@ -39,7 +39,7 @@ export class Config {
     }
 
     configureBoard(state) {
-        this.board = { height: state.board.rows * 16 + 6, width: state.board.columns * 16 }
+        this.board = { height: state.board.rows * 16 + 6, width: state.board.columns * 16, offsetX: 0, offsetY: 0 }
         this.board.top  = this.container.height / 2 - this.board.height / 2
         this.board.left = this.container.width / 2 - this.board.width / 2        
     }

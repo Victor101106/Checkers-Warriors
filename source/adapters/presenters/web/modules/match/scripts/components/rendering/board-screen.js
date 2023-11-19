@@ -5,6 +5,7 @@ export class BoardScreen {
     // --> Constructor Function
 
     constructor(canvas, context, parent) {
+        this.particles = new Array()
         this.context = context
         this.parent = parent
         this.canvas = canvas
@@ -44,33 +45,34 @@ export class BoardScreen {
 
     }
 
-    _movePieceEvent({ startsAt, endsAt, jumps, promoted, winner }) {
+    _movePieceEvent({ positions, startsAt, endsAt, jumps, promoted, winner }) {
 
-        const pieceOrUndefined = this.parent.state.board.spots[startsAt.row][startsAt.column]
-
-        this.parent.state.board.spots[startsAt.row][startsAt.column] = undefined
-        this.parent.state.board.spots[endsAt.row][endsAt.column] = pieceOrUndefined
-        
-        for (let jump of jumps) {
-            this.parent.state.board.spots[jump.position.row][jump.position.column] = undefined
-            this.parent.state.score[jump.piece.player ? 0 : 1]++
-        }
-
-        pieceOrUndefined.promoted = pieceOrUndefined.promoted || promoted
-        
         this.selection = undefined
         this.movements = undefined
 
-        if (!this.parent.screens.optionsScreen.options.enableSounds)
-            return
+        for (let index = 0; index < positions.length; index++) {
+            
+            this.parent.enqueueAnimation({
+                startsAt: positions[index - 1] || startsAt,
+                endsAt: positions[index]
+            }, (data) => this._calculateMoveAnimation(data))
 
-        if (promoted)
-            this.parent.sounds.promotionSound.play()
-        else
-            this.parent.sounds.movePieceSound.play()
+            if (jumps.length) this.parent.enqueueAnimation({
+                interval: index != positions.length,
+                jump: jumps.shift(),
+            }, (data) => this._calculateJumpAnimation(data))
+            
+        }
 
-        if (winner)
-            this.parent.configureWinner(pieceOrUndefined.player)
+        if (promoted) this.parent.enqueueAnimation({
+            position: endsAt
+        }, (data) => this._calculatePromotionAnimation(data))
+
+        if (winner) this.parent.enqueueAnimation({
+            position: endsAt
+        }, (data) => this._calculateWinnerAnimation(data))
+
+        this.parent.enqueueAnimation(undefined, () => this._calculateReverseTurnAnimation())
 
     }
 
@@ -87,18 +89,272 @@ export class BoardScreen {
         }
     }
 
+    // --> Calculate Function
+
+    _calculateMoveAnimation(animation) {
+
+        if (!animation.started) {
+
+            animation.piece    = this.parent.state.board.spots[animation.startsAt.row][animation.startsAt.column]
+            animation.position = { ...animation.startsAt }
+            animation.started  = true
+
+            const differenceX = animation.endsAt.column - animation.startsAt.column
+            const differenceY = animation.endsAt.row - animation.startsAt.row
+
+            animation.distance = {
+                column: Math.abs(differenceX),
+                row: Math.abs(differenceY)
+            }
+
+            animation.direction = {
+                column: differenceX > 0 ? 1 : differenceX < 0 ? -1 : 0,
+                row: differenceY > 0 ? 1 : differenceY < 0 ? -1 : 0
+            }
+
+            this.parent.state.board.spots[animation.startsAt.row][animation.startsAt.column] = undefined
+            this.moveAnimation = { piece: animation.piece, position: animation.position }
+
+        }
+
+        const distanceX = 10 * this.parent.deltatime * animation.direction.column
+        const distanceY = 10 * this.parent.deltatime * animation.direction.row
+
+        animation.distance.column -= Math.abs(distanceX)
+        animation.distance.row -= Math.abs(distanceY)
+
+        animation.position.column += distanceX
+        animation.position.row += distanceY
+
+        if (animation.distance.column <= 0 || animation.distance.row <= 0 || !this.parent.screens.optionsScreen.options.enableAnimations) {
+            
+            this.parent.state.board.spots[animation.endsAt.row][animation.endsAt.column] = animation.piece
+            
+            if (this.parent.screens.optionsScreen.options.enableSounds)
+                this.parent.sounds.movePieceSound.play()
+
+            this.moveAnimation = undefined
+            this.parent.dequeueAnimation()
+            
+        }
+
+    }
+
+    _calculateJumpAnimation(animation) {
+        
+        if (!animation.started) {
+            
+            this._calculateJumpParticles(animation.jump.position)
+
+            this.parent.state.board.spots[animation.jump.position.row][animation.jump.position.column] = undefined
+            this.parent.state.score[animation.jump.piece.player ? 0 : 1]++
+            
+            animation.numberOfShakes = 10
+            animation.magnitude = 2
+            animation.started = true
+            animation.counter = 1
+
+            animation.magnitudeUnit = animation.magnitude / animation.numberOfShakes
+
+        }
+
+        animation.magnitude -= animation.magnitudeUnit
+
+        const randomX = Math.floor(Math.random() * (-animation.magnitude - animation.magnitude + 1)) + animation.magnitude
+        const randomY = Math.floor(Math.random() * (-animation.magnitude - animation.magnitude + 1)) + animation.magnitude
+
+        this.parent.board.offsetX = Math.round(randomX)
+        this.parent.board.offsetY = Math.round(randomY)
+
+        animation.counter++
+
+        if (animation.counter >= animation.numberOfShakes || !this.parent.screens.optionsScreen.options.enableAnimations) {
+            this.parent.board.offsetX = 0
+            this.parent.board.offsetY = 0
+            this.parent.dequeueAnimation()
+        }
+
+    }
+
+    _calculateJumpParticles(position) {
+
+        const piece = this.parent.state.board.spots[position.row][position.column]
+        const rotatedPosition = this.parent.rotatePosition(position)
+
+        const startX = Math.round(this.parent.board.left + rotatedPosition.column * 16)
+        const startY = Math.round(this.parent.board.top  + rotatedPosition.row * 16)
+
+        const middle = { x: startX + 8, y: startY + 8 }
+
+        const angles = [
+            1 * Math.PI     + Math.random() * (Math.PI / 2),
+            3 * Math.PI / 2 + Math.random() * (Math.PI / 2),
+            5 * Math.PI / 4 + Math.random() * (Math.PI / 2),
+            5 * Math.PI / 4 + Math.random() * (Math.PI / 2),
+            5 * Math.PI / 4 + Math.random() * (Math.PI / 2),
+        ]
+        
+        const positions = [
+            { x: startX + 1, y: startY + 1 },
+            { x: startX + 8, y: startY + 1 },
+            { x: startX + 5, y: startY + 6 },
+            { x: startX + 1, y: startY + 8 },
+            { x: startX + 7, y: startY + 9 }
+        ]
+
+        for (let index = 0; index < positions.length; index++) {
+
+            const randomSpeed = 80 + Math.random() * 60
+
+            this.particles.push({
+                position: positions[index],
+                player: piece.player,
+                angle: angles[index],
+                image: index + 1,
+                speed: {
+                    linear: randomSpeed,
+                    gravity: 0,
+                }
+            })
+
+        }
+
+        for (let index = 0; index < (4 + Math.random() * 10); index++) {
+
+            const randomAngle = 5 * Math.PI / 4 + Math.random() * (Math.PI / 2)
+            const randomSize  = 1 + Math.round(Math.random())
+            const randomSpeed = 100 + Math.random() * 80
+
+            this.particles.push({
+                position: { ...middle },
+                angle: randomAngle,
+                size: randomSize,
+                speed: {
+                    linear: randomSpeed,
+                    gravity: 0,
+                }
+            })
+
+        }
+
+    }
+
+    _calculateWinnerAnimation(animation) {
+
+        const pieceOrUndefined = this.parent.state.board.spots[animation.position.row][animation.position.column]
+
+        this.parent.configureWinner(pieceOrUndefined.player)
+        this.parent.dequeueAnimation()
+
+    }
+
+    _calculatePromotionAnimation(animation) {
+
+        if (!animation.started) {
+
+            animation.piece = this.parent.state.board.spots[animation.position.row][animation.position.column]
+            animation.transparency = 0
+            animation.direction = 1
+            animation.offsetY = -0.5
+            animation.started = true
+
+            if (this.parent.screens.optionsScreen.options.enableSounds)
+                this.parent.sounds.promotionSound.play()
+            
+            this.promotionAnimation = animation
+
+        }
+
+        animation.transparency = Math.min(animation.transparency + 0.50 * this.parent.deltatime * animation.direction, 1.25)
+        
+        if (animation.transparency >= 1.25)
+            animation.offsetY = Math.min(animation.offsetY + 0.50 * this.parent.deltatime, 0)
+
+        if (animation.offsetY == 0)
+            animation.direction = -1.5
+
+        if (animation.transparency <= 0 || !this.parent.screens.optionsScreen.options.enableAnimations) {
+
+            animation.piece.promoted = true
+
+            this.promotionAnimation = undefined           
+            this.parent.dequeueAnimation()
+
+        }
+
+    }
+
+    _calculateReverseTurnAnimation() {
+
+        this.parent.reverseTurn()
+
+        if (this.parent.state.turn == this.parent.state.indexOf)
+            this.parent.events.emit('request-find-all-movements')
+
+        this.parent.dequeueAnimation()
+
+    }
+
     // --> Rendering Function
 
     render(deltatime) {
-        this._renderOutline()
-        this._renderSpots()
-        this._renderSelections()
-        this._renderPieces()
+
         this._renderPlayerUp()
         this._renderTimer()
         this._renderScore()
         this._renderOptionsButton()
         this._renderPlayerDown()
+
+        this.parent.board.left += this.parent.board.offsetX
+        this.parent.board.top  += this.parent.board.offsetY
+        
+        this._renderOutline()
+        this._renderSpots()
+        this._renderSelections()
+        this._renderPieces()
+        this._renderMoveAnimation()
+        this._renderParticles()
+        this._renderPromotionAnimation()
+
+        this.parent.board.left -= this.parent.board.offsetX
+        this.parent.board.top  -= this.parent.board.offsetY
+
+    }
+
+    _renderParticles() {
+
+        const slowdown = 40 * this.parent.deltatime
+        const gravity = 200 * this.parent.deltatime
+
+        this.context.fillStyle = '#000000'
+
+        for (let index = 0; index < this.particles.length; index++) {
+
+            const particle = this.particles.at(index)
+
+            particle.speed.linear  = Math.max(particle.speed.linear - slowdown, 0)
+            particle.speed.gravity = particle.speed.gravity + gravity
+
+            const speedX = particle.speed.linear * Math.cos(particle.angle)
+            const speedY = particle.speed.linear * Math.sin(particle.angle) + particle.speed.gravity
+
+            particle.position.x += speedX * this.parent.deltatime
+            particle.position.y += speedY * this.parent.deltatime
+
+            const image = this.parent.images[`particle0${particle.image}`]
+
+            if (image)
+                this.context.drawImage(image, image.width / 2 * particle.player, 0, image.width / 2, image.height, Math.round(particle.position.x), Math.round(particle.position.y), image.width / 2, image.height)
+            else
+                this.context.fillRect(Math.round(particle.position.x - particle.size / 2), Math.round(particle.position.y - particle.size / 2) - 1, particle.size, particle.size)
+
+            if (particle.position.y > this.parent.canvas.height) {
+                this.particles.splice(index, 1)
+                index = index - 1
+            }
+
+        }
+
     }
 
     // --> Board Render Functions
@@ -146,8 +402,12 @@ export class BoardScreen {
 
     }
 
-    _renderCrown(column, row) {
-        this.context.drawImage(this.parent.images.pieceCrown, this.parent.board.left + column * 16 + 3, this.parent.board.top + row * 16 - 2)
+    _renderCrown(column, row) {        
+        this.context.drawImage(this.parent.images.pieceCrown, Math.round(this.parent.board.left + column * 16 + 3), Math.round(this.parent.board.top + row * 16 - 2))
+    }
+
+    _renderCrownSelection(column, row) {        
+        this.context.drawImage(this.parent.images.selectionCrown, Math.round(this.parent.board.left + column * 16 + 2), Math.round(this.parent.board.top + row * 16 - 3))
     }
 
     _renderSelections() {
@@ -176,10 +436,46 @@ export class BoardScreen {
         const position = this.parent.rotatePosition({ column, row })
 
         const pieceOrUndefined = this.parent.state.board.spots[row][column]
-        const image = this.parent.images[pieceOrUndefined ? (pieceOrUndefined.player == this.parent.state.indexOf ? "selectionPiece" : "selectionJump") : "selectionSpot"]
+        const image = this.parent.images[this.promotionAnimation ? 'selectionQueen' : (pieceOrUndefined ? (pieceOrUndefined.player == this.parent.state.indexOf ? "selectionPiece" : "selectionJump") : "selectionSpot")]
 
         this.context.drawImage(image, this.parent.board.left + position.column * 16, this.parent.board.top + position.row * 16)
 
+    }
+
+    _renderPromotionAnimation() {
+
+        if (!this.promotionAnimation)
+            return
+
+        const position = this.parent.rotatePosition(this.promotionAnimation.position)
+        const percentage = Math.min(this.promotionAnimation.transparency, 1)
+
+        this.context.globalAlpha = 0.75 * percentage
+        this.parent._renderBackground()
+
+        this.context.globalAlpha = percentage
+        this._renderCrownSelection(position.column, position.row + this.promotionAnimation.offsetY)
+        this._renderSelection(this.promotionAnimation.position.column, this.promotionAnimation.position.row)
+        
+        this.context.globalAlpha = 1.00
+        this._renderPiece(this.promotionAnimation.position.column, this.promotionAnimation.position.row, this.promotionAnimation.piece)
+        
+        if (this.promotionAnimation.direction >= 0)
+            this.context.globalAlpha = percentage
+    
+        this._renderCrown(position.column, position.row + this.promotionAnimation.offsetY)
+
+        this.context.globalAlpha = 1.00
+
+    }
+
+    _renderMoveAnimation() {
+        
+        if (!this.moveAnimation)
+            return
+
+        this._renderPiece(this.moveAnimation.position.column, this.moveAnimation.position.row, this.moveAnimation.piece)
+        
     }
 
     // --> Extra-Board Render Functions
