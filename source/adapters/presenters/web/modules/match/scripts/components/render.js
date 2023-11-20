@@ -35,6 +35,9 @@ export class Render {
     async loadImages() {
         this.images.sectionSeparator = await loadImage('../static/modules/match/assets/images/section-separator.png')
         this.images.charactersGreen = await loadImage('../static/modules/match/assets/images/characters-green.png')
+        this.images.indicatorMove1 = await loadImage('../static/modules/match/assets/images/indicator-move-1.png')
+        this.images.indicatorMove2 = await loadImage('../static/modules/match/assets/images/indicator-move-2.png')
+        this.images.indicatorMove3 = await loadImage('../static/modules/match/assets/images/indicator-move-3.png')
         this.images.languageSwitch = await loadImage('../static/modules/match/assets/images/language-switch.png')
         this.images.characterColon = await loadImage('../static/modules/match/assets/images/character-colon.png')
         this.images.characterCross = await loadImage('../static/modules/match/assets/images/character-cross.png')
@@ -46,6 +49,8 @@ export class Render {
         this.images.selectionCrown = await loadImage('../static/modules/match/assets/images/selection-crown.png')
         this.images.lossTextBlack = await loadImage('../static/modules/match/assets/images/loss-text-black.png')
         this.images.lossTextWhite = await loadImage('../static/modules/match/assets/images/loss-text-white.png')
+        this.images.indicatorJump = await loadImage('../static/modules/match/assets/images/indicator-jump.png')
+        this.images.indicatorSlot = await loadImage('../static/modules/match/assets/images/indicator-slot.png')
         this.images.charactersRed = await loadImage('../static/modules/match/assets/images/characters-red.png')
         this.images.indicatorLeft = await loadImage('../static/modules/match/assets/images/indicator-left.png')
         this.images.selectionJump = await loadImage('../static/modules/match/assets/images/selection-jump.png')
@@ -126,6 +131,10 @@ export class Render {
     }
 
     // --> Auxiliary Functions
+
+    rotateDirection(direction) {
+        return this.state.indexOf == 0 && this.screens.optionsScreen.options.enableRotation ? { column: direction.column * -1, row: direction.row * -1 } : direction
+    }
 
     rotatePlayers() {
         return this.state.indexOf == 0 && this.screens.optionsScreen.options.enableRotation ? [...this.state.players].reverse() : this.state.players
