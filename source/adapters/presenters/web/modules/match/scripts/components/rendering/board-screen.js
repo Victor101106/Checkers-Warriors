@@ -234,6 +234,9 @@ export class BoardScreen {
 
     _calculateJumpParticles(position) {
 
+        if (!this.parent.screens.optionsScreen.options.enableAnimations)
+            return
+
         const piece = this.parent.state.board.spots[position.row][position.column]
         const rotatedPosition = this.parent.rotatePosition(position)
 
