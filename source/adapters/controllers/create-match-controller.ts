@@ -1,8 +1,10 @@
-import { GetUserByHttpCookieUseCase } from "../../usecases/get-user-by-http-cookie-usecase"
+import { GetUserByAccessTokenUseCase } from "../../usecases/get-user-by-access-token-usecase"
+import { InvalidToken } from "../../external/services/errors/invalid-token"
 import { badRequest, created, unauthorized } from "./helpers/http-helper"
 import { CreateMatchUseCase } from "../../usecases/create-match-usecase"
 import { InvalidParameters } from "./errors/invalid-parameters"
 import { HttpController } from "./ports/http-controller"
+import { parseCookies } from "./helpers/cookie-helper"
 import { HttpResponse } from "./ports/http-response"
 import { HttpRequest } from "./ports/http-request"
 import { z } from 'zod'
@@ -13,11 +15,11 @@ export const CreateMatchControllerSchema = z.object({
 
 export class CreateMatchController implements HttpController {
 
-    private readonly getUserByHttpCookieUseCase: GetUserByHttpCookieUseCase
+    private readonly getUserByAccessTokenUseCase: GetUserByAccessTokenUseCase
     private readonly createMatchUseCase: CreateMatchUseCase
 
-    constructor(getUserByHttpCookieUseCase: GetUserByHttpCookieUseCase, createMatchUseCase: CreateMatchUseCase) {
-        this.getUserByHttpCookieUseCase = getUserByHttpCookieUseCase
+    constructor(getUserByAccessTokenUseCase: GetUserByAccessTokenUseCase, createMatchUseCase: CreateMatchUseCase) {
+        this.getUserByAccessTokenUseCase = getUserByAccessTokenUseCase
         this.createMatchUseCase = createMatchUseCase
     }
 
@@ -30,7 +32,10 @@ export class CreateMatchController implements HttpController {
         
         const { variation } = bodyOrError.data
 
-        const userOrError = await this.getUserByHttpCookieUseCase.execute(request)
+        const parsedCookie = parseCookies(String(request.headers.cookie))
+        const accessToken = parsedCookie['access-token']
+
+        const userOrError = await this.getUserByAccessTokenUseCase.execute({ accessToken })
 
         if (userOrError.isLeft())
             return unauthorized(userOrError.value)

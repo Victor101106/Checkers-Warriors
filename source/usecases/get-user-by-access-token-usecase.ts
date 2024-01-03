@@ -4,14 +4,12 @@ import { InvalidToken } from "../external/services/errors/invalid-token"
 import { UserNotFound } from "./errors/user-not-found"
 import { Either, left, right } from "../shared/either"
 import { User } from "../domain/user/user"
-import { HttpRequestHeaders } from "../adapters/controllers/ports/http-headers"
-import { parseCookies } from "../adapters/controllers/helpers/cookie-helper"
 
-export interface GetUserByHttpCookieRequest {
-    headers: HttpRequestHeaders
+export interface GetUserByAccessTokenRequest {
+    accessToken: string
 }
 
-export class GetUserByHttpCookieUseCase {
+export class GetUserByAccessTokenUseCase {
 
     private readonly accessTokenService: AccessTokenService
     private readonly userRepository: UserRepository
@@ -21,17 +19,12 @@ export class GetUserByHttpCookieUseCase {
         this.userRepository = userRepository
     }
 
-    async execute({ headers }: GetUserByHttpCookieRequest): Promise<Either<UserNotFound | InvalidToken, User>> {
+    async execute({ accessToken }: GetUserByAccessTokenRequest): Promise<Either<UserNotFound | InvalidToken, User>> {
 
-        const cookieHeader = headers.cookie
-
-        if (!cookieHeader)
+        if (!accessToken || !accessToken.length)
             return left(new InvalidToken())
-        
-        const parsedCookie = parseCookies(cookieHeader)
-        const accessToken = parsedCookie['access-token']
 
-        const userIdOrError = await this.accessTokenService.verify(accessToken || String())
+        const userIdOrError = await this.accessTokenService.verify(accessToken)
 
         if (userIdOrError.isLeft())
             return left(new InvalidToken())

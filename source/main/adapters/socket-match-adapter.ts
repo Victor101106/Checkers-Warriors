@@ -2,6 +2,8 @@ import { FindAllMovementsSocketHelper } from './helpers/find-all-movements-socke
 import { InvalidParameters } from '../../adapters/controllers/errors/invalid-parameters'
 import { HttpRequestHeaders } from '../../adapters/controllers/ports/http-headers'
 import { ReceiveMatchSocketHelper } from './helpers/receive-match-socket-helper'
+import { parseCookies } from '../../adapters/controllers/helpers/cookie-helper'
+import { InvalidToken } from '../../external/services/errors/invalid-token'
 import { MovePieceSocketHelper } from './helpers/move-piece-socket-helper'
 import { JoinMatchSocketHelper } from './helpers/join-match-socket-helper'
 import { GiveUpSocketHelper } from './helpers/give-up-socket-helper'
@@ -41,8 +43,11 @@ export class SocketMatchAdapter {
 
                 const matchId = safeParse.data.matchId
 
+                const parsedCookie = parseCookies((<HttpRequestHeaders>socket.request.headers).cookie)
+                const accessToken = parsedCookie['access-token']
+
                 const responseOrError = await this.receiveMatchSocketHelper.execute({
-                    headers: <HttpRequestHeaders>socket.request.headers,
+                    accessToken: accessToken,
                     socketId: socket.id,
                     matchId: matchId
                 })

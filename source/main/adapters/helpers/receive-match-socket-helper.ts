@@ -1,5 +1,4 @@
-import { GetUserByHttpCookieUseCase } from "../../../usecases/get-user-by-http-cookie-usecase"
-import { HttpRequestHeaders } from "../../../adapters/controllers/ports/http-headers"
+import { GetUserByAccessTokenUseCase } from "../../../usecases/get-user-by-access-token-usecase"
 import { CreateRelationUseCase } from "../../../usecases/create-relation-usecase"
 import { InvalidToken } from "../../../external/services/errors/invalid-token"
 import { MatchNotFound } from "../../../usecases/errors/match-not-found"
@@ -9,7 +8,7 @@ import { InvalidId } from "../../../domain/user/errors/invalid-id"
 import { Either, left, right } from "../../../shared/either"
 
 export interface ReceiveMatchSocketRequest {
-    headers: HttpRequestHeaders
+    accessToken: string
     socketId: string
     matchId: string
 }
@@ -31,19 +30,19 @@ export interface ReceiveMatchSocketResponse {
 
 export class ReceiveMatchSocketHelper {
 
-    private readonly getUserByHttpCookieUseCase: GetUserByHttpCookieUseCase
+    private readonly getUserByAccessTokenUseCase: GetUserByAccessTokenUseCase
     private readonly createRelationUseCase: CreateRelationUseCase
     private readonly getMatchUseCase: GetMatchUseCase
 
-    constructor(getUserByHttpCookieUseCase: GetUserByHttpCookieUseCase, createRelationUseCase: CreateRelationUseCase, getMatchUseCase: GetMatchUseCase) {
-        this.getUserByHttpCookieUseCase = getUserByHttpCookieUseCase
+    constructor(getUserByAccessTokenUseCase: GetUserByAccessTokenUseCase, createRelationUseCase: CreateRelationUseCase, getMatchUseCase: GetMatchUseCase) {
+        this.getUserByAccessTokenUseCase = getUserByAccessTokenUseCase
         this.createRelationUseCase = createRelationUseCase
         this.getMatchUseCase = getMatchUseCase
     }
 
-    async execute({ headers, socketId, matchId }: ReceiveMatchSocketRequest): Promise<Either<UserNotFound | InvalidToken | MatchNotFound | InvalidId, ReceiveMatchSocketResponse>> {
+    async execute({ accessToken, socketId, matchId }: ReceiveMatchSocketRequest): Promise<Either<UserNotFound | InvalidToken | MatchNotFound | InvalidId, ReceiveMatchSocketResponse>> {
         
-        const userOrError = await this.getUserByHttpCookieUseCase.execute({ headers })
+        const userOrError = await this.getUserByAccessTokenUseCase.execute({ accessToken })
 
         if (userOrError.isLeft())
             return left(userOrError.value)
