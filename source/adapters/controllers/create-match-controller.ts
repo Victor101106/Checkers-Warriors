@@ -1,25 +1,21 @@
-import { GetUserByAccessTokenUseCase } from "../../usecases/get-user-by-access-token-usecase"
-import { InvalidToken } from "../../external/services/errors/invalid-token"
-import { badRequest, created, unauthorized } from "./helpers/http-helper"
 import { CreateMatchUseCase } from "../../usecases/create-match-usecase"
 import { InvalidParameters } from "./errors/invalid-parameters"
+import { badRequest, created } from "./helpers/http-helper"
 import { HttpController } from "./ports/http-controller"
-import { parseCookies } from "./helpers/cookie-helper"
 import { HttpResponse } from "./ports/http-response"
 import { HttpRequest } from "./ports/http-request"
 import { z } from 'zod'
 
 export const CreateMatchControllerSchema = z.object({
-    variation: z.string()
+    variation: z.string(),
+    userId: z.string()
 })
 
 export class CreateMatchController implements HttpController {
 
-    private readonly getUserByAccessTokenUseCase: GetUserByAccessTokenUseCase
     private readonly createMatchUseCase: CreateMatchUseCase
 
-    constructor(getUserByAccessTokenUseCase: GetUserByAccessTokenUseCase, createMatchUseCase: CreateMatchUseCase) {
-        this.getUserByAccessTokenUseCase = getUserByAccessTokenUseCase
+    constructor(createMatchUseCase: CreateMatchUseCase) {
         this.createMatchUseCase = createMatchUseCase
     }
 
@@ -30,17 +26,7 @@ export class CreateMatchController implements HttpController {
         if (!bodyOrError.success)
             return badRequest(new InvalidParameters())
         
-        const { variation } = bodyOrError.data
-
-        const parsedCookie = parseCookies(String(request.headers.cookie))
-        const accessToken = parsedCookie['access-token']
-
-        const userOrError = await this.getUserByAccessTokenUseCase.execute({ accessToken })
-
-        if (userOrError.isLeft())
-            return unauthorized(userOrError.value)
-
-        const userId = userOrError.value.id.value
+        const { variation, userId } = bodyOrError.data
 
         const matchOrError = await this.createMatchUseCase.execute({ variation, userId })
 
