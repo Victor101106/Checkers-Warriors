@@ -1,3 +1,13 @@
+import { remainsAuthenticatedMiddleware } from "../middleware/factory/remains-authenticated-middleware-factory"
 import { FastifyInstance } from "fastify"
 
-module.exports = (instance: FastifyInstance) => instance.get('/signup', (request, reply) => reply.view('authentication/views/signup-page.html'))
+module.exports = (instance: FastifyInstance) => instance.get('/signup', async (request, reply) => {
+    
+    await remainsAuthenticatedMiddleware.handle(request, reply)
+
+    if ((<any>request.body).auth)
+        return reply.redirect('/')
+
+    return reply.view('authentication/views/signup-page.html')
+
+})

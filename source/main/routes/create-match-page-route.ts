@@ -1,14 +1,13 @@
-import { parseCookies } from "../../adapters/controllers/helpers/cookie-helper"
+import { remainsAuthenticatedMiddleware } from "../middleware/factory/remains-authenticated-middleware-factory"
 import { FastifyInstance } from "fastify"
 
-module.exports = (instance: FastifyInstance) => instance.get('/create-match', (request, reply) => {
+module.exports = (instance: FastifyInstance) => instance.get('/create-match', async (request, reply) => {
+    
+    await remainsAuthenticatedMiddleware.handle(request, reply)
 
-    const cookies = parseCookies(request.headers.cookie || '')
-    const hasAccessToken = !!cookies['access-token']
-
-    if (!hasAccessToken)
+    if (!(<any>request.body).auth)
         return reply.redirect('/')
 
-    reply.view('match/views/create-match-page.html')
+    return reply.view('match/views/create-match-page.html')
 
 })

@@ -1,11 +1,10 @@
-import { parseCookies } from "../../adapters/controllers/helpers/cookie-helper"
+import { remainsAuthenticatedMiddleware } from "../middleware/factory/remains-authenticated-middleware-factory"
 import { FastifyInstance } from "fastify"
 
-module.exports = (instance: FastifyInstance) => instance.get('/', (request, reply) => {
+module.exports = (instance: FastifyInstance) => instance.get('/', async (request, reply) => {
 
-    const cookies = parseCookies(request.headers.cookie || '')
-    const hasAccessToken = !!cookies['access-token']
+    await remainsAuthenticatedMiddleware.handle(request, reply)
 
-    reply.view('presentation/views/landing-page.html', { logged: hasAccessToken })
+    return reply.view('presentation/views/landing-page.html', { auth: (<any>request.body).auth })
 
 })
