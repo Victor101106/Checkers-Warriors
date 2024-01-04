@@ -6,6 +6,7 @@ import { UserNotFound } from "../../../usecases/errors/user-not-found"
 import { GetMatchUseCase } from "../../../usecases/get-match-usecase"
 import { InvalidId } from "../../../domain/user/errors/invalid-id"
 import { Either, left, right } from "../../../shared/either"
+import { Movement } from "../../../domain/match/types/movement"
 
 export interface ReceiveMatchSocketRequest {
     accessToken: string
@@ -18,9 +19,10 @@ export interface ReceiveMatchSocketResponse {
         spots: ({ player: number, promoted: boolean } | void)[][],
         columns: number,
         rows: number
-    }
+    },
     players: [ string, string? ]
     score: [ number, number ]
+    movements: Movement[]
     spectator: boolean
     createdAt: string
     indexOf: number
@@ -74,6 +76,7 @@ export class ReceiveMatchSocketHelper {
                 rows: board.rows,
                 spots: spots
             },
+            movements: match.movements,
             createdAt: match.createdAt.toUTCString(),
             score: match.score,
             players: [

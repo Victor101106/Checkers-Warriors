@@ -1,9 +1,10 @@
 import { FindAllBrazilianMovementsUseCase } from "../find-all-movements/find-all-brazilian-movements"
-import { MovePieceRequest, MovePieceResponse, MovePieceUseCase } from "../../move-piece-usecase"
 import { InvalidOrientation } from "../../../domain/board/errors/invalid-orientation"
 import { InvalidPosition } from "../../../domain/board/errors/invalid-position"
+import { MovePieceRequest, MovePieceUseCase } from "../../move-piece-usecase"
 import { InvalidRange } from "../../../domain/board/errors/invalid-range"
 import { InvalidMovement } from "../../errors/invalid-movement"
+import { Movement } from "../../../domain/match/types/movement"
 import { Either, left, right } from "../../../shared/either"
 import { Piece } from "../../../domain/board/piece"
 
@@ -15,7 +16,7 @@ export class MoveBrazilianPieceUseCase implements MovePieceUseCase {
         this.findAllBrazilianMovementsUseCase = findAllBrazilianMovementsUseCase
     }
 
-    execute({ startsAt, endsAt, board }: MovePieceRequest): Either<InvalidPosition | InvalidRange | InvalidOrientation | InvalidMovement, MovePieceResponse> {
+    execute({ startsAt, endsAt, board }: MovePieceRequest): Either<InvalidPosition | InvalidRange | InvalidOrientation | InvalidMovement, Movement> {
         
         const pieceOrUndefinedOrError = board.getSpot(startsAt)
 
@@ -89,10 +90,10 @@ export class MoveBrazilianPieceUseCase implements MovePieceUseCase {
             jumps: firstCorrectMovement.jumps,
             promoted: isPromoted,
             startsAt: startsAt,
+            player: piece.player,
             winner: winner,
             endsAt: endsAt
         })
-        
 
     }
 

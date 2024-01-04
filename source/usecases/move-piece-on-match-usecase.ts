@@ -1,8 +1,9 @@
 import { MatchRepository } from "../external/repositories/match-repository"
-import { MovePieceResponse, MovePieceUseCase } from "./move-piece-usecase"
 import { VariationNotFound } from "./errors/variation-not-found"
 import { Position } from "../domain/board/types/position"
+import { Movement } from "../domain/match/types/movement"
 import { MatchNotFound } from "./errors/match-not-found"
+import { MovePieceUseCase } from "./move-piece-usecase"
 import { Either, left, right } from "../shared/either"
 import { InvalidTurn } from "./errors/invalid-turn"
 
@@ -23,7 +24,7 @@ export class MovePieceOnMatchUseCase {
         this.matchRepository = matchRepository
     }
 
-    async execute({ startsAt, endsAt, matchId, userId }: MovePieceOnMatch): Promise<Either<MatchNotFound | VariationNotFound, MovePieceResponse>> {
+    async execute({ startsAt, endsAt, matchId, userId }: MovePieceOnMatch): Promise<Either<MatchNotFound | VariationNotFound, Movement>> {
 
         const matchOrUndefined = await this.matchRepository.findById(matchId)
 
@@ -51,16 +52,19 @@ export class MovePieceOnMatchUseCase {
 
         if (responseOrError.isLeft())
             return left(responseOrError.value)
+        
+        const movement = responseOrError.value
 
-        if (responseOrError.value.winner)
+        if (movement.winner)
             match.winner = match.turn
 
-        match.score[match.turn] += responseOrError.value.jumps.length
+        match.movements.push(movement)
+        match.score[match.turn] += movement.jumps.length
         match.reverseTurn()
 
         await this.matchRepository.save(match)
 
-        return right(responseOrError.value)
+        return right(movement)
 
     }
 
