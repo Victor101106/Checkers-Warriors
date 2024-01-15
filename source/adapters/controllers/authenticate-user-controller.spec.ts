@@ -1,7 +1,7 @@
 import { InMemoryUserRepository } from "../../external/repositories/in-memory/in-memory-user-repository"
-import { jwtAccessTokenService } from "../../external/services/factory/access-token-service-factory"
-import { bcryptPasswordService } from "../../external/services/factory/password-service-factory"
-import { uuidUniqueIdService } from "../../external/services/factory/unique-id-service-factory"
+import { jwtAccessTokenGateway } from "../../external/gateways/factory/access-token-gateway-factory"
+import { bcryptPasswordGateway } from "../../external/gateways/factory/password-gateway-factory"
+import { uuidUniqueIdGateway } from "../../external/gateways/factory/unique-id-gateway-factory"
 import { AuthenticateUserUseCase } from "../../usecases/authenticate-user-usecase"
 import { AuthenticateUserController } from "./authenticate-user-controller"
 import { CreateUserUseCase } from "../../usecases/create-user-usecase"
@@ -11,9 +11,9 @@ import { describe, expect, it } from "vitest"
 describe('Authenticate user controller', async () => {
 
     const inMemoryUserRepository = new InMemoryUserRepository()
-    const authenticateUserUseCase = new AuthenticateUserUseCase(jwtAccessTokenService, bcryptPasswordService, inMemoryUserRepository)
+    const authenticateUserUseCase = new AuthenticateUserUseCase(jwtAccessTokenGateway, bcryptPasswordGateway, inMemoryUserRepository)
     const authenticateUserController = new AuthenticateUserController(authenticateUserUseCase)
-    const createUserUseCase = new CreateUserUseCase(bcryptPasswordService, uuidUniqueIdService, inMemoryUserRepository)
+    const createUserUseCase = new CreateUserUseCase(bcryptPasswordGateway, uuidUniqueIdGateway, inMemoryUserRepository)
     const createUserController = new CreateUserController(authenticateUserUseCase, createUserUseCase)
 
     const createUserRequestBody = {

@@ -1,6 +1,6 @@
 import { MatchRepository } from "../external/repositories/match-repository"
 import { UserRepository } from "../external/repositories/user-repository"
-import { UniqueIdService } from "../external/services/unique-id-service"
+import { UniqueIdGateway } from "../external/gateways/unique-id-gateway"
 import { VariationNotFound } from "./errors/variation-not-found"
 import { InvalidId } from "../domain/user/errors/invalid-id"
 import { Variation } from "../domain/match/types/variation"
@@ -17,13 +17,13 @@ export interface CreateMatchRequest {
 export class CreateMatchUseCase {
 
     private readonly createBoardUseCases: Array<CreateBoardUseCase>
-    private readonly uniqueIdService: UniqueIdService
+    private readonly uniqueIdGateway: UniqueIdGateway
     private readonly matchRepository: MatchRepository
     private readonly userRepository: UserRepository
 
-    constructor(createBoardUseCases: Array<CreateBoardUseCase>, uniqueIdService: UniqueIdService, matchRepository: MatchRepository, userRepository: UserRepository) {
+    constructor(createBoardUseCases: Array<CreateBoardUseCase>, uniqueIdGateway: UniqueIdGateway, matchRepository: MatchRepository, userRepository: UserRepository) {
         this.createBoardUseCases = createBoardUseCases
-        this.uniqueIdService = uniqueIdService
+        this.uniqueIdGateway = uniqueIdGateway
         this.matchRepository = matchRepository
         this.userRepository = userRepository
     }
@@ -40,7 +40,7 @@ export class CreateMatchUseCase {
         if (!userOrUndefined)
             return left(new UserNotFound())
         
-        const uniqueId = await this.uniqueIdService.generate() 
+        const uniqueId = await this.uniqueIdGateway.generate() 
         const user = userOrUndefined
         
         const formatedVariation = variation.charAt(0).toUpperCase() + variation.slice(1).toLowerCase()    

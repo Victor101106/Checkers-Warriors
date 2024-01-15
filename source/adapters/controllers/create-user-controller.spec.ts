@@ -1,7 +1,7 @@
 import { InMemoryUserRepository } from "../../external/repositories/in-memory/in-memory-user-repository"
-import { jwtAccessTokenService } from "../../external/services/factory/access-token-service-factory"
-import { bcryptPasswordService } from "../../external/services/factory/password-service-factory"
-import { uuidUniqueIdService } from "../../external/services/factory/unique-id-service-factory"
+import { jwtAccessTokenGateway } from "../../external/gateways/factory/access-token-gateway-factory"
+import { bcryptPasswordGateway } from "../../external/gateways/factory/password-gateway-factory"
+import { uuidUniqueIdGateway } from "../../external/gateways/factory/unique-id-gateway-factory"
 import { AuthenticateUserUseCase } from "../../usecases/authenticate-user-usecase"
 import { CreateUserUseCase } from "../../usecases/create-user-usecase"
 import { CreateUserController } from "./create-user-controller"
@@ -10,8 +10,8 @@ import { describe, expect, it } from "vitest"
 describe('Create user controller', () => {
 
     const inMemoryUserRepository = new InMemoryUserRepository()
-    const createUserUseCase = new CreateUserUseCase(bcryptPasswordService, uuidUniqueIdService, inMemoryUserRepository)
-    const authenticateUserUseCase = new AuthenticateUserUseCase(jwtAccessTokenService, bcryptPasswordService, inMemoryUserRepository)
+    const createUserUseCase = new CreateUserUseCase(bcryptPasswordGateway, uuidUniqueIdGateway, inMemoryUserRepository)
+    const authenticateUserUseCase = new AuthenticateUserUseCase(jwtAccessTokenGateway, bcryptPasswordGateway, inMemoryUserRepository)
     const createUserController = new CreateUserController(authenticateUserUseCase, createUserUseCase)
 
     it('should be able to receive a status code 201 to create a valid user', async () => {

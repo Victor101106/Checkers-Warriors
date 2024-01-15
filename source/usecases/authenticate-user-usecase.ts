@@ -1,7 +1,7 @@
 import { IncorrectEmailOrPassword } from "./errors/incorrect-email-or-password"
-import { AccessTokenService } from "../external/services/access-token-service"
+import { AccessTokenGateway } from "../external/gateways/access-token-gateway"
 import { UserRepository } from "../external/repositories/user-repository"
-import { PasswordService } from "../external/services/password-service"
+import { PasswordGateway } from "../external/gateways/password-gateway"
 import { Either, right, left } from "../shared/either"
 
 export interface AuthenticateUserRequest {
@@ -11,13 +11,13 @@ export interface AuthenticateUserRequest {
 
 export class AuthenticateUserUseCase {
 
-    private readonly accessTokenService: AccessTokenService
-    private readonly passwordService: PasswordService
+    private readonly accessTokenGateway: AccessTokenGateway
+    private readonly passwordGateway: PasswordGateway
     private readonly userRepository: UserRepository
 
-    constructor(accessTokenService: AccessTokenService, passwordService: PasswordService, userRepository: UserRepository) {
-        this.accessTokenService = accessTokenService
-        this.passwordService = passwordService
+    constructor(accessTokenGateway: AccessTokenGateway, passwordGateway: PasswordGateway, userRepository: UserRepository) {
+        this.accessTokenGateway = accessTokenGateway
+        this.passwordGateway = passwordGateway
         this.userRepository = userRepository
     }
 
@@ -28,12 +28,12 @@ export class AuthenticateUserUseCase {
         if (!userOrUndefined)
             return left(new IncorrectEmailOrPassword())
             
-        const isNotSamePassword = !(await this.passwordService.compare(password, userOrUndefined.password.value))
+        const isNotSamePassword = !(await this.passwordGateway.compare(password, userOrUndefined.password.value))
 
         if (isNotSamePassword)
             return left(new IncorrectEmailOrPassword())
 
-        const accessToken = await this.accessTokenService.generate(userOrUndefined.id.value)
+        const accessToken = await this.accessTokenGateway.generate(userOrUndefined.id.value)
 
         return right(accessToken)
 

@@ -1,7 +1,7 @@
-import { PasswordService } from "../password-service"
+import { PasswordGateway } from "../password-gateway"
 import { compare, hash, genSalt } from 'bcrypt'
 
-export class BcryptPasswordService implements PasswordService {
+export class BcryptPasswordGateway implements PasswordGateway {
 
     async encrypt(password: string): Promise<string> {
         return hash(password, await genSalt())

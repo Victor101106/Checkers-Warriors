@@ -1,6 +1,6 @@
 import { inMemoryUserRepository } from "../../external/repositories/factory/user-repository-factory"
-import { bcryptPasswordService } from "../../external/services/factory/password-service-factory"
-import { uuidUniqueIdService } from "../../external/services/factory/unique-id-service-factory"
+import { bcryptPasswordGateway } from "../../external/gateways/factory/password-gateway-factory"
+import { uuidUniqueIdGateway } from "../../external/gateways/factory/unique-id-gateway-factory"
 import { CreateUserUseCase } from "../create-user-usecase"
 
-export const createUserUseCase = new CreateUserUseCase(bcryptPasswordService, uuidUniqueIdService, inMemoryUserRepository)
+export const createUserUseCase = new CreateUserUseCase(bcryptPasswordGateway, uuidUniqueIdGateway, inMemoryUserRepository)

@@ -1,6 +1,6 @@
 import { UserRepository } from "../external/repositories/user-repository"
-import { UniqueIdService } from "../external/services/unique-id-service"
-import { PasswordService } from "../external/services/password-service"
+import { UniqueIdGateway } from "../external/gateways/unique-id-gateway"
+import { PasswordGateway } from "../external/gateways/password-gateway"
 import { InvalidPassword } from "../domain/user/errors/invalid-password"
 import { EmailAlreadyInUse } from "./errors/email-already-in-use"
 import { Either, left, right } from "../shared/either"
@@ -15,13 +15,13 @@ export interface CreateUserRequest {
 
 export class CreateUserUseCase {
 
-    private readonly passwordService: PasswordService
-    private readonly uniqueIdService: UniqueIdService
+    private readonly passwordGateway: PasswordGateway
+    private readonly uniqueIdGateway: UniqueIdGateway
     private readonly userRepository: UserRepository
 
-    constructor(passwordService: PasswordService, uniqueIdService: UniqueIdService, userRepository: UserRepository) {
-        this.passwordService = passwordService
-        this.uniqueIdService = uniqueIdService
+    constructor(passwordGateway: PasswordGateway, uniqueIdGateway: UniqueIdGateway, userRepository: UserRepository) {
+        this.passwordGateway = passwordGateway
+        this.uniqueIdGateway = uniqueIdGateway
         this.userRepository = userRepository
     }
 
@@ -37,8 +37,8 @@ export class CreateUserUseCase {
         if (isInvalidPassword)
             return left(new InvalidPassword())
         
-        const encrypted = await this.passwordService.encrypt(password)
-        const uniqueId = await this.uniqueIdService.generate()
+        const encrypted = await this.passwordGateway.encrypt(password)
+        const uniqueId = await this.uniqueIdGateway.generate()
 
         const userOrError = User.create({
             password: { value: encrypted, validate: false },

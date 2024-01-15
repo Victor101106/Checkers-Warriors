@@ -1,6 +1,6 @@
-import { AccessTokenService } from "../external/services/access-token-service"
+import { AccessTokenGateway } from "../external/gateways/access-token-gateway"
 import { UserRepository } from "../external/repositories/user-repository"
-import { InvalidToken } from "../external/services/errors/invalid-token"
+import { InvalidToken } from "../external/gateways/errors/invalid-token"
 import { UserNotFound } from "./errors/user-not-found"
 import { Either, left, right } from "../shared/either"
 import { User } from "../domain/user/user"
@@ -11,11 +11,11 @@ export interface GetUserByAccessTokenRequest {
 
 export class GetUserByAccessTokenUseCase {
 
-    private readonly accessTokenService: AccessTokenService
+    private readonly accessTokenGateway: AccessTokenGateway
     private readonly userRepository: UserRepository
 
-    constructor(accessTokenService: AccessTokenService, userRepository: UserRepository) {
-        this.accessTokenService = accessTokenService
+    constructor(accessTokenGateway: AccessTokenGateway, userRepository: UserRepository) {
+        this.accessTokenGateway = accessTokenGateway
         this.userRepository = userRepository
     }
 
@@ -24,7 +24,7 @@ export class GetUserByAccessTokenUseCase {
         if (!accessToken || !accessToken.length)
             return left(new InvalidToken())
 
-        const userIdOrError = await this.accessTokenService.verify(accessToken)
+        const userIdOrError = await this.accessTokenGateway.verify(accessToken)
 
         if (userIdOrError.isLeft())
             return left(new InvalidToken())

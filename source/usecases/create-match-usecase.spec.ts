@@ -1,7 +1,7 @@
 import { InMemoryMatchRepository } from "../external/repositories/in-memory/in-memory-match-repository"
 import { InMemoryUserRepository } from "../external/repositories/in-memory/in-memory-user-repository"
-import { bcryptPasswordService } from "../external/services/factory/password-service-factory"
-import { uuidUniqueIdService } from "../external/services/factory/unique-id-service-factory"
+import { bcryptPasswordGateway } from "../external/gateways/factory/password-gateway-factory"
+import { uuidUniqueIdGateway } from "../external/gateways/factory/unique-id-gateway-factory"
 import { createBrazilianBoardUseCase } from "./factory/create-board-usecase-factory"
 import { VariationNotFound } from "./errors/variation-not-found"
 import { CreateMatchUseCase } from "./create-match-usecase"
@@ -17,8 +17,8 @@ describe('Create match use case', async () => {
     const inMemoryMatchRepository = new InMemoryMatchRepository()
     const inMemoryUserRepository = new InMemoryUserRepository()
 
-    const createMatchUseCase = new CreateMatchUseCase([ createBrazilianBoardUseCase ], uuidUniqueIdService, inMemoryMatchRepository, inMemoryUserRepository)
-    const createUserUseCase = new CreateUserUseCase(bcryptPasswordService, uuidUniqueIdService, inMemoryUserRepository)
+    const createMatchUseCase = new CreateMatchUseCase([ createBrazilianBoardUseCase ], uuidUniqueIdGateway, inMemoryMatchRepository, inMemoryUserRepository)
+    const createUserUseCase = new CreateUserUseCase(bcryptPasswordGateway, uuidUniqueIdGateway, inMemoryUserRepository)
 
     const userOrError = await createUserUseCase.execute({
         password: 'Password123.',

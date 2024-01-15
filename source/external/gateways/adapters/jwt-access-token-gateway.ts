@@ -1,9 +1,9 @@
 import { Either, left, right } from "../../../shared/either"
-import { AccessTokenService } from "../access-token-service"
+import { AccessTokenGateway } from "../access-token-gateway"
 import { InvalidToken } from "../errors/invalid-token"
 import { sign, verify } from 'jsonwebtoken'
  
-export class JwtAccessTokenService implements AccessTokenService {
+export class JwtAccessTokenGateway implements AccessTokenGateway {
 
     async generate(value: string): Promise<string> {
         return sign({value}, <string>process.env.ACCESS_TOKEN_SECRET_KEY, { expiresIn: '30d' })

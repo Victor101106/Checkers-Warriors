@@ -1,8 +1,8 @@
 import { InMemoryUserRepository } from "../external/repositories/in-memory/in-memory-user-repository"
-import { jwtAccessTokenService } from "../external/services/factory/access-token-service-factory"
-import { bcryptPasswordService } from "../external/services/factory/password-service-factory"
-import { uuidUniqueIdService } from "../external/services/factory/unique-id-service-factory"
-import { InvalidToken } from "../external/services/errors/invalid-token"
+import { jwtAccessTokenGateway } from "../external/gateways/factory/access-token-gateway-factory"
+import { bcryptPasswordGateway } from "../external/gateways/factory/password-gateway-factory"
+import { uuidUniqueIdGateway } from "../external/gateways/factory/unique-id-gateway-factory"
+import { InvalidToken } from "../external/gateways/errors/invalid-token"
 import { AuthenticateUserUseCase } from "./authenticate-user-usecase"
 import { CreateUserUseCase } from "./create-user-usecase"
 import { describe, it, expect } from "vitest"
@@ -14,9 +14,9 @@ describe('Get user by access token use case', async () => {
 
     const inMemoryUserRepository = new InMemoryUserRepository()
 
-    const authenticateUserUseCase = new AuthenticateUserUseCase(jwtAccessTokenService, bcryptPasswordService, inMemoryUserRepository)
-    const createUserUseCase = new CreateUserUseCase(bcryptPasswordService, uuidUniqueIdService, inMemoryUserRepository)
-    const getUserByAccessTokenUseCase = new GetUserByAccessTokenUseCase(jwtAccessTokenService, inMemoryUserRepository)
+    const authenticateUserUseCase = new AuthenticateUserUseCase(jwtAccessTokenGateway, bcryptPasswordGateway, inMemoryUserRepository)
+    const createUserUseCase = new CreateUserUseCase(bcryptPasswordGateway, uuidUniqueIdGateway, inMemoryUserRepository)
+    const getUserByAccessTokenUseCase = new GetUserByAccessTokenUseCase(jwtAccessTokenGateway, inMemoryUserRepository)
 
     it('should be able to ensure authentication and get user', async () => {
         
@@ -46,7 +46,7 @@ describe('Get user by access token use case', async () => {
     it('should not be able to ensure authentication with a user that does not exist', async () => {
         
         const simulatedUserId: string = 'd02d9324-f819-4ea8-9f51-1115d43b1da2'
-        const accessToken = await jwtAccessTokenService.generate(simulatedUserId)
+        const accessToken = await jwtAccessTokenGateway.generate(simulatedUserId)
 
         const authenticatedUserOrError = await getUserByAccessTokenUseCase.execute({ accessToken })
         
