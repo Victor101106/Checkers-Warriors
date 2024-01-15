@@ -2,7 +2,6 @@ import instance from "./configs/instance"
 
 import { env } from './configs/env'
 
-import './factories/main/adapters/socket-match-adapter-factory'
 import './configs/socket'
 
 instance.ready((error) => {
