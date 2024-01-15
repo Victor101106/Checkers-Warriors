@@ -1,6 +1,6 @@
-import { HttpRequestHeaders } from "../../adapters/controllers/ports/http-headers"
-import { HttpController } from "../../adapters/controllers/ports/http-controller"
-import { HttpRequest } from "../../adapters/controllers/ports/http-request"
+import { HttpRequestHeaders } from "../../application/controllers/ports/http-headers"
+import { HttpController } from "../../application/controllers/ports/http-controller"
+import { HttpRequest } from "../../application/controllers/ports/http-request"
 import { FastifyReply, FastifyRequest } from "fastify"
 
 export const fastifyRouteAdapter = (controller: HttpController) => {

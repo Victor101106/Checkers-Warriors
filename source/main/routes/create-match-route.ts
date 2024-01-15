@@ -1,5 +1,5 @@
 import { ensureAuthenticatedMiddleware } from "../middleware/factory/ensure-authenticated-middleware-factory"
-import { createMatchController } from "../../adapters/controllers/factory/create-match-controller-factory"
+import { createMatchController } from "../../application/controllers/factory/create-match-controller-factory"
 import { fastifyRouteAdapter } from "../adapters/fastify-route-adapter"
 import { FastifyInstance } from "fastify"
 

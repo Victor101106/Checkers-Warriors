@@ -5,6 +5,6 @@ import path from 'path'
 export default (instance: FastifyInstance) => {
     instance.register(FastifyView, { 
         engine: { ejs: require('ejs') },
-        root: path.join(__dirname, '../../adapters/presenters/web/modules/')
+        root: path.join(__dirname, '../../application/presenters/web/modules/')
     })
 }

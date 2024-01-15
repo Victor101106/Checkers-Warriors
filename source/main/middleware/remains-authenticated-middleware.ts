@@ -1,4 +1,4 @@
-import { parseCookies, serializeCookie } from "../../adapters/controllers/helpers/cookie-helper"
+import { parseCookies, serializeCookie } from "../../application/controllers/helpers/cookie-helper"
 import { GetUserByAccessTokenUseCase } from "../../domain/usecases/get-user-by-access-token-usecase"
 import { FastifyReply, FastifyRequest } from "fastify"
 

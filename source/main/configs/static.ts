@@ -4,7 +4,7 @@ import path from 'path'
 
 export default (instance: FastifyInstance) => {
     instance.register(FastifyStatic, { 
-        root: path.join(__dirname, '../../adapters/presenters/web/'),
+        root: path.join(__dirname, '../../application/presenters/web/'),
         prefix: '/static/'
     })
 }
