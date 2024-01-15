@@ -1,5 +1,5 @@
-import { RelationRepository } from "../../infra/repositories/relation-repository"
-import { MatchRepository } from "../../infra/repositories/match-repository"
+import { RelationRepository } from "../contracts/repositories/relation-repository"
+import { MatchRepository } from "../contracts/repositories/match-repository"
 import { InvalidId } from "../entities/user/errors/invalid-id"
 import { MatchNotFound } from "./errors/match-not-found"
 import { Either, left, right } from "../../shared/either"

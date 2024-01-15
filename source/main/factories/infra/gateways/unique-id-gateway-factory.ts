@@ -1,3 +1,3 @@
-import { UuidUniqueIdGateway } from "../../../../infra/gateways/adapters/uuid-unique-id-gateway"
+import { UuidUniqueIdGateway } from "../../../../infra/gateways/uuid-unique-id-gateway"
 
 export const uuidUniqueIdGateway = new UuidUniqueIdGateway()

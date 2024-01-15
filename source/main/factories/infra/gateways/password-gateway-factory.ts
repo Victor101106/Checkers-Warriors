@@ -1,3 +1,3 @@
-import { BcryptPasswordGateway } from "../../../../infra/gateways/adapters/bcrypt-password-gateway"
+import { BcryptPasswordGateway } from "../../../../infra/gateways/bcrypt-password-gateway"
 
 export const bcryptPasswordGateway = new BcryptPasswordGateway()

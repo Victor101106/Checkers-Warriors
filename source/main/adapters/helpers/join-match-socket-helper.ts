@@ -1,4 +1,4 @@
-import { RelationRepository } from "../../../infra/repositories/relation-repository"
+import { RelationRepository } from "../../../domain/contracts/repositories/relation-repository"
 import { MatchAlreadyFull } from "../../../domain/usecases/errors/match-already-full"
 import { MatchNotFound } from "../../../domain/usecases/errors/match-not-found"
 import { JoinMatchUseCase } from "../../../domain/usecases/join-match-usecase"

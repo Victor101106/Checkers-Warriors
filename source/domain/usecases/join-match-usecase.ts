@@ -1,5 +1,5 @@
-import { MatchRepository } from "../../infra/repositories/match-repository"
-import { UserRepository } from "../../infra/repositories/user-repository"
+import { MatchRepository } from "../contracts/repositories/match-repository"
+import { UserRepository } from "../contracts/repositories/user-repository"
 import { MatchAlreadyFull } from "./errors/match-already-full"
 import { MatchNotFound } from "./errors/match-not-found"
 import { Either, left, right } from "../../shared/either"

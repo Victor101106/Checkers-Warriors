@@ -1,5 +1,5 @@
-import { MatchRepository } from "../match-repository"
-import { Match } from "../../../domain/entities/match/match"
+import { MatchRepository } from "../../domain/contracts/repositories/match-repository"
+import { Match } from "../../domain/entities/match/match"
 
 export class InMemoryMatchRepository implements MatchRepository {
 

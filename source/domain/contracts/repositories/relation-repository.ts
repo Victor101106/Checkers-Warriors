@@ -1,4 +1,4 @@
-import { Relation } from "../../domain/entities/relation/relation"
+import { Relation } from "../../entities/relation/relation"
 
 export interface RelationRepository {
     findById(id: string): Promise<Relation | void>

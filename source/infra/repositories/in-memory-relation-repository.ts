@@ -1,5 +1,5 @@
-import { Relation } from "../../../domain/entities/relation/relation"
-import { RelationRepository } from "../relation-repository"
+import { Relation } from "../../domain/entities/relation/relation"
+import { RelationRepository } from "../../domain/contracts/repositories/relation-repository"
 
 export class InMemoryRelationRepository implements RelationRepository {
 

@@ -1,3 +1,3 @@
-import { InMemoryRelationRepository } from "../../../../infra/repositories/in-memory/in-memory-relation-repository"
+import { InMemoryRelationRepository } from "../../../../infra/repositories/in-memory-relation-repository"
 
 export const inMemoryRelationRepository = new InMemoryRelationRepository()

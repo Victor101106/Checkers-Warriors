@@ -1,4 +1,4 @@
-import { PasswordGateway } from "../password-gateway"
+import { PasswordGateway } from "../../domain/contracts/gateways/password-gateway"
 import { compare, hash, genSalt } from 'bcrypt'
 
 export class BcryptPasswordGateway implements PasswordGateway {

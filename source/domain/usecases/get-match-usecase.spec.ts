@@ -1,5 +1,5 @@
-import { InMemoryMatchRepository } from "../../infra/repositories/in-memory/in-memory-match-repository"
-import { InMemoryUserRepository } from "../../infra/repositories/in-memory/in-memory-user-repository"
+import { InMemoryMatchRepository } from "../../infra/repositories/in-memory-match-repository"
+import { InMemoryUserRepository } from "../../infra/repositories/in-memory-user-repository"
 import { bcryptPasswordGateway } from "../../main/factories/infra/gateways/password-gateway-factory"
 import { uuidUniqueIdGateway } from "../../main/factories/infra/gateways/unique-id-gateway-factory"
 import { createBrazilianBoardUseCase } from "../../main/factories/domain/usecases/create-board-usecase-factory"
