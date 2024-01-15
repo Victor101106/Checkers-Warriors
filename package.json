@@ -1,14 +1,12 @@
 {
   "name": "checkers-warriors",
   "version": "0.0.1",
-  "scripts": {
-    "start:dev": "tsx watch --require dotenv/config source/main/server.ts",
-    "start": "node -r dotenv/config dist/main/server.js",
-    "start:test": "vitest",
-    "build": "tsup source"
-  },
+  "description": "Checkers is a classic board game, now imagine it with pixelated visuals and some gameplay updates. Well, this is Checkers Warriors!",
+  "license": "GPL-3.0-only",
   "keywords": [
     "clean architecture",
+    "design patterns",
+    "clean code",
     "multiplayer",
     "online game",
     "typescript",
@@ -16,7 +14,8 @@
     "pixelart",
     "checkers",
     "solid",
-    "game"
+    "game",
+    "node"
   ],
   "author": {
     "name": "Victor Gabriel",
@@ -27,6 +26,16 @@
     "type": "git",
     "url": "https://github.com/Victor101106/Checkers-Warriors.git"
   },
+  "bugs": {
+    "url": "https://github.com/Victor101106/Checkers-Warriors/issues",
+    "email": "victorgabriel101106+github@gmail.com"
+  },
+  "scripts": {
+    "start:dev": "tsx watch --require dotenv/config source/main/server.ts",
+    "start": "node -r dotenv/config dist/main/server.js",
+    "start:test": "vitest",
+    "build": "tsup source"
+  },
   "config": {
     "commitizen": {
       "path": "cz-conventional-changelog"
@@ -35,7 +44,6 @@
   "tsup": {
     "bundle": false
   },
-  "license": "GPL-3.0-only",
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
     "@types/cookie": "^0.5.1",
