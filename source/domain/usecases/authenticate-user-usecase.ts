@@ -1,7 +1,7 @@
 import { IncorrectEmailOrPassword } from "./errors/incorrect-email-or-password"
-import { AccessTokenGateway } from "../../external/gateways/access-token-gateway"
-import { UserRepository } from "../../external/repositories/user-repository"
-import { PasswordGateway } from "../../external/gateways/password-gateway"
+import { AccessTokenGateway } from "../../infra/gateways/access-token-gateway"
+import { UserRepository } from "../../infra/repositories/user-repository"
+import { PasswordGateway } from "../../infra/gateways/password-gateway"
 import { Either, right, left } from "../../shared/either"
 
 export interface AuthenticateUserRequest {

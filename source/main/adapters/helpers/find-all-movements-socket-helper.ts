@@ -1,6 +1,6 @@
 import { FindAllMovementsOnMatchUseCase } from "../../../domain/usecases/find-all-movements-on-match-usecase"
 import { FindAllMovementsResponse } from "../../../domain/usecases/find-all-movements-usecase"
-import { RelationRepository } from "../../../external/repositories/relation-repository"
+import { RelationRepository } from "../../../infra/repositories/relation-repository"
 import { VariationNotFound } from "../../../domain/usecases/errors/variation-not-found"
 import { InvalidMovement } from "../../../domain/usecases/errors/invalid-movement"
 import { MatchNotFound } from "../../../domain/usecases/errors/match-not-found"

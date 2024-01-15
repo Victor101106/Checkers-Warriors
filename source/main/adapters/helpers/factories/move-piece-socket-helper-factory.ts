@@ -1,4 +1,4 @@
-import { inMemoryRelationRepository } from "../../../../external/repositories/factory/relation-repository-factory"
+import { inMemoryRelationRepository } from "../../../../infra/repositories/factory/relation-repository-factory"
 import { movePieceOnMatchUseCase } from "../../../../domain/usecases/factory/move-piece-on-match-usecase-factory"
 import { MovePieceSocketHelper } from "../move-piece-socket-helper"
 

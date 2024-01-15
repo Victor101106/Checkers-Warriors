@@ -1,4 +1,4 @@
-import { MatchRepository } from "../../external/repositories/match-repository"
+import { MatchRepository } from "../../infra/repositories/match-repository"
 import { MatchNotFound } from "./errors/match-not-found"
 import { Either, left, right } from "../../shared/either"
 import { Match } from "../entities/match/match"

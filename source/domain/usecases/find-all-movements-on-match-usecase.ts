@@ -1,5 +1,5 @@
 import { FindAllMovementsResponse, FindAllMovementsUseCase } from "./find-all-movements-usecase"
-import { MatchRepository } from "../../external/repositories/match-repository"
+import { MatchRepository } from "../../infra/repositories/match-repository"
 import { VariationNotFound } from "./errors/variation-not-found"
 import { InvalidMovement } from "./errors/invalid-movement"
 import { MatchNotFound } from "./errors/match-not-found"

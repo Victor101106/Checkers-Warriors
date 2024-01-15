@@ -1,5 +1,5 @@
 import { MovePieceOnMatchUseCase } from "../../../domain/usecases/move-piece-on-match-usecase"
-import { RelationRepository } from "../../../external/repositories/relation-repository"
+import { RelationRepository } from "../../../infra/repositories/relation-repository"
 import { VariationNotFound } from "../../../domain/usecases/errors/variation-not-found"
 import { MatchNotFound } from "../../../domain/usecases/errors/match-not-found"
 import { InvalidId } from "../../../domain/entities/user/errors/invalid-id"

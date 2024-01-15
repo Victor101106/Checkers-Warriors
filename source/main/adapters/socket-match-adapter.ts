@@ -3,7 +3,7 @@ import { InvalidParameters } from '../../application/controllers/errors/invalid-
 import { HttpRequestHeaders } from '../../application/controllers/ports/http-headers'
 import { ReceiveMatchSocketHelper } from './helpers/receive-match-socket-helper'
 import { parseCookies } from '../../application/controllers/helpers/cookie-helper'
-import { InvalidToken } from '../../external/gateways/errors/invalid-token'
+import { InvalidToken } from '../../infra/gateways/errors/invalid-token'
 import { MovePieceSocketHelper } from './helpers/move-piece-socket-helper'
 import { JoinMatchSocketHelper } from './helpers/join-match-socket-helper'
 import { GiveUpSocketHelper } from './helpers/give-up-socket-helper'

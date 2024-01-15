@@ -1,6 +1,6 @@
 import { GetUserByAccessTokenUseCase } from "../../../domain/usecases/get-user-by-access-token-usecase"
 import { CreateRelationUseCase } from "../../../domain/usecases/create-relation-usecase"
-import { InvalidToken } from "../../../external/gateways/errors/invalid-token"
+import { InvalidToken } from "../../../infra/gateways/errors/invalid-token"
 import { MatchNotFound } from "../../../domain/usecases/errors/match-not-found"
 import { UserNotFound } from "../../../domain/usecases/errors/user-not-found"
 import { GetMatchUseCase } from "../../../domain/usecases/get-match-usecase"

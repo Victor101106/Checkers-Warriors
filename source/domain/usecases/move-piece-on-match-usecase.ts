@@ -1,4 +1,4 @@
-import { MatchRepository } from "../../external/repositories/match-repository"
+import { MatchRepository } from "../../infra/repositories/match-repository"
 import { VariationNotFound } from "./errors/variation-not-found"
 import { Position } from "../entities/board/types/position"
 import { Movement } from "../entities/match/types/movement"
