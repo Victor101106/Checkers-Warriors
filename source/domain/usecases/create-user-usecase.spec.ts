@@ -1,6 +1,6 @@
 import { InMemoryUserRepository } from "../../infra/repositories/in-memory/in-memory-user-repository"
-import { bcryptPasswordGateway } from "../../infra/gateways/factory/password-gateway-factory"
-import { uuidUniqueIdGateway } from "../../infra/gateways/factory/unique-id-gateway-factory"
+import { bcryptPasswordGateway } from "../../main/factories/infra/gateways/password-gateway-factory"
+import { uuidUniqueIdGateway } from "../../main/factories/infra/gateways/unique-id-gateway-factory"
 import { InvalidPassword } from "../entities/user/errors/invalid-password"
 import { EmailAlreadyInUse } from "./errors/email-already-in-use"
 import { CreateUserUseCase } from "./create-user-usecase"

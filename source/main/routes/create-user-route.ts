@@ -1,4 +1,4 @@
-import { createUserController } from "../../application/controllers/factory/create-user-controller-factory"
+import { createUserController } from "../factories/application/controllers/create-user-controller-factory"
 import { fastifyRouteAdapter } from "../adapters/fastify-route-adapter"
 import { FastifyInstance } from "fastify"
 

@@ -1,4 +1,4 @@
-import { authenticateUserController } from "../../application/controllers/factory/authenticate-user-controller-factory"
+import { authenticateUserController } from "../factories/application/controllers/authenticate-user-controller-factory"
 import { fastifyRouteAdapter } from "../adapters/fastify-route-adapter"
 import { FastifyInstance } from "fastify"
 

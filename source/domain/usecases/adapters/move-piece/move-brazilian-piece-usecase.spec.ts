@@ -1,5 +1,5 @@
-import { createBrazilianBoardUseCase } from "../../factory/create-board-usecase-factory"
-import { moveBrazilianPieceUseCase } from "../../factory/move-piece-usecase-factory"
+import { createBrazilianBoardUseCase } from "../../../../main/factories/domain/usecases/create-board-usecase-factory"
+import { moveBrazilianPieceUseCase } from "../../../../main/factories/domain/usecases/move-piece-usecase-factory"
 import { Board } from "../../../entities/board/board"
 import { Right } from "../../../../shared/either"
 import { describe, it, expect } from "vitest"

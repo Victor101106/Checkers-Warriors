@@ -1,5 +1,5 @@
-import { createTrajectoryUseCase } from "./factory/create-trajectory-usecase-factory"
-import { createBrazilianBoardUseCase } from "./factory/create-board-usecase-factory"
+import { createTrajectoryUseCase } from "../../main/factories/domain/usecases/create-trajectory-usecase-factory"
+import { createBrazilianBoardUseCase } from "../../main/factories/domain/usecases/create-board-usecase-factory"
 import { Direction } from "../entities/board/types/direction"
 import { Position } from "../entities/board/types/position"
 import { describe, expect, it } from "vitest"

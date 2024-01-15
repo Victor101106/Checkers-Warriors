@@ -1,4 +1,4 @@
-import { remainsAuthenticatedMiddleware } from "../middleware/factory/remains-authenticated-middleware-factory"
+import { remainsAuthenticatedMiddleware } from "../factories/main/middleware/remains-authenticated-middleware-factory"
 import { FastifyInstance } from "fastify"
 
 module.exports = (instance: FastifyInstance) => instance.get('/signup', async (request, reply) => {

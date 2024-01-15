@@ -1,5 +1,5 @@
-import { findAllBrazilianMovementsUseCase } from "../../factory/find-all-movements-usecase-factory"
-import { createBrazilianBoardUseCase } from "../../factory/create-board-usecase-factory"
+import { findAllBrazilianMovementsUseCase } from "../../../../main/factories/domain/usecases/find-all-movements-usecase-factory"
+import { createBrazilianBoardUseCase } from "../../../../main/factories/domain/usecases/create-board-usecase-factory"
 import { FindAllMovementsResponse } from "../../find-all-movements-usecase"
 import { Direction } from "../../../entities/board/types/direction"
 import { Board } from "../../../entities/board/board"

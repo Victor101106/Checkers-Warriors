@@ -1,5 +1,5 @@
-import { createMovementTreeUseCase } from "./factory/create-movement-tree-usecase-factory"
-import { createBrazilianBoardUseCase } from "./factory/create-board-usecase-factory"
+import { createMovementTreeUseCase } from "../../main/factories/domain/usecases/create-movement-tree-usecase-factory"
+import { createBrazilianBoardUseCase } from "../../main/factories/domain/usecases/create-board-usecase-factory"
 import { Direction } from "../entities/board/types/direction"
 import { Board } from "../entities/board/board"
 import { describe, it, expect } from "vitest"
