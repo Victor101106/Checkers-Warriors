@@ -1,11 +1,11 @@
-import { FindAllMovementsOnMatchUseCase } from "../../../usecases/find-all-movements-on-match-usecase"
-import { FindAllMovementsResponse } from "../../../usecases/find-all-movements-usecase"
+import { FindAllMovementsOnMatchUseCase } from "../../../domain/usecases/find-all-movements-on-match-usecase"
+import { FindAllMovementsResponse } from "../../../domain/usecases/find-all-movements-usecase"
 import { RelationRepository } from "../../../external/repositories/relation-repository"
-import { VariationNotFound } from "../../../usecases/errors/variation-not-found"
-import { InvalidMovement } from "../../../usecases/errors/invalid-movement"
-import { MatchNotFound } from "../../../usecases/errors/match-not-found"
-import { UserNotFound } from "../../../usecases/errors/user-not-found"
-import { InvalidId } from "../../../domain/user/errors/invalid-id"
+import { VariationNotFound } from "../../../domain/usecases/errors/variation-not-found"
+import { InvalidMovement } from "../../../domain/usecases/errors/invalid-movement"
+import { MatchNotFound } from "../../../domain/usecases/errors/match-not-found"
+import { UserNotFound } from "../../../domain/usecases/errors/user-not-found"
+import { InvalidId } from "../../../domain/entities/user/errors/invalid-id"
 import { Either, left, right } from "../../../shared/either"
 
 export interface FindAllMovementsSocketRequest {

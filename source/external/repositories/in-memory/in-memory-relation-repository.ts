@@ -1,4 +1,4 @@
-import { Relation } from "../../../domain/relation/relation"
+import { Relation } from "../../../domain/entities/relation/relation"
 import { RelationRepository } from "../relation-repository"
 
 export class InMemoryRelationRepository implements RelationRepository {

@@ -1,4 +1,4 @@
-import { CreateMatchUseCase } from "../../usecases/create-match-usecase"
+import { CreateMatchUseCase } from "../../domain/usecases/create-match-usecase"
 import { InvalidParameters } from "./errors/invalid-parameters"
 import { badRequest, created } from "./helpers/http-helper"
 import { HttpController } from "./ports/http-controller"

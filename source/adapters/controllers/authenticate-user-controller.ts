@@ -1,4 +1,4 @@
-import { AuthenticateUserUseCase } from "../../usecases/authenticate-user-usecase"
+import { AuthenticateUserUseCase } from "../../domain/usecases/authenticate-user-usecase"
 import { badRequest, ok, unauthorized } from "./helpers/http-helper"
 import { InvalidParameters } from "./errors/invalid-parameters"
 import { serializeCookie } from "./helpers/cookie-helper"

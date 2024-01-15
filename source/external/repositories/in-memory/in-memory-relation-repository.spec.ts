@@ -1,5 +1,5 @@
 import { InMemoryRelationRepository } from "./in-memory-relation-repository"
-import { Relation } from "../../../domain/relation/relation"
+import { Relation } from "../../../domain/entities/relation/relation"
 import { Right } from "../../../shared/either"
 import { describe, expect, it } from "vitest"
 

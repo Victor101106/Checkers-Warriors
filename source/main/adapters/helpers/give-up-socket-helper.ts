@@ -1,11 +1,11 @@
 import { RelationRepository } from "../../../external/repositories/relation-repository"
-import { MatchAlreadyFull } from "../../../usecases/errors/match-already-full"
-import { MatchNotFound } from "../../../usecases/errors/match-not-found"
-import { UserNotFound } from "../../../usecases/errors/user-not-found"
-import { InvalidId } from "../../../domain/user/errors/invalid-id"
-import { GiveUpUseCase } from "../../../usecases/give-up-usecase"
+import { MatchAlreadyFull } from "../../../domain/usecases/errors/match-already-full"
+import { MatchNotFound } from "../../../domain/usecases/errors/match-not-found"
+import { UserNotFound } from "../../../domain/usecases/errors/user-not-found"
+import { InvalidId } from "../../../domain/entities/user/errors/invalid-id"
+import { GiveUpUseCase } from "../../../domain/usecases/give-up-usecase"
 import { Either, left, right } from "../../../shared/either"
-import { Id } from "../../../domain/user/id"
+import { Id } from "../../../domain/entities/user/id"
 
 export interface GiveUpSocketRequest {
     relationId: string

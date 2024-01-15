@@ -1,5 +1,5 @@
-import { AuthenticateUserUseCase } from "../../usecases/authenticate-user-usecase"
-import { CreateUserUseCase } from "../../usecases/create-user-usecase"
+import { AuthenticateUserUseCase } from "../../domain/usecases/authenticate-user-usecase"
+import { CreateUserUseCase } from "../../domain/usecases/create-user-usecase"
 import { InvalidParameters } from "./errors/invalid-parameters"
 import { badRequest, created, unauthorized } from "./helpers/http-helper"
 import { HttpController } from "./ports/http-controller"

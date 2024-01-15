@@ -1,5 +1,5 @@
 import { parseCookies, serializeCookie } from "../../adapters/controllers/helpers/cookie-helper"
-import { GetUserByAccessTokenUseCase } from "../../usecases/get-user-by-access-token-usecase"
+import { GetUserByAccessTokenUseCase } from "../../domain/usecases/get-user-by-access-token-usecase"
 import { FastifyReply, FastifyRequest } from "fastify"
 
 export class EnsureAuthenticatedMiddleware {

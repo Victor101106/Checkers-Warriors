@@ -2,8 +2,8 @@ import { InMemoryUserRepository } from "../../external/repositories/in-memory/in
 import { jwtAccessTokenGateway } from "../../external/gateways/factory/access-token-gateway-factory"
 import { bcryptPasswordGateway } from "../../external/gateways/factory/password-gateway-factory"
 import { uuidUniqueIdGateway } from "../../external/gateways/factory/unique-id-gateway-factory"
-import { AuthenticateUserUseCase } from "../../usecases/authenticate-user-usecase"
-import { CreateUserUseCase } from "../../usecases/create-user-usecase"
+import { AuthenticateUserUseCase } from "../../domain/usecases/authenticate-user-usecase"
+import { CreateUserUseCase } from "../../domain/usecases/create-user-usecase"
 import { CreateUserController } from "./create-user-controller"
 import { describe, expect, it } from "vitest"
 

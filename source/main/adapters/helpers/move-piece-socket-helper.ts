@@ -1,12 +1,12 @@
-import { MovePieceOnMatchUseCase } from "../../../usecases/move-piece-on-match-usecase"
+import { MovePieceOnMatchUseCase } from "../../../domain/usecases/move-piece-on-match-usecase"
 import { RelationRepository } from "../../../external/repositories/relation-repository"
-import { VariationNotFound } from "../../../usecases/errors/variation-not-found"
-import { MatchNotFound } from "../../../usecases/errors/match-not-found"
-import { InvalidId } from "../../../domain/user/errors/invalid-id"
-import { Position } from "../../../domain/board/types/position"
+import { VariationNotFound } from "../../../domain/usecases/errors/variation-not-found"
+import { MatchNotFound } from "../../../domain/usecases/errors/match-not-found"
+import { InvalidId } from "../../../domain/entities/user/errors/invalid-id"
+import { Position } from "../../../domain/entities/board/types/position"
 import { Either, left, right } from "../../../shared/either"
-import { Jump } from "../../../domain/board/types/jump"
-import { Id } from "../../../domain/user/id"
+import { Jump } from "../../../domain/entities/board/types/jump"
+import { Id } from "../../../domain/entities/user/id"
 
 export interface MovePieceSocketRequest {
     relationId: string

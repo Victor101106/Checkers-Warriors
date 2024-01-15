@@ -1,14 +1,14 @@
 import { InMemoryMatchRepository } from "../../external/repositories/in-memory/in-memory-match-repository"
 import { InMemoryUserRepository } from "../../external/repositories/in-memory/in-memory-user-repository"
-import { createBrazilianBoardUseCase } from "../../usecases/factory/create-board-usecase-factory"
+import { createBrazilianBoardUseCase } from "../../domain/usecases/factory/create-board-usecase-factory"
 import { bcryptPasswordGateway } from "../../external/gateways/factory/password-gateway-factory"
 import { uuidUniqueIdGateway } from "../../external/gateways/factory/unique-id-gateway-factory"
-import { CreateMatchUseCase } from "../../usecases/create-match-usecase"
-import { CreateUserUseCase } from "../../usecases/create-user-usecase"
+import { CreateMatchUseCase } from "../../domain/usecases/create-match-usecase"
+import { CreateUserUseCase } from "../../domain/usecases/create-user-usecase"
 import { CreateMatchController } from "./create-match-controller"
 import { describe, expect, it } from "vitest"
 import { Right } from "../../shared/either"
-import { User } from "../../domain/user/user"
+import { User } from "../../domain/entities/user/user"
 
 describe('Create match controller', async () => {
 

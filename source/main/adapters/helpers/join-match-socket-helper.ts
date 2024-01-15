@@ -1,11 +1,11 @@
 import { RelationRepository } from "../../../external/repositories/relation-repository"
-import { MatchAlreadyFull } from "../../../usecases/errors/match-already-full"
-import { MatchNotFound } from "../../../usecases/errors/match-not-found"
-import { JoinMatchUseCase } from "../../../usecases/join-match-usecase"
-import { UserNotFound } from "../../../usecases/errors/user-not-found"
-import { InvalidId } from "../../../domain/user/errors/invalid-id"
+import { MatchAlreadyFull } from "../../../domain/usecases/errors/match-already-full"
+import { MatchNotFound } from "../../../domain/usecases/errors/match-not-found"
+import { JoinMatchUseCase } from "../../../domain/usecases/join-match-usecase"
+import { UserNotFound } from "../../../domain/usecases/errors/user-not-found"
+import { InvalidId } from "../../../domain/entities/user/errors/invalid-id"
 import { Either, left, right } from "../../../shared/either"
-import { Match } from "../../../domain/match/match"
+import { Match } from "../../../domain/entities/match/match"
 
 export interface JoinMatchSocketRequest {
     relationId: string

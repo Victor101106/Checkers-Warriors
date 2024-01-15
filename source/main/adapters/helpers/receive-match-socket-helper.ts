@@ -1,12 +1,12 @@
-import { GetUserByAccessTokenUseCase } from "../../../usecases/get-user-by-access-token-usecase"
-import { CreateRelationUseCase } from "../../../usecases/create-relation-usecase"
+import { GetUserByAccessTokenUseCase } from "../../../domain/usecases/get-user-by-access-token-usecase"
+import { CreateRelationUseCase } from "../../../domain/usecases/create-relation-usecase"
 import { InvalidToken } from "../../../external/gateways/errors/invalid-token"
-import { MatchNotFound } from "../../../usecases/errors/match-not-found"
-import { UserNotFound } from "../../../usecases/errors/user-not-found"
-import { GetMatchUseCase } from "../../../usecases/get-match-usecase"
-import { InvalidId } from "../../../domain/user/errors/invalid-id"
+import { MatchNotFound } from "../../../domain/usecases/errors/match-not-found"
+import { UserNotFound } from "../../../domain/usecases/errors/user-not-found"
+import { GetMatchUseCase } from "../../../domain/usecases/get-match-usecase"
+import { InvalidId } from "../../../domain/entities/user/errors/invalid-id"
 import { Either, left, right } from "../../../shared/either"
-import { Movement } from "../../../domain/match/types/movement"
+import { Movement } from "../../../domain/entities/match/types/movement"
 
 export interface ReceiveMatchSocketRequest {
     accessToken: string

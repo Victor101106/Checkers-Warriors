@@ -1,4 +1,4 @@
-import { Match } from "../../domain/match/match"
+import { Match } from "../../domain/entities/match/match"
 
 export interface MatchRepository {
     findById(id: string): Promise<Match | void>
