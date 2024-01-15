@@ -1,6 +1,8 @@
-import { parseCookies, serializeCookie } from "../../application/controllers/helpers/cookie-helper"
 import { GetUserByAccessTokenUseCase } from "../../domain/usecases/get-user-by-access-token-usecase"
-import { FastifyReply, FastifyRequest } from "fastify"
+import { parseCookies, serializeCookie } from "../helpers/cookie-helper"
+import { HttpResponse } from "../contracts/http-response"
+import { HttpRequest } from "../contracts/http-request"
+import { ok } from "../helpers/http-helper"
 
 export class RemainsAuthenticatedMiddleware {
 
@@ -10,23 +12,18 @@ export class RemainsAuthenticatedMiddleware {
         this.getUserByAccessTokenUseCase = getUserByAccessTokenUseCase
     }
 
-    async handle(request: FastifyRequest, reply: FastifyReply) {
-
+    async handle(request: HttpRequest): Promise<HttpResponse> {
+        
         const parsedCookie = parseCookies(String(request.headers.cookie))
         const accessToken = parsedCookie['access-token']
 
         const userOrError = await this.getUserByAccessTokenUseCase.execute({ accessToken })
+        const headers = new Array()
 
-        if (userOrError.isLeft()) {
+        if (userOrError.isLeft())
+            headers.push({ name: 'Set-Cookie', value: serializeCookie('access-token', '', { sameSite: true, expires: new Date('Thu, 01 Jan 1970 00:00:00 GMT') }) })
 
-            reply.header('Set-Cookie', serializeCookie('access-token', '', {
-                expires: new Date('Thu, 01 Jan 1970 00:00:00 GMT'),
-                sameSite: true
-            }))
-
-        }
-
-        request.body = { ...<object>request.body, auth: userOrError.isRight() }
+        return ok({ auth: userOrError.isRight() }, headers)
 
     }
 

@@ -3,7 +3,7 @@ import { HttpHandler } from "../../application/contracts/http-handler"
 import { HttpRequest } from "../../application/contracts/http-request"
 import { FastifyReply, FastifyRequest } from "fastify"
 
-export const fastifyRouteAdapter = (controller: HttpHandler) => {
+export const fastifyMiddlewareAdapter = (middleware: HttpHandler) => {
     
     return async (request: FastifyRequest, reply: FastifyReply) => {
         
@@ -13,12 +13,15 @@ export const fastifyRouteAdapter = (controller: HttpHandler) => {
             body: request.body || new Object()
         }
 
-        const httpResponse = await controller.handle(httpRequest)
+        const httpResponse = await middleware.handle(httpRequest)
 
         httpResponse.headers?.forEach(header => {
             reply.header(header.name, header.value)
         })
 
+        if (httpResponse.code === 200)
+            return request.body = { ...<object>request.body, ...httpResponse.body }
+            
         reply.status(httpResponse.code).send(httpResponse.body)
 
     }

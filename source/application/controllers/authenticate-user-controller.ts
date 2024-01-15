@@ -1,10 +1,10 @@
 import { AuthenticateUserUseCase } from "../../domain/usecases/authenticate-user-usecase"
-import { badRequest, ok, unauthorized } from "./helpers/http-helper"
-import { InvalidParameters } from "./errors/invalid-parameters"
-import { serializeCookie } from "./helpers/cookie-helper"
-import { HttpController } from "./ports/http-controller"
-import { HttpResponse } from "./ports/http-response"
-import { HttpRequest } from "./ports/http-request"
+import { badRequest, ok, unauthorized } from "../helpers/http-helper"
+import { InvalidParameters } from "../errors/invalid-parameters"
+import { serializeCookie } from "../helpers/cookie-helper"
+import { HttpHandler } from "../contracts/http-handler"
+import { HttpResponse } from "../contracts/http-response"
+import { HttpRequest } from "../contracts/http-request"
 import { z } from 'zod'
 
 export const AuthenticateUserControllerSchema = z.object({
@@ -12,7 +12,7 @@ export const AuthenticateUserControllerSchema = z.object({
     email: z.string()
 })
 
-export class AuthenticateUserController implements HttpController {
+export class AuthenticateUserController implements HttpHandler {
 
     private readonly authenticateUserUseCase: AuthenticateUserUseCase
 

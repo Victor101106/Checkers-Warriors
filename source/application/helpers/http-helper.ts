@@ -1,5 +1,5 @@
-import { HttpResponseHeader } from "../ports/http-headers"
-import { HttpResponse } from "../ports/http-response"
+import { HttpResponseHeader } from "../contracts/http-headers"
+import { HttpResponse } from "../contracts/http-response"
 import { serializeCookie } from "./cookie-helper"
 
 export const unauthorized = (error: Error, headers: Array<HttpResponseHeader> = new Array<HttpResponseHeader>()): HttpResponse => ({

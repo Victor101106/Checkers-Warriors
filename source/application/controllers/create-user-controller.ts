@@ -1,12 +1,12 @@
 import { AuthenticateUserUseCase } from "../../domain/usecases/authenticate-user-usecase"
 import { CreateUserUseCase } from "../../domain/usecases/create-user-usecase"
-import { InvalidParameters } from "./errors/invalid-parameters"
-import { badRequest, created, unauthorized } from "./helpers/http-helper"
-import { HttpController } from "./ports/http-controller"
-import { HttpResponse } from "./ports/http-response"
-import { HttpRequest } from "./ports/http-request"
+import { InvalidParameters } from "../errors/invalid-parameters"
+import { badRequest, created, unauthorized } from "../helpers/http-helper"
+import { HttpHandler } from "../contracts/http-handler"
+import { HttpResponse } from "../contracts/http-response"
+import { HttpRequest } from "../contracts/http-request"
 import { z } from 'zod'
-import { serializeCookie } from "./helpers/cookie-helper"
+import { serializeCookie } from "../helpers/cookie-helper"
 
 export const CreateUserControllerSchema = z.object({
     password: z.string(),
@@ -14,7 +14,7 @@ export const CreateUserControllerSchema = z.object({
     name: z.string()
 })
 
-export class CreateUserController implements HttpController {
+export class CreateUserController implements HttpHandler {
 
     private readonly authenticateUserUseCase: AuthenticateUserUseCase
     private readonly createUserUseCase: CreateUserUseCase
