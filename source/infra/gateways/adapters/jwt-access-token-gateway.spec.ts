@@ -1,7 +1,8 @@
 import { JwtAccessTokenGateway } from "./jwt-access-token-gateway"
-import { describe, it, expect, beforeAll } from "vitest"
 import { InvalidToken } from "../errors/invalid-token"
 import { Left, Right } from "../../../shared/either"
+import { env } from "../../../main/configs/env"
+import { describe, it, expect } from "vitest"
 import { sign } from "jsonwebtoken"
 
 describe('Jwt access token token gateway', () => {
@@ -34,7 +35,7 @@ describe('Jwt access token token gateway', () => {
 
     it('should not be able to verify a access token without value on payload', async () => {
 
-        const accessToken = sign({ value: undefined }, <string>process.env.ACCESS_TOKEN_SECRET_KEY)
+        const accessToken = sign({ value: undefined }, env.accessTokenSecretKey)
         const userIdOrError = await jwtAccessTokenGateway.verify(accessToken)
 
         expect(userIdOrError).instanceOf(Left)

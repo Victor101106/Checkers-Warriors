@@ -1,9 +1,9 @@
 import instance from "./configs/instance"
 
+import { env } from './configs/env'
+
 import './factories/main/adapters/socket-match-adapter-factory'
 import './configs/socket'
-
-const PORT = Number(process.env.PORT)
 
 instance.ready((error) => {
 
@@ -12,8 +12,8 @@ instance.ready((error) => {
         process.exit(1)
     }
     
-    instance.server.listen(PORT, () => {
-        console.log(`⚡ Listening at PORT ${PORT}!`)
+    instance.server.listen(env.port, () => {
+        console.log(`⚡ Listening at PORT ${env.port}!`)
     })
 
 })
