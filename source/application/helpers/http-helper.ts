@@ -7,7 +7,8 @@ export const unauthorized = (error: Error, headers: Array<HttpResponseHeader> = 
     code: 401,
     body: { 
         message: error.message, 
-        name: error.name 
+        name: error.name,
+        auth: false
     }
 })
 

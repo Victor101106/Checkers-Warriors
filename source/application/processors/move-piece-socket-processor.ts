@@ -1,22 +1,14 @@
 import { MovePieceOnMatchUseCase } from "../../domain/usecases/move-piece-on-match-usecase"
 import { RelationRepository } from "../../domain/contracts/repositories/relation-repository"
+import { MovementPresenter } from "../presenters/api/movement-presenter"
 import { InvalidId } from "../../domain/entities/user/errors/invalid-id"
-import { Position } from "../../domain/entities/board/types/position"
 import { SocketProcessor } from "../contracts/socket-processor"
-import { Jump } from "../../domain/entities/board/types/jump"
-import { ValidationBuilder } from "../validation/builder"
 import { Either, left, right } from "../../shared/either"
+import { ValidationBuilder } from "../validation/builder"
 import { Validator } from "../validation/validator"
-import { Id } from "../../domain/entities/user/id"
 
-export interface MovePieceSocketProcessorResponse {
-    positions: Array<Position>
-    startsAt: Position
-    promoted: boolean
-    endsAt: Position
-    winner: boolean
-    jumps: Array<Jump>
-    matchId: Id
+export interface MovePieceSocketProcessorResponse extends ReturnType<typeof MovementPresenter.toJSON> {
+    matchId: string
 }
 
 export class MovePieceSocketProcessor extends SocketProcessor {
@@ -59,7 +51,7 @@ export class MovePieceSocketProcessor extends SocketProcessor {
         if (responseOrError.isLeft())
             return left(responseOrError.value)
 
-        return right(Object.assign({ matchId }, responseOrError.value))
+        return right(Object.assign({ matchId: matchId.value }, MovementPresenter.toJSON(responseOrError.value)))
 
     }
 

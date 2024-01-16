@@ -1,26 +1,14 @@
 import { GetUserByAccessTokenUseCase } from "../../domain/usecases/get-user-by-access-token-usecase"
 import { CreateRelationUseCase } from "../../domain/usecases/create-relation-usecase"
 import { GetMatchUseCase } from "../../domain/usecases/get-match-usecase"
-import { Movement } from "../../domain/entities/match/types/movement"
+import { MatchPresenter } from "../presenters/api/match-presenter"
 import { SocketProcessor } from "../contracts/socket-processor"
-import { Either, left, right } from "../../shared/either"
 import { ValidationBuilder } from "../validation/builder"
+import { Either, left, right } from "../../shared/either"
 import { Validator } from "../validation/validator"
 
-export interface ReceiveMatchSocketProcessorResponse {
-    board: {
-        spots: ({ player: number, promoted: boolean } | void)[][],
-        columns: number,
-        rows: number
-    },
-    players: [ string, string? ]
-    score: [ number, number ]
-    movements: Movement[]
-    spectator: boolean
-    createdAt: string
+export interface ReceiveMatchSocketProcessorResponse extends ReturnType<typeof MatchPresenter.toJSON> {
     indexOf: number
-    winner?: number
-    turn: number
 }
 
 export class ReceiveMatchSocketProcessor extends SocketProcessor {
@@ -60,7 +48,6 @@ export class ReceiveMatchSocketProcessor extends SocketProcessor {
 
         const match = matchOrError.value
         const user  = userOrError.value
-        const board = match.board
 
         const relationOrError = await this.createRelationUseCase.execute({
             matchId: match.id.value,
@@ -72,28 +59,8 @@ export class ReceiveMatchSocketProcessor extends SocketProcessor {
             return left(relationOrError.value)
 
         const indexOf = match.players.findIndex(player => player?.id.value == user.id.value)
-        const spots = board.spots.map(array => array.map(piece => piece ? { player: piece.player, promoted: piece.promoted } : undefined))
 
-        const response: ReceiveMatchSocketProcessorResponse = {
-            board: {
-                columns: board.columns,
-                rows: board.rows,
-                spots: spots
-            },
-            movements: match.movements,
-            createdAt: match.createdAt.toUTCString(),
-            score: match.score,
-            players: [
-                match.players[0]?.name.value,
-                match.players[1]?.name.value
-            ],
-            spectator: indexOf < 0,
-            winner: match.winner,
-            indexOf: indexOf,
-            turn: match.turn
-        }
-
-        return right(response)
+        return right(Object.assign({ indexOf }, MatchPresenter.toJSON(match)))
 
     }
 

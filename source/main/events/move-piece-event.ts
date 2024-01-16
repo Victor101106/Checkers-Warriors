@@ -15,15 +15,11 @@ module.exports = (socket: Socket, server: Server) => {
             return socket.emit('move-piece-rejected', responseOrError.value)
 
         const response = responseOrError.value
+        const matchId  = response.matchId
 
-        server.to(response.matchId.value).emit('move-piece', {
-            positions: response.positions,
-            promoted: response.promoted,
-            startsAt: response.startsAt,
-            winner: response.winner,
-            endsAt: response.endsAt,
-            jumps: response.jumps
-        })
+        delete response.matchId
+
+        server.to(matchId).emit('move-piece', response)
 
     })
 
