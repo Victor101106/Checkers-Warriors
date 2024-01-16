@@ -73,7 +73,7 @@ describe('Authenticate user controller', async () => {
             query: {}
         })
 
-        expect(response.body.name).toBe('InvalidParameters')
+        expect(response.body.name).toBe('RequiredFieldError')
         expect(response.code).toBe(400)
 
     })

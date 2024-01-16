@@ -2,10 +2,10 @@ import { GetUserByAccessTokenUseCase } from "../../domain/usecases/get-user-by-a
 import { CreateRelationUseCase } from "../../domain/usecases/create-relation-usecase"
 import { GetMatchUseCase } from "../../domain/usecases/get-match-usecase"
 import { Movement } from "../../domain/entities/match/types/movement"
-import { InvalidParameters } from "../errors/invalid-parameters"
 import { SocketProcessor } from "../contracts/socket-processor"
 import { Either, left, right } from "../../shared/either"
-import { z } from "zod"
+import { ValidationBuilder } from "../validation/builder"
+import { Validator } from "../validation/validator"
 
 export interface ReceiveMatchSocketProcessorResponse {
     board: {
@@ -23,32 +23,30 @@ export interface ReceiveMatchSocketProcessorResponse {
     turn: number
 }
 
-export class ReceiveMatchSocketProcessor implements SocketProcessor {
+export class ReceiveMatchSocketProcessor extends SocketProcessor {
 
     private readonly getUserByAccessTokenUseCase: GetUserByAccessTokenUseCase
     private readonly createRelationUseCase: CreateRelationUseCase
     private readonly getMatchUseCase: GetMatchUseCase
 
     constructor(getUserByAccessTokenUseCase: GetUserByAccessTokenUseCase, createRelationUseCase: CreateRelationUseCase, getMatchUseCase: GetMatchUseCase) {
+        super()
         this.getUserByAccessTokenUseCase = getUserByAccessTokenUseCase
         this.createRelationUseCase = createRelationUseCase
         this.getMatchUseCase = getMatchUseCase
     }
 
-    async execute(data: any): Promise<Either<Error, ReceiveMatchSocketProcessorResponse>> {
+    protected buildValidators(data: any): Validator[] {
+        return [
+            ...ValidationBuilder.of('accessToken', data.accessToken).required().string().build(),
+            ...ValidationBuilder.of('socketId', data.socketId).required().string().build(),
+            ...ValidationBuilder.of('matchId', data.matchId).required().string().build()
+        ]
+    }
+
+    async perform(data: any): Promise<Either<Error, ReceiveMatchSocketProcessorResponse>> {
         
-        const eventSchema = z.object({ 
-            accessToken: z.string(),
-            socketId: z.string(),
-            matchId: z.string()
-        })
-
-        const safeParse = eventSchema.safeParse(data)
-
-        if (!safeParse.success)
-            return left(new InvalidParameters())
-
-        const { accessToken, socketId, matchId } = safeParse.data
+        const { accessToken, socketId, matchId } = data
 
         const userOrError = await this.getUserByAccessTokenUseCase.execute({ accessToken })
 

@@ -14,17 +14,18 @@ export interface GiveUpSocketProcessorResponse {
     matchId: Id
 }
 
-export class GiveUpSocketProcessor implements SocketProcessor {
+export class GiveUpSocketProcessor extends SocketProcessor {
 
     private readonly relationRepository: RelationRepository
     private readonly giveUpUseCase: GiveUpUseCase
 
     constructor(relationRepository: RelationRepository, giveUpUseCase: GiveUpUseCase) {
+        super()
         this.relationRepository = relationRepository
         this.giveUpUseCase = giveUpUseCase
     }
 
-    async execute({ relationId }: GiveUpSocketProcessorRequest): Promise<Either<Error, GiveUpSocketProcessorResponse>> {
+    async perform({ relationId }: GiveUpSocketProcessorRequest): Promise<Either<Error, GiveUpSocketProcessorResponse>> {
 
         const relationOrUndefined = await this.relationRepository.findById(relationId)
 

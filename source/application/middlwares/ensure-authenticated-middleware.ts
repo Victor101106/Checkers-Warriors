@@ -3,16 +3,18 @@ import { ok, unauthorized } from "../helpers/http-helper"
 import { HttpResponse } from "../contracts/http-response"
 import { parseCookies } from "../helpers/cookie-helper"
 import { HttpRequest } from "../contracts/http-request"
+import { HttpHandler } from "../contracts/http-handler"
 
-export class EnsureAuthenticatedMiddleware {
+export class EnsureAuthenticatedMiddleware extends HttpHandler {
 
     private readonly getUserByAccessTokenUseCase: GetUserByAccessTokenUseCase
 
     constructor(getUserByAccessTokenUseCase: GetUserByAccessTokenUseCase) {
+        super()
         this.getUserByAccessTokenUseCase = getUserByAccessTokenUseCase
     }
 
-    async handle(request: HttpRequest): Promise<HttpResponse> {
+    async perform(request: HttpRequest): Promise<HttpResponse> {
         
         const parsedCookie = parseCookies(String(request.headers.cookie))
         const accessToken = parsedCookie['access-token']

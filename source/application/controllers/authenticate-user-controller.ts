@@ -1,33 +1,32 @@
 import { AuthenticateUserUseCase } from "../../domain/usecases/authenticate-user-usecase"
-import { badRequest, ok, unauthorized } from "../helpers/http-helper"
-import { InvalidParameters } from "../errors/invalid-parameters"
 import { serializeCookie } from "../helpers/cookie-helper"
-import { HttpHandler } from "../contracts/http-handler"
+import { ValidationBuilder } from "../validation/builder"
+import { ok, unauthorized } from "../helpers/http-helper"
 import { HttpResponse } from "../contracts/http-response"
+import { HttpHandler } from "../contracts/http-handler"
 import { HttpRequest } from "../contracts/http-request"
-import { z } from 'zod'
+import { Validator } from "../validation/validator"
 
-export const AuthenticateUserControllerSchema = z.object({
-    password: z.string(),
-    email: z.string()
-})
-
-export class AuthenticateUserController implements HttpHandler {
+export class AuthenticateUserController extends HttpHandler {
 
     private readonly authenticateUserUseCase: AuthenticateUserUseCase
 
     constructor(authenticateUserUseCase: AuthenticateUserUseCase) {
+        super()
         this.authenticateUserUseCase = authenticateUserUseCase
     }
 
-    async handle(request: HttpRequest): Promise<HttpResponse> {
+    protected buildValidators(httpRequest: HttpRequest): Validator[] {
+        return [
+            ...ValidationBuilder.of('body', httpRequest.body).required().object().build(),
+            ...ValidationBuilder.of('password', httpRequest.body.password).required().string().build(),
+            ...ValidationBuilder.of('email', httpRequest.body.email).required().string().build(),
+        ]
+    }
 
-        const bodyOrError = AuthenticateUserControllerSchema.safeParse(request.body)
+    async perform(request: HttpRequest): Promise<HttpResponse> {
 
-        if (!bodyOrError.success)
-            return badRequest(new InvalidParameters())
-
-        const { password, email } = bodyOrError.data
+        const { password, email } = request.body
 
         const accessTokenOrError = await this.authenticateUserUseCase.execute({ password, email })
 

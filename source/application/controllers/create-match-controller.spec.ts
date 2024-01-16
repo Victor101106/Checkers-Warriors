@@ -51,7 +51,7 @@ describe('Create match controller', async () => {
         })
 
         expect(response.code).toBe(400)
-        expect(response.body.name).toBe('InvalidParameters')
+        expect(response.body.name).toBe('RequiredFieldError')
 
     })
 

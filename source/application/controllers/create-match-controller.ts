@@ -1,32 +1,31 @@
 import { CreateMatchUseCase } from "../../domain/usecases/create-match-usecase"
-import { InvalidParameters } from "../errors/invalid-parameters"
 import { badRequest, created } from "../helpers/http-helper"
-import { HttpHandler } from "../contracts/http-handler"
+import { ValidationBuilder } from "../validation/builder"
 import { HttpResponse } from "../contracts/http-response"
+import { HttpHandler } from "../contracts/http-handler"
 import { HttpRequest } from "../contracts/http-request"
-import { z } from 'zod'
+import { Validator } from "../validation/validator"
 
-export const CreateMatchControllerSchema = z.object({
-    variation: z.string(),
-    userId: z.string()
-})
-
-export class CreateMatchController implements HttpHandler {
+export class CreateMatchController extends HttpHandler {
 
     private readonly createMatchUseCase: CreateMatchUseCase
 
     constructor(createMatchUseCase: CreateMatchUseCase) {
+        super()
         this.createMatchUseCase = createMatchUseCase
     }
 
-    async handle(request: HttpRequest): Promise<HttpResponse> {
+    protected buildValidators(httpRequest: HttpRequest): Validator[] {
+        return [
+            ...ValidationBuilder.of('body', httpRequest.body).required().object().build(),
+            ...ValidationBuilder.of('variation', httpRequest.body.variation).required().string().build(),
+            ...ValidationBuilder.of('userId', httpRequest.body.variation).required().string().build(),
+        ]
+    }
 
-        const bodyOrError = CreateMatchControllerSchema.safeParse(request.body)
-
-        if (!bodyOrError.success)
-            return badRequest(new InvalidParameters())
+    async perform(request: HttpRequest): Promise<HttpResponse> {
         
-        const { variation, userId } = bodyOrError.data
+        const { variation, userId } = request.body
 
         const matchOrError = await this.createMatchUseCase.execute({ variation, userId })
 

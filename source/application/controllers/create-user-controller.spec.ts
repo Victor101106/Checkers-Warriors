@@ -43,7 +43,7 @@ describe('Create user controller', () => {
             query: {}
         })
 
-        expect(response.body.name).toBe('InvalidParameters')
+        expect(response.body.name).toBe('RequiredFieldError')
         expect(response.code).toBe(400)
 
     })

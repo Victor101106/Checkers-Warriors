@@ -15,17 +15,18 @@ export interface JoinMatchSocketProcessorResponse {
     match: Match
 }
 
-export class JoinMatchSocketProcessor implements SocketProcessor {
+export class JoinMatchSocketProcessor extends SocketProcessor {
 
     private readonly relationRepository: RelationRepository
     private readonly joinMatchUseCase: JoinMatchUseCase
 
     constructor(relationRepository: RelationRepository, joinMatchUseCase: JoinMatchUseCase) {
+        super()
         this.relationRepository = relationRepository
         this.joinMatchUseCase = joinMatchUseCase
     }
 
-    async execute({ relationId }: JoinMatchSocketProcessorRequest): Promise<Either<Error, JoinMatchSocketProcessorResponse>> {
+    async perform({ relationId }: JoinMatchSocketProcessorRequest): Promise<Either<Error, JoinMatchSocketProcessorResponse>> {
 
         const relationOrUndefined = await this.relationRepository.findById(relationId)
 

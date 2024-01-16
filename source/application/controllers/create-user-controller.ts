@@ -1,37 +1,36 @@
 import { AuthenticateUserUseCase } from "../../domain/usecases/authenticate-user-usecase"
 import { CreateUserUseCase } from "../../domain/usecases/create-user-usecase"
-import { InvalidParameters } from "../errors/invalid-parameters"
 import { badRequest, created, unauthorized } from "../helpers/http-helper"
-import { HttpHandler } from "../contracts/http-handler"
-import { HttpResponse } from "../contracts/http-response"
-import { HttpRequest } from "../contracts/http-request"
-import { z } from 'zod'
 import { serializeCookie } from "../helpers/cookie-helper"
+import { HttpResponse } from "../contracts/http-response"
+import { ValidationBuilder } from "../validation/builder"
+import { HttpHandler } from "../contracts/http-handler"
+import { HttpRequest } from "../contracts/http-request"
+import { Validator } from "../validation/validator"
 
-export const CreateUserControllerSchema = z.object({
-    password: z.string(),
-    email: z.string(),
-    name: z.string()
-})
-
-export class CreateUserController implements HttpHandler {
+export class CreateUserController extends HttpHandler {
 
     private readonly authenticateUserUseCase: AuthenticateUserUseCase
     private readonly createUserUseCase: CreateUserUseCase
 
     constructor(authenticateUserUseCase: AuthenticateUserUseCase, createUserUseCase: CreateUserUseCase) {
+        super()
         this.authenticateUserUseCase = authenticateUserUseCase
         this.createUserUseCase = createUserUseCase
     }
 
-    async handle(request: HttpRequest): Promise<HttpResponse> {
+    protected buildValidators(httpRequest: HttpRequest): Validator[] {
+        return [
+            ...ValidationBuilder.of('body', httpRequest.body).required().object().build(),
+            ...ValidationBuilder.of('password', httpRequest.body.password).required().string().build(),
+            ...ValidationBuilder.of('email', httpRequest.body.email).required().string().build(),
+            ...ValidationBuilder.of('name', httpRequest.body.name).required().string().build(),
+        ]
+    }
 
-        const bodyOrError = CreateUserControllerSchema.safeParse(request.body)
-
-        if (!bodyOrError.success)
-            return badRequest(new InvalidParameters())
+    async perform(request: HttpRequest): Promise<HttpResponse> {
         
-        const body = bodyOrError.data
+        const body = request.body
 
         const userOrError = await this.createUserUseCase.execute({
             password: body.password,

@@ -9,17 +9,18 @@ export interface FindAllMovementsSocketProcessorRequest {
     relationId: string
 }
 
-export class FindAllMovementsSocketProcessor implements SocketProcessor {
+export class FindAllMovementsSocketProcessor extends SocketProcessor {
 
     private readonly findAllMovementsOnMatchUseCase: FindAllMovementsOnMatchUseCase
     private readonly relationRepository: RelationRepository
 
     constructor(findAllMovementsOnMatchUseCase: FindAllMovementsOnMatchUseCase, relationRepository: RelationRepository) {
+        super()
         this.findAllMovementsOnMatchUseCase = findAllMovementsOnMatchUseCase
         this.relationRepository = relationRepository
     }
 
-    async execute({ relationId }: FindAllMovementsSocketProcessorRequest): Promise<Either<Error, FindAllMovementsResponse>> {
+    async perform({ relationId }: FindAllMovementsSocketProcessorRequest): Promise<Either<Error, FindAllMovementsResponse>> {
         
         const relationOrUndefined = await this.relationRepository.findById(relationId)
 
