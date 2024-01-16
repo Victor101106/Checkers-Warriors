@@ -7,7 +7,7 @@ module.exports = (socket: Socket, server: Server) => {
 
     socket.on('receive-match', async (event) => {
 
-        const parsedCookie = parseCookies((<HttpRequestHeaders>socket.request.headers).cookie)
+        const parsedCookie = parseCookies((<HttpRequestHeaders>socket.request.headers).cookie ?? '')
         const accessToken = parsedCookie['access-token']
 
         const responseOrError = await receiveMatchSocketProcessor.execute({
