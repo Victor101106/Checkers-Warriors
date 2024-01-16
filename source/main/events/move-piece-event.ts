@@ -1,23 +1,13 @@
-import { movePieceSocketHelper } from "../factories/main/events/helpers/move-piece-event-helper-factory"
-import { InvalidParameters } from "../../application/errors/invalid-parameters"
+import { movePieceSocketProcessor } from "../factories/application/processors/move-piece-socket-processor-factory"
 import { Server, Socket } from "socket.io"
-import { z } from "zod"
 
 module.exports = (socket: Socket, server: Server) => {
 
     socket.on('move-piece', async (event) => {
 
-        const positionSchema = z.object({ column: z.number(), row: z.number() })
-
-        const startsAtSafeParse = positionSchema.safeParse(event.startsAt)
-        const endsAtSafeParse = positionSchema.safeParse(event.endsAt)
-
-        if (!startsAtSafeParse.success || !endsAtSafeParse.success)
-            return socket.emit('move-piece-rejected', new InvalidParameters())
-
-        const responseOrError = await movePieceSocketHelper.execute({
-            startsAt: startsAtSafeParse.data,
-            endsAt: endsAtSafeParse.data,
+        const responseOrError = await movePieceSocketProcessor.execute({
+            startsAt: event?.startsAt,
+            endsAt: event?.endsAt,
             relationId: socket.id
         })
 

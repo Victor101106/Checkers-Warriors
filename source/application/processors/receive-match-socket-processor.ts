@@ -1,20 +1,13 @@
-import { GetUserByAccessTokenUseCase } from "../../../domain/usecases/get-user-by-access-token-usecase"
-import { CreateRelationUseCase } from "../../../domain/usecases/create-relation-usecase"
-import { InvalidToken } from "../../../domain/contracts/gateways/errors/invalid-token"
-import { MatchNotFound } from "../../../domain/usecases/errors/match-not-found"
-import { UserNotFound } from "../../../domain/usecases/errors/user-not-found"
-import { GetMatchUseCase } from "../../../domain/usecases/get-match-usecase"
-import { InvalidId } from "../../../domain/entities/user/errors/invalid-id"
-import { Either, left, right } from "../../../shared/either"
-import { Movement } from "../../../domain/entities/match/types/movement"
+import { GetUserByAccessTokenUseCase } from "../../domain/usecases/get-user-by-access-token-usecase"
+import { CreateRelationUseCase } from "../../domain/usecases/create-relation-usecase"
+import { GetMatchUseCase } from "../../domain/usecases/get-match-usecase"
+import { Movement } from "../../domain/entities/match/types/movement"
+import { InvalidParameters } from "../errors/invalid-parameters"
+import { SocketProcessor } from "../contracts/socket-processor"
+import { Either, left, right } from "../../shared/either"
+import { z } from "zod"
 
-export interface ReceiveMatchSocketRequest {
-    accessToken: string
-    socketId: string
-    matchId: string
-}
-
-export interface ReceiveMatchSocketResponse {
+export interface ReceiveMatchSocketProcessorResponse {
     board: {
         spots: ({ player: number, promoted: boolean } | void)[][],
         columns: number,
@@ -30,7 +23,7 @@ export interface ReceiveMatchSocketResponse {
     turn: number
 }
 
-export class ReceiveMatchSocketHelper {
+export class ReceiveMatchSocketProcessor implements SocketProcessor {
 
     private readonly getUserByAccessTokenUseCase: GetUserByAccessTokenUseCase
     private readonly createRelationUseCase: CreateRelationUseCase
@@ -42,8 +35,21 @@ export class ReceiveMatchSocketHelper {
         this.getMatchUseCase = getMatchUseCase
     }
 
-    async execute({ accessToken, socketId, matchId }: ReceiveMatchSocketRequest): Promise<Either<UserNotFound | InvalidToken | MatchNotFound | InvalidId, ReceiveMatchSocketResponse>> {
+    async execute(data: any): Promise<Either<Error, ReceiveMatchSocketProcessorResponse>> {
         
+        const eventSchema = z.object({ 
+            accessToken: z.string(),
+            socketId: z.string(),
+            matchId: z.string()
+        })
+
+        const safeParse = eventSchema.safeParse(data)
+
+        if (!safeParse.success)
+            return left(new InvalidParameters())
+
+        const { accessToken, socketId, matchId } = safeParse.data
+
         const userOrError = await this.getUserByAccessTokenUseCase.execute({ accessToken })
 
         if (userOrError.isLeft())
@@ -70,7 +76,7 @@ export class ReceiveMatchSocketHelper {
         const indexOf = match.players.findIndex(player => player?.id.value == user.id.value)
         const spots = board.spots.map(array => array.map(piece => piece ? { player: piece.player, promoted: piece.promoted } : undefined))
 
-        const response: ReceiveMatchSocketResponse = {
+        const response: ReceiveMatchSocketProcessorResponse = {
             board: {
                 columns: board.columns,
                 rows: board.rows,

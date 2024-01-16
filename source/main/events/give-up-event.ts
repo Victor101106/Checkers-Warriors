@@ -1,11 +1,11 @@
-import { giveUpSocketHelper } from "../factories/main/events/helpers/give-up-event-helper-factory"
+import { giveUpSocketProcessor } from "../factories/application/processors/give-up-socket-processor-factory"
 import { Server, Socket } from "socket.io"
 
 module.exports = (socket: Socket, server: Server) => {
 
     socket.on('give-up', async (event) => {
 
-        const responseOrError = await giveUpSocketHelper.execute({
+        const responseOrError = await giveUpSocketProcessor.execute({
             relationId: socket.id
         })
 

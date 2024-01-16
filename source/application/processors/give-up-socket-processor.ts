@@ -1,22 +1,20 @@
-import { RelationRepository } from "../../../domain/contracts/repositories/relation-repository"
-import { MatchAlreadyFull } from "../../../domain/usecases/errors/match-already-full"
-import { MatchNotFound } from "../../../domain/usecases/errors/match-not-found"
-import { UserNotFound } from "../../../domain/usecases/errors/user-not-found"
-import { InvalidId } from "../../../domain/entities/user/errors/invalid-id"
-import { GiveUpUseCase } from "../../../domain/usecases/give-up-usecase"
-import { Either, left, right } from "../../../shared/either"
-import { Id } from "../../../domain/entities/user/id"
+import { RelationRepository } from "../../domain/contracts/repositories/relation-repository"
+import { InvalidId } from "../../domain/entities/user/errors/invalid-id"
+import { GiveUpUseCase } from "../../domain/usecases/give-up-usecase"
+import { SocketProcessor } from "../contracts/socket-processor"
+import { Either, left, right } from "../../shared/either"
+import { Id } from "../../domain/entities/user/id"
 
-export interface GiveUpSocketRequest {
+export interface GiveUpSocketProcessorRequest {
     relationId: string
 }
 
-export interface GiveUpSocketResponse {
+export interface GiveUpSocketProcessorResponse {
     winner: number
     matchId: Id
 }
 
-export class GiveUpSocketHelper {
+export class GiveUpSocketProcessor implements SocketProcessor {
 
     private readonly relationRepository: RelationRepository
     private readonly giveUpUseCase: GiveUpUseCase
@@ -26,7 +24,7 @@ export class GiveUpSocketHelper {
         this.giveUpUseCase = giveUpUseCase
     }
 
-    async execute({ relationId }: GiveUpSocketRequest): Promise<Either<InvalidId | UserNotFound | MatchNotFound | MatchAlreadyFull, GiveUpSocketResponse>> {
+    async execute({ relationId }: GiveUpSocketProcessorRequest): Promise<Either<Error, GiveUpSocketProcessorResponse>> {
 
         const relationOrUndefined = await this.relationRepository.findById(relationId)
 

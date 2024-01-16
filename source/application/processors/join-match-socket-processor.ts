@@ -1,23 +1,21 @@
-import { RelationRepository } from "../../../domain/contracts/repositories/relation-repository"
-import { MatchAlreadyFull } from "../../../domain/usecases/errors/match-already-full"
-import { MatchNotFound } from "../../../domain/usecases/errors/match-not-found"
-import { JoinMatchUseCase } from "../../../domain/usecases/join-match-usecase"
-import { UserNotFound } from "../../../domain/usecases/errors/user-not-found"
-import { InvalidId } from "../../../domain/entities/user/errors/invalid-id"
-import { Either, left, right } from "../../../shared/either"
-import { Match } from "../../../domain/entities/match/match"
+import { RelationRepository } from "../../domain/contracts/repositories/relation-repository"
+import { JoinMatchUseCase } from "../../domain/usecases/join-match-usecase"
+import { InvalidId } from "../../domain/entities/user/errors/invalid-id"
+import { SocketProcessor } from "../contracts/socket-processor"
+import { Either, left, right } from "../../shared/either"
+import { Match } from "../../domain/entities/match/match"
 
-export interface JoinMatchSocketRequest {
+export interface JoinMatchSocketProcessorRequest {
     relationId: string
 }
 
-export interface JoinMatchSocketResponse {
+export interface JoinMatchSocketProcessorResponse {
     indexOf: number
     player: string
     match: Match
 }
 
-export class JoinMatchSocketHelper {
+export class JoinMatchSocketProcessor implements SocketProcessor {
 
     private readonly relationRepository: RelationRepository
     private readonly joinMatchUseCase: JoinMatchUseCase
@@ -27,7 +25,7 @@ export class JoinMatchSocketHelper {
         this.joinMatchUseCase = joinMatchUseCase
     }
 
-    async execute({ relationId }: JoinMatchSocketRequest): Promise<Either<InvalidId | UserNotFound | MatchNotFound | MatchAlreadyFull, JoinMatchSocketResponse>> {
+    async execute({ relationId }: JoinMatchSocketProcessorRequest): Promise<Either<Error, JoinMatchSocketProcessorResponse>> {
 
         const relationOrUndefined = await this.relationRepository.findById(relationId)
 
