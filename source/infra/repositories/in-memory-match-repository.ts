@@ -5,6 +5,17 @@ export class InMemoryMatchRepository implements MatchRepository {
 
     private readonly database: Match[] = new Array()
 
+    async getUnfinishedRandom(): Promise<void | Match> {
+        
+        const unfinishedMatchs = this.database.filter(match => !match.winner)
+
+        if (unfinishedMatchs.length === 0)
+            return
+
+        return unfinishedMatchs.at(Math.random() * unfinishedMatchs.length)
+
+    }
+
     async save(match: Match): Promise<void> {
         this.database.push(match)
     }

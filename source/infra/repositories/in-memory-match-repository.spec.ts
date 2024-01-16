@@ -4,8 +4,8 @@ import { describe, expect, it } from "vitest"
 import { Match } from "../../domain/entities/match/match"
 import { CreateBrazilianBoardUseCase } from "../../domain/usecases/adapters/create-board/create-brazilian-board-usecase"
 import { Board } from "../../domain/entities/board/board"
-import { Id } from "../../domain/entities/user/id"
 import { Variation } from "../../domain/entities/match/types/variation"
+import { User } from "../../domain/entities/user/user"
 
 describe('In-memory user repository', () => {
 
@@ -17,15 +17,21 @@ describe('In-memory user repository', () => {
     expect(boardOrError).instanceOf(Right)
     const board = boardOrError.value as Board
 
-    const idOrError = Id.create()
+    const userOrError = User.create({
+        password: { value: 'User123.' },
+        email: 'user@gmail.com',
+        name: 'User',
+    })
 
-    expect(idOrError).instanceOf(Right)
-    const id = idOrError.value as Id
+    expect(userOrError).instanceOf(Right)
+    const user = userOrError.value as User
     
     const matchOrError = Match.create({
         variation: Variation.Brazilian,
-        players: [ id ],
-        board: board
+        movements: new Array(),
+        players: [ user ],
+        board: board,
+        turn: 0
     })
 
     expect(matchOrError).instanceOf(Right)
@@ -41,14 +47,25 @@ describe('In-memory user repository', () => {
 
     })
 
+    it('should be able to get a random unfinished match in repository', async () => {
+
+        const matchOrUndefined = await inMemoryMatchRepository.getUnfinishedRandom()
+    
+        expect(matchOrUndefined).toBeInstanceOf(Match)
+        expect(matchOrUndefined?.winner).toBeFalsy()
+
+    })
+
     it('should be able to update a user in repository', async () => {
 
         const updatedMatchOrError = Match.create({
+            movements: match.movements,
             variation: match.variation,
             createdAt: match.createdAt,
             players: match.players,
             board: match.board,
             id: match.id.value,
+            winner: 1,
             turn: 1
         })
 
@@ -61,6 +78,14 @@ describe('In-memory user repository', () => {
         const matchOrUndefined = await inMemoryMatchRepository.findById(updateMatch.id.value)
 
         expect(matchOrUndefined).toBe(updateMatch)
+
+    })
+
+    it('should not be able to get a random unfinished match in repository', async () => {
+
+        const matchOrUndefined = await inMemoryMatchRepository.getUnfinishedRandom()
+    
+        expect(matchOrUndefined).toBeUndefined()
 
     })
     
