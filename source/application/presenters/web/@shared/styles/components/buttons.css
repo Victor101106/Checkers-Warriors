@@ -1,84 +1,107 @@
-/* <!-- Button Style --> */
+/* <!-- General Style --> */
 
-.button {
+.button-secondary-smooth,
+.button-secondary-ghost,
+.button-tertiary,
+.button-primary,
+.button-cta {
+
+    /* --> Default Style */
+    transition: background .25s, color .25s, opacity .25s;
     border-radius: var(--border-radius-button-primary);
-    transition: background .25s, color .25s;
-    align-items: first baseline;
     justify-content: center;
-    padding: 1rem 1.8rem;
     display: inline-flex;
-    font-size: 1.6rem;
+    align-items: center;
     font-weight: 600;
     cursor: pointer;
-    gap: 1rem;
-}
+    border: none;
 
-/* <!-- Modifier Style --> */
-
-.button.button-small {
-    padding: .7rem 1.6rem;
+    /* --> Default Size (Medium) */
+    padding-inline: 2.4rem;
     font-size: 1.6rem;
-    font-weight: 600;
-    gap: .7rem;
+    height: 4.4rem;
+    gap: .8rem;
+
 }
 
-.button.button-full-width {
+/* <!-- Button Primary & CTA --> */
+
+.button-primary,
+.button-cta {
+    background-color: var(--color-primary-400);
+    color: var(--color-primary-900);
+}
+
+.button-primary:hover,
+.button-cta:hover {
+    background-color: var(--color-primary-500);
+}
+
+.button-cta {
+    padding-inline: 3rem !important;
+}
+
+/* <!-- Button Secondary --> */
+
+.button-secondary-ghost {
+    outline: var(--color-primary-400) solid .2rem;
+    color: var(--color-primary-400);
+    background: none;
+}
+
+.button-secondary-ghost:hover {
+    background-color: var(--color-primary-400);
+    color: var(--color-primary-900);
+}
+
+.button-secondary-smooth {
+    background-color: var(--color-primary-800);
+    color: var(--color-primary-400);
+}
+
+.button-secondary-smooth:hover {
+    background-color: var(--color-primary-400);
+    color: var(--color-primary-900);
+}
+
+/* <!-- Button Tertiary --> */
+
+.button-tertiary {
+    background: none;
+    color: #ffffff;
+    opacity: 0.5;
+    border: none;
+}
+
+.button-tertiary:hover {
+    opacity: 1;
+}
+
+/* <!-- Button Sizes --> */
+
+.button-full-width {
     width: 100%;
 }
 
-/* <!-- Default Style --> */
-
-.default-button {
-    border: var(--color-primary-400) solid .2rem;
-    background-color: var(--color-primary-400);
-    color: var(--color-primary-900);
+.button-small {
+    padding-inline: 1.8rem;
+    font-size: 1.4rem;
+    height: 3.2rem;
+    gap: .4rem;
 }
 
-.default-button.button-selected,
-.default-button:hover {
-    background-color: var(--color-primary-500);
-    border-color: var(--color-primary-500);
+.button-medium {
+    padding-inline: 2.2rem;
+    font-size: 1.6rem;
+    height: 3.8rem;
+    gap: .8rem;
 }
 
-/* <!-- Smooth Style --> */
-
-.smooth-button {
-    background-color: var(--color-primary-800);
-    color: var(--color-primary-400);
-    border: none;
+.button-big {
+    padding-inline: 3.2rem;
+    font-size: 1.6rem;
+    height: 4.8rem;
+    gap: .8rem;
 }
 
-.smooth-button.button-selected,
-.smooth-button:hover {
-    background-color: var(--color-primary-400);
-    color: var(--color-primary-900);
-}
-
-/* <!-- Ghost Style --> */
-
-.ghost-button {
-    background: none;
-    color: #869693;
-    border: none;
-}
-
-.ghost-button.button-selected, 
-.ghost-button:hover {
-    color: #ffffff;
-}
-
-/* <!-- Outlined Style --> */
-
-.outlined-button {
-    border: var(--color-primary-400) solid .2rem;
-    background: none;
-    color: var(--color-primary-400);
-}
-
-.outlined-button.button-selected,
-.outlined-button:hover {
-    background-color: var(--color-primary-400);
-    color: var(--color-primary-900);
-}
-
-/* <!-- Final Style --> */
+/* <!-- Final Types --> */
