@@ -1,5 +1,5 @@
 import { InvalidMeasure } from "./errors/invalid-measure"
-import { Left, Right } from "../../../shared/either"
+import { Left, Right } from "../../../@shared/either"
 import { describe, expect, it } from "vitest"
 import { Board } from "./board"
 import { Piece } from "./piece"

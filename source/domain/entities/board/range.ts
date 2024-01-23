@@ -1,4 +1,4 @@
-import { Either, left, right } from "../../../shared/either"
+import { Either, left, right } from "../../../@shared/either"
 import { InvalidRange } from "./errors/invalid-range"
 
 export class Range {

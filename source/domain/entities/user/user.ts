@@ -1,5 +1,5 @@
 import { InvalidPassword } from "./errors/invalid-password"
-import { Either, left, right } from "../../../shared/either"
+import { Either, left, right } from "../../../@shared/either"
 import { InvalidEmail } from "./errors/invalid-email"
 import { InvalidName } from "./errors/invalid-name"
 import { InvalidId } from "./errors/invalid-id"

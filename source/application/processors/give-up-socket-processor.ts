@@ -2,7 +2,7 @@ import { RelationRepository } from "../../domain/contracts/repositories/relation
 import { InvalidId } from "../../domain/entities/user/errors/invalid-id"
 import { GiveUpUseCase } from "../../domain/usecases/give-up-usecase"
 import { SocketProcessor } from "../contracts/socket-processor"
-import { Either, left, right } from "../../shared/either"
+import { Either, left, right } from "../../@shared/either"
 import { Id } from "../../domain/entities/user/id"
 
 export interface GiveUpSocketProcessorRequest {

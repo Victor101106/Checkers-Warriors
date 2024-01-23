@@ -3,7 +3,7 @@ import { Position } from "../entities/board/types/position"
 import { Player } from "../entities/board/types/player"
 import { Jump } from "../entities/board/types/jump"
 import { Board } from "../entities/board/board"
-import { Either } from "../../shared/either"
+import { Either } from "../../@shared/either"
 
 export interface FindAllMovementsRequest {
     player: Player

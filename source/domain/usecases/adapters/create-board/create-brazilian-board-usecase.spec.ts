@@ -1,7 +1,7 @@
 import { createBrazilianBoardUseCase } from "../../../../main/factories/domain/usecases/create-board-usecase-factory"
 import { Board } from "../../../entities/board/board"
 import { Piece } from "../../../entities/board/piece"
-import { Right } from "../../../../shared/either"
+import { Right } from "../../../../@shared/either"
 import { describe, expect, it } from "vitest"
 
 describe('Create brazilian board use case', () => {

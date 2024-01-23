@@ -3,7 +3,7 @@ import { InvalidPosition } from "../../../entities/board/errors/invalid-position
 import { InvalidMeasure } from "../../../entities/board/errors/invalid-measure"
 import { InvalidRange } from "../../../entities/board/errors/invalid-range"
 import { CreateBoardUseCase } from "../../create-board-usecase"
-import { Either, left, right } from "../../../../shared/either"
+import { Either, left, right } from "../../../../@shared/either"
 import { Board } from "../../../entities/board/board"
 import { Piece } from "../../../entities/board/piece"
 

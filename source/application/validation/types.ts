@@ -1,5 +1,5 @@
 import { FieldTypeError } from "../errors/field-type-error"
-import { Either, left, right } from "../../shared/either"
+import { Either, left, right } from "../../@shared/either"
 import { Validator } from "./validator"
 
 export class StringValidator implements Validator {

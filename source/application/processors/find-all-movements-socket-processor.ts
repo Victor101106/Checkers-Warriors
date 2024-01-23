@@ -4,7 +4,7 @@ import { InvalidId } from "../../domain/entities/user/errors/invalid-id"
 import { Position } from "../../domain/entities/board/types/position"
 import { JumpPresenter } from "../presenters/api/jump-presenter"
 import { SocketProcessor } from "../contracts/socket-processor"
-import { Either, left, right } from "../../shared/either"
+import { Either, left, right } from "../../@shared/either"
 
 export interface FindAllMovementsSocketProcessorRequest {
     relationId: string

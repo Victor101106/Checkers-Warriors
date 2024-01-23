@@ -1,6 +1,6 @@
 import { InvalidPosition } from "../entities/board/errors/invalid-position"
 import { Position } from "../entities/board/types/position"
-import { Either, left, right } from "../../shared/either"
+import { Either, left, right } from "../../@shared/either"
 import { Node } from "../entities/board/types/node"
 import { Jump } from "../entities/board/types/jump"
 import { Board } from "../entities/board/board"

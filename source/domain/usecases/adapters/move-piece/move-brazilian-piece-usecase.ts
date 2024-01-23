@@ -5,7 +5,7 @@ import { MovePieceRequest, MovePieceUseCase } from "../../move-piece-usecase"
 import { InvalidRange } from "../../../entities/board/errors/invalid-range"
 import { InvalidMovement } from "../../errors/invalid-movement"
 import { Movement } from "../../../entities/match/types/movement"
-import { Either, left, right } from "../../../../shared/either"
+import { Either, left, right } from "../../../../@shared/either"
 import { Piece } from "../../../entities/board/piece"
 
 export class MoveBrazilianPieceUseCase implements MovePieceUseCase {

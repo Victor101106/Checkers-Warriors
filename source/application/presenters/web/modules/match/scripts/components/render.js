@@ -1,4 +1,4 @@
-import { EventEmitter } from "../../../../shared/scripts/components/event-emitter.js"
+import { EventEmitter } from "../../../../@shared/scripts/components/event-emitter.js"
 import { OptionsScreen } from "./rendering/options-screen.js"
 import { InviteScreen } from "./rendering/invite-screen.js"
 import { WinnerScreen } from "./rendering/winner-screen.js"

@@ -4,7 +4,7 @@ import { Position } from "../entities/board/types/position"
 import { Movement } from "../entities/match/types/movement"
 import { MatchNotFound } from "./errors/match-not-found"
 import { MovePieceUseCase } from "./move-piece-usecase"
-import { Either, left, right } from "../../shared/either"
+import { Either, left, right } from "../../@shared/either"
 import { InvalidTurn } from "./errors/invalid-turn"
 
 export interface MovePieceOnMatch {

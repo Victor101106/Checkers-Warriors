@@ -1,4 +1,4 @@
-import { Left, Right } from "../../../shared/either"
+import { Left, Right } from "../../../@shared/either"
 import { InvalidId } from "./errors/invalid-id"
 import { describe, expect, it } from "vitest"
 import { Id } from "./id"

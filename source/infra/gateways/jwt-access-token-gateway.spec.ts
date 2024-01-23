@@ -1,6 +1,6 @@
 import { JwtAccessTokenGateway } from "./jwt-access-token-gateway"
 import { InvalidToken } from "../../domain/contracts/gateways/errors/invalid-token"
-import { Left, Right } from "../../shared/either"
+import { Left, Right } from "../../@shared/either"
 import { env } from "../../main/configs/env"
 import { describe, it, expect } from "vitest"
 import { sign } from "jsonwebtoken"

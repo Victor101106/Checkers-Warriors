@@ -1,5 +1,5 @@
 import { InvalidPassword } from "./errors/invalid-password"
-import { Left, Right } from "../../../shared/either"
+import { Left, Right } from "../../../@shared/either"
 import { describe, it, expect } from "vitest"
 import { Password } from "./password"
 

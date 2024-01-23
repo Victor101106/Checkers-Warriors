@@ -1,4 +1,4 @@
-import { Either, left, right } from "../../../shared/either"
+import { Either, left, right } from "../../../@shared/either"
 import { InvalidId } from "./errors/invalid-id"
 
 export class Id {

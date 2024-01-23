@@ -10,7 +10,7 @@ import { Variation } from "../entities/match/types/variation"
 import { CreateUserUseCase } from "./create-user-usecase"
 import { MatchNotFound } from "./errors/match-not-found"
 import { Match } from "../entities/match/match"
-import { Left, Right } from "../../shared/either"
+import { Left, Right } from "../../@shared/either"
 import { describe, expect, it } from "vitest"
 import { User } from "../entities/user/user"
 

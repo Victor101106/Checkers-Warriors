@@ -6,7 +6,7 @@ import { InvalidId } from "../entities/user/errors/invalid-id"
 import { Variation } from "../entities/match/types/variation"
 import { CreateBoardUseCase } from "./create-board-usecase"
 import { UserNotFound } from "./errors/user-not-found"
-import { Either, left, right } from "../../shared/either"
+import { Either, left, right } from "../../@shared/either"
 import { Match } from "../entities/match/match"
 
 export interface CreateMatchRequest {

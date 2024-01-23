@@ -7,7 +7,7 @@ import { AuthenticateUserUseCase } from "./authenticate-user-usecase"
 import { CreateUserUseCase } from "./create-user-usecase"
 import { describe, it, expect } from "vitest"
 import { UserNotFound } from "./errors/user-not-found"
-import { Left, Right } from "../../shared/either"
+import { Left, Right } from "../../@shared/either"
 import { GetUserByAccessTokenUseCase } from "./get-user-by-access-token-usecase"
 
 describe('Get user by access token use case', async () => {

@@ -1,5 +1,5 @@
 import { MatchRepository } from "../contracts/repositories/match-repository"
-import { Either, left, right } from "../../shared/either"
+import { Either, left, right } from "../../@shared/either"
 import { Match } from "../entities/match/match"
 
 export class GetRandomUnfinishedMatchUseCase {

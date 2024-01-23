@@ -4,7 +4,7 @@ import { uuidUniqueIdGateway } from "../../main/factories/infra/gateways/unique-
 import { InvalidPassword } from "../entities/user/errors/invalid-password"
 import { EmailAlreadyInUse } from "./errors/email-already-in-use"
 import { CreateUserUseCase } from "./create-user-usecase"
-import { Left, Right } from "../../shared/either"
+import { Left, Right } from "../../@shared/either"
 import { describe, expect, it } from "vitest"
 import { User } from "../entities/user/user"
 

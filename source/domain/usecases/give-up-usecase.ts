@@ -1,7 +1,7 @@
 import { MatchRepository } from "../contracts/repositories/match-repository"
 import { InvalidId } from "../entities/user/errors/invalid-id"
 import { MatchNotFound } from "./errors/match-not-found"
-import { Either, left, right } from "../../shared/either"
+import { Either, left, right } from "../../@shared/either"
 
 export interface GiveUpRequest {
     matchId: string

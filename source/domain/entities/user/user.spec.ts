@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest"
-import { Right } from "../../../shared/either"
+import { Right } from "../../../@shared/either"
 import { User } from "./user"
 
 describe('User domain', () => {

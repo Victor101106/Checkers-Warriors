@@ -8,7 +8,7 @@ import { CreateMatchUseCase } from "./create-match-usecase"
 import { Variation } from "../entities/match/types/variation"
 import { CreateUserUseCase } from "./create-user-usecase"
 import { UserNotFound } from "./errors/user-not-found"
-import { Left, Right } from "../../shared/either"
+import { Left, Right } from "../../@shared/either"
 import { describe, expect, it } from "vitest"
 import { User } from "../entities/user/user"
 

@@ -6,7 +6,7 @@ import { IncorrectEmailOrPassword } from "./errors/incorrect-email-or-password"
 import { AuthenticateUserUseCase } from "./authenticate-user-usecase"
 import { CreateUserUseCase } from "./create-user-usecase"
 import { describe, it, expect } from "vitest"
-import { Left, Right } from "../../shared/either"
+import { Left, Right } from "../../@shared/either"
 
 describe('Authenticate user use case', async () => {
 

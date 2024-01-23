@@ -1,7 +1,7 @@
 import { createBrazilianBoardUseCase } from "../../../../main/factories/domain/usecases/create-board-usecase-factory"
 import { moveBrazilianPieceUseCase } from "../../../../main/factories/domain/usecases/move-piece-usecase-factory"
 import { Board } from "../../../entities/board/board"
-import { Right } from "../../../../shared/either"
+import { Right } from "../../../../@shared/either"
 import { describe, it, expect } from "vitest"
 
 describe('Find movement by quantity rule use case', () => {

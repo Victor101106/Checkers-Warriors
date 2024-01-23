@@ -1,5 +1,5 @@
 import { InvalidRange } from "./errors/invalid-range"
-import { Left, Right } from "../../../shared/either"
+import { Left, Right } from "../../../@shared/either"
 import { describe, expect, it } from "vitest"
 import { Range } from "./range"
 

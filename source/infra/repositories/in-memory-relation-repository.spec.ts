@@ -1,6 +1,6 @@
 import { InMemoryRelationRepository } from "./in-memory-relation-repository"
 import { Relation } from "../../domain/entities/relation/relation"
-import { Right } from "../../shared/either"
+import { Right } from "../../@shared/either"
 import { describe, expect, it } from "vitest"
 
 describe('In-memory relation repository', () => {

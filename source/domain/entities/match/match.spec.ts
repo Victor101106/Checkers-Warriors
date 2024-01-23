@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 import { Variation } from "./types/variation"
-import { Right } from "../../../shared/either"
+import { Right } from "../../../@shared/either"
 import { Board } from "../board/board"
 import { User } from "../user/user"
 import { Match } from "./match"

@@ -2,7 +2,7 @@ import { AccessTokenGateway } from "../contracts/gateways/access-token-gateway"
 import { UserRepository } from "../contracts/repositories/user-repository"
 import { InvalidToken } from "../contracts/gateways/errors/invalid-token"
 import { UserNotFound } from "./errors/user-not-found"
-import { Either, left, right } from "../../shared/either"
+import { Either, left, right } from "../../@shared/either"
 import { User } from "../entities/user/user"
 
 export interface GetUserByAccessTokenRequest {

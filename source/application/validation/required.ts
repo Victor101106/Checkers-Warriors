@@ -1,5 +1,5 @@
 import { RequiredFieldError } from "../errors/required-field-error"
-import { Either, left, right } from "../../shared/either"
+import { Either, left, right } from "../../@shared/either"
 import { Validator } from "./validator"
 
 export class Required implements Validator {

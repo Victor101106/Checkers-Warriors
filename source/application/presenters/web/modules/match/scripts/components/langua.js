@@ -1,4 +1,4 @@
-import { EventEmitter } from "../../../../shared/scripts/components/event-emitter.js"
+import { EventEmitter } from "../../../../@shared/scripts/components/event-emitter.js"
 
 let currentLanguage = (navigator.language || navigator.userLanguage).toLowerCase()
 

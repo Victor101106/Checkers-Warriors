@@ -5,7 +5,7 @@ import { FindMovementsResponse } from "./find-movements-usecase"
 import { Direction } from "../entities/board/types/direction"
 import { Board } from "../entities/board/board"
 import { describe, it, expect } from "vitest"
-import { Right } from "../../shared/either"
+import { Right } from "../../@shared/either"
 
 describe('Find movement by quantity rule use case', () => {
 

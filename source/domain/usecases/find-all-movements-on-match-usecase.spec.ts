@@ -12,7 +12,7 @@ import { CreateUserUseCase } from "./create-user-usecase"
 import { describe, expect, it } from "vitest"
 import { Match } from "../entities/match/match"
 import { User } from "../entities/user/user"
-import { Right } from "../../shared/either"
+import { Right } from "../../@shared/either"
 
 describe('Find all movements on match use case', async () => {
     

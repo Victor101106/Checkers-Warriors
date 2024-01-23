@@ -5,7 +5,7 @@ import { InvalidMovement } from "./errors/invalid-movement"
 import { Movement } from "../entities/match/types/movement"
 import { Position } from "../entities/board/types/position"
 import { Board } from "../entities/board/board"
-import { Either } from "../../shared/either"
+import { Either } from "../../@shared/either"
 
 export interface MovePieceRequest {
     startsAt: Position

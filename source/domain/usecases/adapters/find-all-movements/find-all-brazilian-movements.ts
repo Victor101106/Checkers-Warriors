@@ -2,7 +2,7 @@ import { FindAllMovementsRequest, FindAllMovementsResponse, FindAllMovementsUseC
 import { InvalidPosition } from "../../../entities/board/errors/invalid-position"
 import { CreateMovementTreeUseCase } from "../../create-movement-tree-usecase"
 import { FindMovementsUseCase } from "../../find-movements-usecase"
-import { Either, left, right } from "../../../../shared/either"
+import { Either, left, right } from "../../../../@shared/either"
 
 export class FindAllBrazilianMovementsUseCase implements FindAllMovementsUseCase {
 

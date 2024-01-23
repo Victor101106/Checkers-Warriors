@@ -1,6 +1,6 @@
 import { ValidationComposite } from "../validation/composite"
 import { Validator } from "../validation/validator"
-import { Either, left } from "../../shared/either"
+import { Either, left } from "../../@shared/either"
 
 export abstract class SocketProcessor {
 

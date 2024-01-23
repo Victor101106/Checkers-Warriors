@@ -3,7 +3,7 @@ import { badRequest } from "../helpers/http-helper"
 import { Validator } from "../validation/validator"
 import { HttpResponse } from "./http-response"
 import { HttpRequest } from "./http-request"
-import { Either } from "../../shared/either"
+import { Either } from "../../@shared/either"
 
 export abstract class HttpHandler {
 

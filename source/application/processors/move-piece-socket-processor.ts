@@ -3,7 +3,7 @@ import { RelationRepository } from "../../domain/contracts/repositories/relation
 import { MovementPresenter } from "../presenters/api/movement-presenter"
 import { InvalidId } from "../../domain/entities/user/errors/invalid-id"
 import { SocketProcessor } from "../contracts/socket-processor"
-import { Either, left, right } from "../../shared/either"
+import { Either, left, right } from "../../@shared/either"
 import { ValidationBuilder } from "../validation/builder"
 import { Validator } from "../validation/validator"
 

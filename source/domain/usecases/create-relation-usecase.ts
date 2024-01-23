@@ -2,7 +2,7 @@ import { RelationRepository } from "../contracts/repositories/relation-repositor
 import { MatchRepository } from "../contracts/repositories/match-repository"
 import { InvalidId } from "../entities/user/errors/invalid-id"
 import { MatchNotFound } from "./errors/match-not-found"
-import { Either, left, right } from "../../shared/either"
+import { Either, left, right } from "../../@shared/either"
 import { Relation } from "../entities/relation/relation"
 
 export interface CreateRelationRequest {

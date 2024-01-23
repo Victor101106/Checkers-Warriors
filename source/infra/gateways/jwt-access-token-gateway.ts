@@ -1,4 +1,4 @@
-import { Either, left, right } from "../../shared/either"
+import { Either, left, right } from "../../@shared/either"
 import { AccessTokenGateway } from "../../domain/contracts/gateways/access-token-gateway"
 import { InvalidToken } from "../../domain/contracts/gateways/errors/invalid-token"
 import { sign, verify } from 'jsonwebtoken'

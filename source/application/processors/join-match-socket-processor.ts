@@ -2,7 +2,7 @@ import { RelationRepository } from "../../domain/contracts/repositories/relation
 import { JoinMatchUseCase } from "../../domain/usecases/join-match-usecase"
 import { InvalidId } from "../../domain/entities/user/errors/invalid-id"
 import { SocketProcessor } from "../contracts/socket-processor"
-import { Either, left, right } from "../../shared/either"
+import { Either, left, right } from "../../@shared/either"
 import { Match } from "../../domain/entities/match/match"
 
 export interface JoinMatchSocketProcessorRequest {

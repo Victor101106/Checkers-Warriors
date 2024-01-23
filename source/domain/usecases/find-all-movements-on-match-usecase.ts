@@ -3,7 +3,7 @@ import { MatchRepository } from "../contracts/repositories/match-repository"
 import { VariationNotFound } from "./errors/variation-not-found"
 import { InvalidMovement } from "./errors/invalid-movement"
 import { MatchNotFound } from "./errors/match-not-found"
-import { Either, left, right } from "../../shared/either"
+import { Either, left, right } from "../../@shared/either"
 import { UserNotFound } from "./errors/user-not-found"
 
 export interface FindAllMovementsOnMatchRequest {

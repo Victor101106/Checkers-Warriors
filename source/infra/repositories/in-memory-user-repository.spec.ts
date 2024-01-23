@@ -1,5 +1,5 @@
 import { InMemoryUserRepository } from "./in-memory-user-repository"
-import { Right } from "../../shared/either"
+import { Right } from "../../@shared/either"
 import { User } from "../../domain/entities/user/user"
 import { describe, expect, it } from "vitest"
 

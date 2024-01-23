@@ -1,5 +1,5 @@
 import { InvalidEmail } from "./errors/invalid-email"
-import { Left, Right } from "../../../shared/either"
+import { Left, Right } from "../../../@shared/either"
 import { describe, expect, it } from "vitest"
 import { Email } from "./email"
 

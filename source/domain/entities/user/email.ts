@@ -1,4 +1,4 @@
-import { Either, left, right } from "../../../shared/either"
+import { Either, left, right } from "../../../@shared/either"
 import { InvalidEmail } from "./errors/invalid-email"
 
 export class Email {

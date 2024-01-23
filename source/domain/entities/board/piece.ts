@@ -1,5 +1,5 @@
 import { InvalidOrientation } from "./errors/invalid-orientation"
-import { Either, left, right } from "../../../shared/either"
+import { Either, left, right } from "../../../@shared/either"
 import { InvalidRange } from "./errors/invalid-range"
 import { Orientations } from "./types/orientations"
 import { Orientation } from "./types/orientation"

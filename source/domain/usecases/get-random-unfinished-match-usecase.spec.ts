@@ -5,7 +5,7 @@ import { uuidUniqueIdGateway } from "../../main/factories/infra/gateways/unique-
 import { createBrazilianBoardUseCase } from "../../main/factories/domain/usecases/create-board-usecase-factory"
 import { CreateMatchUseCase } from "./create-match-usecase"
 import { CreateUserUseCase } from "./create-user-usecase"
-import { Left, Right } from "../../shared/either"
+import { Left, Right } from "../../@shared/either"
 import { describe, expect, it } from "vitest"
 import { Match } from "../entities/match/match"
 import { User } from "../entities/user/user"

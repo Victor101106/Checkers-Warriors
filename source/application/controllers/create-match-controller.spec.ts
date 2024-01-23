@@ -7,7 +7,7 @@ import { CreateMatchUseCase } from "../../domain/usecases/create-match-usecase"
 import { CreateUserUseCase } from "../../domain/usecases/create-user-usecase"
 import { CreateMatchController } from "./create-match-controller"
 import { describe, expect, it } from "vitest"
-import { Right } from "../../shared/either"
+import { Right } from "../../@shared/either"
 import { User } from "../../domain/entities/user/user"
 
 describe('Create match controller', async () => {

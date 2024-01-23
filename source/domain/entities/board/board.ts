@@ -1,6 +1,6 @@
 import { InvalidPosition } from "./errors/invalid-position"
 import { InvalidMeasure } from "./errors/invalid-measure"
-import { Either, left, right } from "../../../shared/either"
+import { Either, left, right } from "../../../@shared/either"
 import { Position } from "./types/position"
 import { Piece } from "./piece"
 

@@ -14,7 +14,7 @@
 }
 
 html, body {
-    background-image: url('/static/shared/assets/background.gif');
+    background-image: url('/static/@shared/assets/background.gif');
     height: 100vh;
     height: 100dvh;
     width: 100vw;

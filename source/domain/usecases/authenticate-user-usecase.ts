@@ -2,7 +2,7 @@ import { IncorrectEmailOrPassword } from "./errors/incorrect-email-or-password"
 import { AccessTokenGateway } from "../contracts/gateways/access-token-gateway"
 import { UserRepository } from "../contracts/repositories/user-repository"
 import { PasswordGateway } from "../contracts/gateways/password-gateway"
-import { Either, right, left } from "../../shared/either"
+import { Either, right, left } from "../../@shared/either"
 
 export interface AuthenticateUserRequest {
     password: string

@@ -1,4 +1,4 @@
-import { Either, left, right } from "../../shared/either"
+import { Either, left, right } from "../../@shared/either"
 import { Validator } from "./validator"
 
 export class ValidationComposite implements Validator {

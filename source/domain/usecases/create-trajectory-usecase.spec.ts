@@ -4,7 +4,7 @@ import { Direction } from "../entities/board/types/direction"
 import { Position } from "../entities/board/types/position"
 import { describe, expect, it } from "vitest"
 import { Board } from "../entities/board/board"
-import { Right } from "../../shared/either"
+import { Right } from "../../@shared/either"
 
 describe('Create trajectory use case', () => {
     

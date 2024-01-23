@@ -1,5 +1,5 @@
 import { InvalidPassword } from "./errors/invalid-password"
-import { Either, left, right } from "../../../shared/either"
+import { Either, left, right } from "../../../@shared/either"
 
 export class Password {
 

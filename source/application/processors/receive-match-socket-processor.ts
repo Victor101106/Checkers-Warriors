@@ -4,7 +4,7 @@ import { GetMatchUseCase } from "../../domain/usecases/get-match-usecase"
 import { MatchPresenter } from "../presenters/api/match-presenter"
 import { SocketProcessor } from "../contracts/socket-processor"
 import { ValidationBuilder } from "../validation/builder"
-import { Either, left, right } from "../../shared/either"
+import { Either, left, right } from "../../@shared/either"
 import { Validator } from "../validation/validator"
 
 export interface ReceiveMatchSocketProcessorResponse extends ReturnType<typeof MatchPresenter.toJSON> {

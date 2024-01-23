@@ -1,5 +1,5 @@
 import { InMemoryMatchRepository } from "./in-memory-match-repository"
-import { Right } from "../../shared/either"
+import { Right } from "../../@shared/either"
 import { describe, expect, it } from "vitest"
 import { Match } from "../../domain/entities/match/match"
 import { CreateBrazilianBoardUseCase } from "../../domain/usecases/adapters/create-board/create-brazilian-board-usecase"

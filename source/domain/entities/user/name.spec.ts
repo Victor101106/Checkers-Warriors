@@ -1,5 +1,5 @@
 import { InvalidName } from './errors/invalid-name'
-import { Left, Right } from '../../../shared/either'
+import { Left, Right } from '../../../@shared/either'
 import { it, expect, describe } from 'vitest'
 import { Name } from './name'
 

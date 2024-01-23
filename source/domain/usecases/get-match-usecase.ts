@@ -1,6 +1,6 @@
 import { MatchRepository } from "../contracts/repositories/match-repository"
 import { MatchNotFound } from "./errors/match-not-found"
-import { Either, left, right } from "../../shared/either"
+import { Either, left, right } from "../../@shared/either"
 import { Match } from "../entities/match/match"
 
 export interface GetMatchRequest {

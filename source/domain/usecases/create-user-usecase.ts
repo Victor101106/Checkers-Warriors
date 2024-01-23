@@ -3,7 +3,7 @@ import { UniqueIdGateway } from "../contracts/gateways/unique-id-gateway"
 import { PasswordGateway } from "../contracts/gateways/password-gateway"
 import { InvalidPassword } from "../entities/user/errors/invalid-password"
 import { EmailAlreadyInUse } from "./errors/email-already-in-use"
-import { Either, left, right } from "../../shared/either"
+import { Either, left, right } from "../../@shared/either"
 import { Password } from "../entities/user/password"
 import { User } from "../entities/user/user"
 
