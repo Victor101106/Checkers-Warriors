@@ -1,0 +1,21 @@
+/* <!-- General Style --> */
+
+:root {
+
+    /* --> Primary Color <-- */
+    --color-primary-900: #1c3528;
+    --color-primary-800: #2e5742;
+    --color-primary-700: #3f785b;
+    --color-primary-600: #519a74;
+    --color-primary-500: #6cb28e;
+    --color-primary-400: #8DC3A7;
+    --color-primary-300: #afd5c1;
+    --color-primary-200: #d0e6db;
+    --color-primary-100: #f2f8f5;
+
+    /* --> Button Radius <-- */
+    --border-radius-button-primary: 999rem;
+
+}
+
+/* <!-- Final Style --> */

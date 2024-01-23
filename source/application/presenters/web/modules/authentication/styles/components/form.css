@@ -103,7 +103,7 @@
 
 #form-signin-redirect a,
 #form-signup-redirect a {
-    color: #0C2C27;
+    color: var(--color-primary-900);
 }
 
 /* <!-- Final Style --> */
