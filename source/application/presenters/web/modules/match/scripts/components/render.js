@@ -1,3 +1,4 @@
+import { FlickerRender } from "../../../../@shared/scripts/components/rendering/render-flicker.js"
 import { EventEmitter } from "../../../../@shared/scripts/components/event-emitter.js"
 import { OptionsScreen } from "./rendering/options-screen.js"
 import { InviteScreen } from "./rendering/invite-screen.js"
@@ -11,7 +12,7 @@ export class Render {
     // --> Constructor Function
 
     constructor(canvas, context) {
-        this.effect = { top: 0, time: new Date().getTime() }
+        this.flicker = new FlickerRender(canvas, context)
         this.events = new EventEmitter()
         this.currentScreen = undefined
         this.animations = new Array()
@@ -224,20 +225,10 @@ export class Render {
         if (!this.screens.optionsScreen.options.enableEffects)
             return
         
-        this.context.fillStyle = '#000000'
-        this.context.globalAlpha = 0.1
-        
-        for (let top = this.effect.top; top < this.canvas.height; top += 2)
-            this.context.fillRect(0 - this.container?.left, top - this.container?.top, this.canvas.width, 1)
-
-        const currentDate = new Date().getTime()
-
-        if (currentDate - this.effect.time >= 125) {
-            this.effect.top  = this.effect.top ? 0 : 1
-            this.effect.time = currentDate
-        } 
-
-        this.context.globalAlpha = 1.0
+        this.flicker.render(this.deltatime, {
+            left: -this.container.left ?? 0,
+            top: -this.container.top ?? 0
+        })
 
     }
 
