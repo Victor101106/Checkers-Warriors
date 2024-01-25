@@ -1,3 +1,4 @@
+import { CanvasHandler } from "../../../../@shared/scripts/components/handlers/canvas-handler.js"
 import { EventEmitter } from "../../../../@shared/scripts/components/event-emitter.js"
 import language from "./langua.js"
 
@@ -14,15 +15,7 @@ export class Config {
 
     configureCanvas() {
 
-        const { innerHeight: windowInnerHeight, innerWidth: windowInnerWidth } = window
-        
-        if (windowInnerWidth / windowInnerHeight < this.container.width / this.container.height) {
-            this.canvas.width  = Math.round(this.container.width)
-            this.canvas.height = Math.round(windowInnerHeight * this.canvas.width / windowInnerWidth)
-        } else {
-            this.canvas.height = Math.round(this.container.height)
-            this.canvas.width  = Math.round(windowInnerWidth * this.canvas.height / windowInnerHeight)
-        }
+        CanvasHandler.resizeByProportion(this.canvas, this.container.width, this.container.height)
 
         this.configurePosition()
 
