@@ -1,11 +1,11 @@
 import { FlickerRender } from "../../../../@shared/scripts/components/rendering/render-flicker.js"
+import { loadImage } from "../../../../@shared/scripts/components/loading/load-image.js"
+import { loadAudio } from "../../../../@shared/scripts/components/loading/load-audio.js"
 import { EventEmitter } from "../../../../@shared/scripts/components/event-emitter.js"
 import { OptionsScreen } from "./rendering/options-screen.js"
 import { InviteScreen } from "./rendering/invite-screen.js"
 import { WinnerScreen } from "./rendering/winner-screen.js"
 import { BoardScreen } from "./rendering/board-screen.js"
-import { loadImage } from "./loading/load-image.js"
-import { loadAudio } from "./loading/load-audio.js"
 
 export class Render {
 
