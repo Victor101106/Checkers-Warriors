@@ -1,4 +1,5 @@
 import { FlickerRender } from "../../../../@shared/scripts/components/rendering/render-flicker.js"
+import { TextRender } from "../../../../@shared/scripts/components/rendering/render-text.js"
 import { loadImage } from "../../../../@shared/scripts/components/loading/load-image.js"
 import { loadAudio } from "../../../../@shared/scripts/components/loading/load-audio.js"
 import { EventEmitter } from "../../../../@shared/scripts/components/event-emitter.js"
@@ -14,6 +15,7 @@ export class Render {
     constructor(canvas, context) {
         this.flicker = new FlickerRender(canvas, context)
         this.events = new EventEmitter()
+        this.text = new TextRender(context)
         this.currentScreen = undefined
         this.animations = new Array()
         this.elements = new Object()
@@ -232,26 +234,8 @@ export class Render {
 
     }
 
-    _renderString(string, left, top, characters, length = Infinity, increment = 1) {
-
-        for (let character of string.toLowerCase()) {
-
-            if (length == 0)
-                return
-
-            const characterCode  = character.charCodeAt(0) - 97
-            const characterIndex = characterCode < 0 || characterCode > 25 ? 26 : characterCode
-
-            const parsedInteger = Number.parseInt(character)
-
-            if (character != ' ')
-                this.context.drawImage(characters, (isNaN(parsedInteger) ? characterIndex : 27 + parsedInteger) * 3, 0, 3, 5, left, top, 3, 5)
-            
-            left   += 4 * increment
-            length -= 1
-
-        }
-
+    _renderString(string, left, top, characterImage, maxLength = Infinity, positionIncrement = 1) {
+        this.text.render(string, { left, top }, characterImage, maxLength, positionIncrement)
     }
 
     // --> Final Class
