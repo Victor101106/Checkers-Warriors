@@ -123,7 +123,7 @@ export class Render {
         this.currentScreen = this.screens.winnerScreen
         this.state.winner = winner
 
-        if (!this.screens.optionsScreen.options.enableSounds)
+        if (this.screens.optionsScreen.options.get('sounds') != 'true')
             return
 
         if (this.state.indexOf == -1 || this.state.winner == this.state.indexOf)
@@ -136,25 +136,25 @@ export class Render {
     // --> Auxiliary Functions
 
     rotateDirection(direction) {
-        return this.state.indexOf == 0 && this.screens.optionsScreen.options.enableRotation ? { column: direction.column * -1, row: direction.row * -1 } : direction
+        return this.state.indexOf == 0 && this.screens.optionsScreen.options.get('rotation') == 'true' ? { column: direction.column * -1, row: direction.row * -1 } : direction
     }
 
     rotatePlayers() {
-        return this.state.indexOf == 0 && this.screens.optionsScreen.options.enableRotation ? [...this.state.players].reverse() : this.state.players
+        return this.state.indexOf == 0 && this.screens.optionsScreen.options.get('rotation') == 'true' ? [...this.state.players].reverse() : this.state.players
     }
     
     rotateScore() {
-        return this.state.indexOf == 0 && this.screens.optionsScreen.options.enableRotation ? [...this.state.score].reverse() : this.state.score
+        return this.state.indexOf == 0 && this.screens.optionsScreen.options.get('rotation') == 'true' ? [...this.state.score].reverse() : this.state.score
     }
 
     rotateTurn() {
-        return this.state.indexOf == 0 && this.screens.optionsScreen.options.enableRotation ? 1 - this.state.turn : this.state.turn
+        return this.state.indexOf == 0 && this.screens.optionsScreen.options.get('rotation') == 'true' ? 1 - this.state.turn : this.state.turn
     }
 
     rotatePosition(position) {   
         return {
-            column: this.state.indexOf == 0 && this.screens.optionsScreen.options.enableRotation ? this.state.board.columns - position.column - 1  : position.column,
-            row: this.state.indexOf == 0 && this.screens.optionsScreen.options.enableRotation ? this.state.board.rows - position.row - 1 : position.row
+            column: this.state.indexOf == 0 && this.screens.optionsScreen.options.get('rotation') == 'true' ? this.state.board.columns - position.column - 1  : position.column,
+            row: this.state.indexOf == 0 && this.screens.optionsScreen.options.get('rotation') == 'true' ? this.state.board.rows - position.row - 1 : position.row
         }
     }
 
@@ -224,7 +224,7 @@ export class Render {
 
     _renderEffects() {
 
-        if (!this.screens.optionsScreen.options.enableEffects)
+        if (this.screens.optionsScreen.options.get('effects') != 'true')
             return
         
         this.flicker.render(this.deltatime, {

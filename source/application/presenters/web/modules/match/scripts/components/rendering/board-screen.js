@@ -157,7 +157,7 @@ export class BoardScreen {
         animation.position.column += distanceX
         animation.position.row += distanceY
 
-        if (animation.distance.column <= 0 || animation.distance.row <= 0 || !this.parent.screens.optionsScreen.options.enableAnimations) {
+        if (animation.distance.column <= 0 || animation.distance.row <= 0 || this.parent.screens.optionsScreen.options.get('animation') != 'true') {
             
             this.parent.state.board.spots[animation.endsAt.row][animation.endsAt.column] = animation.piece
             
@@ -224,7 +224,7 @@ export class BoardScreen {
 
         animation.counter++
 
-        if (animation.counter >= animation.numberOfShakes || !this.parent.screens.optionsScreen.options.enableAnimations) {
+        if (animation.counter >= animation.numberOfShakes || this.parent.screens.optionsScreen.options.get('animation') != 'true') {
             this.parent.board.offsetX = 0
             this.parent.board.offsetY = 0
             this.parent.dequeueAnimation()
@@ -234,7 +234,7 @@ export class BoardScreen {
 
     _calculateJumpParticles(position) {
 
-        if (!this.parent.screens.optionsScreen.options.enableAnimations)
+        if (this.parent.screens.optionsScreen.options.get('animation') != 'true')
             return
 
         const piece = this.parent.state.board.spots[position.row][position.column]
@@ -332,7 +332,7 @@ export class BoardScreen {
         if (animation.offsetY == 0)
             animation.direction = -1.5
 
-        if (animation.transparency <= 0 || !this.parent.screens.optionsScreen.options.enableAnimations) {
+        if (animation.transparency <= 0 || this.parent.screens.optionsScreen.options.get('animation') != 'true') {
 
             animation.piece.promoted = true
 

@@ -1,3 +1,4 @@
+import { OptionHandler } from "../../../../../@shared/scripts/components/handlers/option-handler.js"
 import language from "../langua.js"
 
 export class OptionsScreen {
@@ -5,15 +6,10 @@ export class OptionsScreen {
     // --> Constructor Function
 
     constructor(canvas, context, parent) {
+        this.options = new OptionHandler()
         this.context = context
         this.parent = parent
         this.canvas = canvas
-        this.options = {
-            enableAnimations: true,
-            enableRotation: true,
-            enableEffects: true,
-            enableSounds: true
-        }
     }
     
     // --> Configure Functions
@@ -26,28 +22,28 @@ export class OptionsScreen {
         const translateX = this.parent.container.width / 2 - middleX | 0
         const translateY = this.parent.container.height / 2 - 51 / 2 | 0
 
-        const enableAnimationsToggleOnClick = () => { this.options.enableAnimations = !this.options.enableAnimations }
+        const enableAnimationsToggleOnClick = () => { this.options.set('animation', this.options.get('animation') == 'true' ? 'false' : 'true') }
         const enableAnimationsToggleWidth = enableAnimationsToggleCaption.length * 4 + 6
         const enableAnimationsToggleLeft = translateX
         const enableAnimationsToggleTop = translateY
         const enableAnimationsToggleHeigth = 5
         
         const enableRotationToggleCaption = language.getCaption(7)
-        const enableRotationToggleOnClick = () => { this.options.enableRotation = !this.options.enableRotation }
+        const enableRotationToggleOnClick = () => { this.options.set('rotation', this.options.get('rotation') == 'true' ? 'false' : 'true') }
         const enableRotationToggleWidth = enableRotationToggleCaption.length * 4 + 6
         const enableRotationToggleLeft = translateX + middleX - enableRotationToggleWidth / 2 | 0
         const enableRotationToggleTop = translateY  + 1 * 7
         const enableRotationToggleHeigth = 5 
 
         const enableEffectsToggleCaption = language.getCaption(8)
-        const enableEffectsToggleOnClick = () => { this.options.enableEffects = !this.options.enableEffects }
+        const enableEffectsToggleOnClick = () => { this.options.set('effects', this.options.get('effects') == 'true' ? 'false' : 'true') }
         const enableEffectsToggleWidth = enableEffectsToggleCaption.length * 4 + 6
         const enableEffectsToggleLeft = translateX + middleX - enableEffectsToggleWidth / 2 | 0
         const enableEffectsToggleTop = translateY  + 2 * 7
         const enableEffectsToggleHeigth = 5 
         
         const enableSoundsToggleCaption = language.getCaption(9)
-        const enableSoundsToggleOnClick = () => { this.options.enableSounds = !this.options.enableSounds; return !this.options.enableSounds }
+        const enableSoundsToggleOnClick = () => { this.options.set('sounds', this.options.get('sounds') == 'true' ? 'false' : 'true') }
         const enableSoundsToggleWidth = enableSoundsToggleCaption.length * 4 + 6
         const enableSoundsToggleLeft = translateX + middleX - enableSoundsToggleWidth / 2 | 0
         const enableSoundsToggleTop = translateY  + 3 * 7
@@ -108,19 +104,19 @@ export class OptionsScreen {
         const characters = this.parent.images.charactersGreen
 
         this.context.globalAlpha = enableAnimationsToggle.hovering ? 1.00 : 0.60
-        this.context.drawImage(this.parent.images[this.options.enableAnimations ? "checkBoxOn" : "checkBoxOff"], enableAnimationsToggle.left, enableAnimationsToggle.top)
+        this.context.drawImage(this.parent.images[this.options.get('animation') == 'true' ? "checkBoxOn" : "checkBoxOff"], enableAnimationsToggle.left, enableAnimationsToggle.top)
         this.parent._renderString(enableAnimationsToggle.caption, 7 + enableAnimationsToggle.left, enableAnimationsToggle.top, characters)
 
         this.context.globalAlpha = enableRotationToggle.hovering ? 1.00 : 0.60
-        this.context.drawImage(this.parent.images[this.options.enableRotation ? "checkBoxOn" : "checkBoxOff"], enableRotationToggle.left, enableRotationToggle.top)
+        this.context.drawImage(this.parent.images[this.options.get('rotation') == 'true' ? "checkBoxOn" : "checkBoxOff"], enableRotationToggle.left, enableRotationToggle.top)
         this.parent._renderString(enableRotationToggle.caption, 7 + enableRotationToggle.left, enableRotationToggle.top, characters)
 
         this.context.globalAlpha = enableEffectsToggle.hovering ? 1.00 : 0.60
-        this.context.drawImage(this.parent.images[this.options.enableEffects ? "checkBoxOn" : "checkBoxOff"], enableEffectsToggle.left, enableEffectsToggle.top)
+        this.context.drawImage(this.parent.images[this.options.get('effects') == 'true' ? "checkBoxOn" : "checkBoxOff"], enableEffectsToggle.left, enableEffectsToggle.top)
         this.parent._renderString(enableEffectsToggle.caption, 7 + enableEffectsToggle.left, enableEffectsToggle.top, characters)
 
         this.context.globalAlpha = enableSoundsToggle.hovering ? 1.00 : 0.60
-        this.context.drawImage(this.parent.images[this.options.enableSounds ? "checkBoxOn" : "checkBoxOff"], enableSoundsToggle.left, enableSoundsToggle.top)
+        this.context.drawImage(this.parent.images[this.options.get('sounds') == 'true' ? "checkBoxOn" : "checkBoxOff"], enableSoundsToggle.left, enableSoundsToggle.top)
         this.parent._renderString(enableSoundsToggle.caption, 7 + enableSoundsToggle.left, enableSoundsToggle.top, characters)
 
         this.context.globalAlpha = languageSwitch.hovering ? 1.00 : 0.60

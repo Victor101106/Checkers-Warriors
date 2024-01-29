@@ -1,6 +1,7 @@
+import { OptionHandler } from "../../../../@shared/scripts/components/handlers/option-handler.js"
 import { EventEmitter } from "../../../../@shared/scripts/components/event-emitter.js"
 
-let currentLanguage = (navigator.language || navigator.userLanguage).toLowerCase()
+const options = new OptionHandler()
 
 export const languages = {
     'en-us': [
@@ -58,26 +59,26 @@ const events = new EventEmitter()
 function switchLanguage() {
     
     const keys = Object.keys(languages)
-    const index = Math.max(keys.findIndex(key => key == currentLanguage), 0)
+    const index = Math.max(keys.findIndex(key => key == options.get('language')), 0)
 
     setLanguage(keys[(index + 1) % keys.length])
 
 }
 
 function setLanguage(language = undefined) {
-    
-    currentLanguage = language || (navigator.language || navigator.userLanguage).toLowerCase()
-    
+
+    options.set('language', language || (navigator.language || navigator.userLanguage).toLowerCase())
+        
     events.emit('update-language')
 
 }
 
 function getCaption(position) {
-    return (languages[currentLanguage] || languages['en-us']).at(position)
+    return (languages[options.get('language')] || languages['en-us']).at(position)
 }
 
 function getLanguage() {
-    return currentLanguage
+    return options.get('language')
 }
 
 export default { switchLanguage, setLanguage, getLanguage, getCaption, events }
