@@ -1,4 +1,4 @@
-import { statusHandler } from '../../../@shared/scripts/components/status-handler.js'
+import { statusHandler } from '../../../@shared/scripts/components/handlers/status-handler.js'
 import { signinRequest } from './components/request/signin-request.js'
 import InputValidation from './components/form/input-validation.js'
 

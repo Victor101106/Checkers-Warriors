@@ -1,5 +1,5 @@
 import { createMatchRequest } from "./components/request/create-match-request.js"
-import { statusHandler } from "../../../@shared/scripts/components/status-handler.js"
+import { statusHandler } from "../../../@shared/scripts/components/handlers/status-handler.js"
 
 const [ cardListItemButtonBrazilian ] = [ document.querySelector('#card-list-item-button-brazilian') ]
 
