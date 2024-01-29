@@ -1,5 +1,3 @@
-import language from "../langua.js"
-
 export class InviteScreen {
 
     // --> Constructor Function
@@ -15,12 +13,12 @@ export class InviteScreen {
     configureElements() {
 
         const acceptInviteButtonOnClick = () => this.parent.events.emit('request-join-match')
-        const acceptInviteButtonCaption = language.getCaption(3)
+        const acceptInviteButtonCaption = this.parent.screens.optionsScreen.language.getCaption('accept-invite')
         const acceptInviteButtonWidth  = acceptInviteButtonCaption.length * 4 - 1
         const acceptInviteButtonHeight = 5
 
         const justWatchButtonOnClick = () => this.parent.currentScreen = this.parent.screens.boardScreen
-        const justWatchButtonCaption = language.getCaption(4)
+        const justWatchButtonCaption = this.parent.screens.optionsScreen.language.getCaption('just-watch')
         const justWatchButtonWidth  = justWatchButtonCaption.length * 4 - 1
         const justWatchButtonHeight = 5
 

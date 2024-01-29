@@ -1,13 +1,11 @@
-import { OptionHandler } from "../../../../../@shared/scripts/components/handlers/option-handler.js"
-import language from "../langua.js"
-
 export class OptionsScreen {
 
     // --> Constructor Function
 
-    constructor(canvas, context, parent) {
-        this.options = new OptionHandler()
+    constructor(canvas, context, parent, language, options) {
+        this.language = language
         this.context = context
+        this.options = options
         this.parent = parent
         this.canvas = canvas
     }
@@ -16,7 +14,7 @@ export class OptionsScreen {
 
     configureElements() {
 
-        const enableAnimationsToggleCaption = language.getCaption(6)
+        const enableAnimationsToggleCaption = this.language.getCaption('enable-animations')
         const middleX = (enableAnimationsToggleCaption.length * 4 + 6) / 2
         
         const translateX = this.parent.container.width / 2 - middleX | 0
@@ -28,49 +26,49 @@ export class OptionsScreen {
         const enableAnimationsToggleTop = translateY
         const enableAnimationsToggleHeigth = 5
         
-        const enableRotationToggleCaption = language.getCaption(7)
+        const enableRotationToggleCaption = this.language.getCaption('enable-rotation')
         const enableRotationToggleOnClick = () => { this.options.set('rotation', this.options.get('rotation') == 'true' ? 'false' : 'true') }
         const enableRotationToggleWidth = enableRotationToggleCaption.length * 4 + 6
         const enableRotationToggleLeft = translateX + middleX - enableRotationToggleWidth / 2 | 0
         const enableRotationToggleTop = translateY  + 1 * 7
         const enableRotationToggleHeigth = 5 
 
-        const enableEffectsToggleCaption = language.getCaption(8)
+        const enableEffectsToggleCaption = this.language.getCaption('enable-effects')
         const enableEffectsToggleOnClick = () => { this.options.set('effects', this.options.get('effects') == 'true' ? 'false' : 'true') }
         const enableEffectsToggleWidth = enableEffectsToggleCaption.length * 4 + 6
         const enableEffectsToggleLeft = translateX + middleX - enableEffectsToggleWidth / 2 | 0
         const enableEffectsToggleTop = translateY  + 2 * 7
         const enableEffectsToggleHeigth = 5 
         
-        const enableSoundsToggleCaption = language.getCaption(9)
+        const enableSoundsToggleCaption = this.language.getCaption('enable-sounds')
         const enableSoundsToggleOnClick = () => { this.options.set('sounds', this.options.get('sounds') == 'true' ? 'false' : 'true') }
         const enableSoundsToggleWidth = enableSoundsToggleCaption.length * 4 + 6
         const enableSoundsToggleLeft = translateX + middleX - enableSoundsToggleWidth / 2 | 0
         const enableSoundsToggleTop = translateY  + 3 * 7
         const enableSoundsToggleHeigth = 5 
 
-        const languageSwitchCaption = language.getCaption(0)
-        const languageSwitchOnClick = () => { language.switchLanguage() }
+        const languageSwitchCaption = this.language.getCaption('language')
+        const languageSwitchOnClick = () => { this.language.switchLanguage() }
         const languageSwitchWidth = languageSwitchCaption.length * 4 + 8
         const languageSwitchLeft = translateX + middleX - languageSwitchWidth / 2 | 0
         const languageSwitchTop = translateY + 4 * 7
         const languageSwitchHeigth = 7
         
-        const exitToHomeButtonCaption = language.getCaption(10)
+        const exitToHomeButtonCaption = this.language.getCaption('exit-to-home')
         const exitToHomeButtonOnClick = () => window.location.assign('/')
         const exitToHomeButtonWidth = exitToHomeButtonCaption.length * 4 - 1
         const exitToHomeButtonLeft = translateX + middleX - exitToHomeButtonWidth / 2 | 0
         const exitToHomeButtonTop = translateY + 5 + 5 * 7 + 2
         const exitToHomeButtonHeigth = 5 
         
-        const giveUpButtonCaption = language.getCaption(11)
+        const giveUpButtonCaption = this.language.getCaption('give-up')
         const giveUpButtonOnClick = () => this.parent.events.emit('request-give-up')
         const giveUpButtonWidth = giveUpButtonCaption.length * 4 - 1
         const giveUpButtonLeft = translateX + middleX - giveUpButtonWidth / 2 | 0
         const giveUpButtonTop = translateY + 5 + 6 * 7 + 2
         const giveUpButtonHeigth = 5 
         
-        const closeButtonCaption = language.getCaption(12)
+        const closeButtonCaption = this.language.getCaption('close')
         const closeButtonOnClick = () => this.parent.currentScreen = this.parent.screens.boardScreen
         const closeButtonWidth = closeButtonCaption.length * 4 - 1
         const closeButtonLeft = translateX + middleX - closeButtonWidth / 2 | 0

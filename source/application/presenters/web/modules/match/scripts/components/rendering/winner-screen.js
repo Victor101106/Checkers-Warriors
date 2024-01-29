@@ -1,5 +1,3 @@
-import language from "../langua.js"
-
 export class WinnerScreen {
 
     // --> Constructor Function
@@ -15,7 +13,7 @@ export class WinnerScreen {
 
     configureElements() {
 
-        const returnToHomeButtonCaption = language.getCaption(13)
+        const returnToHomeButtonCaption = this.parent.screens.optionsScreen.language.getCaption('click-here-to-return-home')
         const returnToHomeButtonLeft = Math.floor(this.parent.container.width / 2 - (returnToHomeButtonCaption.length * 4 - 1) / 2)
         const returnToHomeButtonWidth = returnToHomeButtonCaption.length * 4 -1
         const returnToHomeButtonOnClick = () => window.location.assign('/')

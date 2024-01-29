@@ -1,12 +1,12 @@
 import { CanvasHandler } from "../../../../@shared/scripts/components/handlers/canvas-handler.js"
 import { EventEmitter } from "../../../../@shared/scripts/components/event-emitter.js"
-import language from "./langua.js"
 
 export class Config {
     
     // --> Constructor Functions
 
-    constructor(canvas) {
+    constructor(canvas, language) {
+        this.language = language
         this.events = new EventEmitter()
         this.canvas = canvas
     }
@@ -38,7 +38,7 @@ export class Config {
     }
 
     configureTitle(state) {
-        document.title = state.indexOf == -1 ? language.getCaption(1) : language.getCaption(2)
+        document.title = state.indexOf == -1 ? this.language.getCaption('watching-match') : this.language.getCaption('playing-match')
     }
 
     // --> Final Class

@@ -1,20 +1,24 @@
 // --> Imports
 
+import { LanguageHandler } from "../../../@shared/scripts/components/handlers/language-handler.js"
+import { OptionHandler } from "../../../@shared/scripts/components/handlers/option-handler.js"
+
 import { Socket } from "./components/socket.js"
 import { Render } from "./components/render.js"
 import { Config } from "./components/config.js"
 import { Inputs } from "./components/inputs.js"
-
-import language from "./components/langua.js"
 
 // --> Statements
 
 const canvas  = document.querySelector('canvas')
 const context = canvas.getContext('2d')
 
-const render = new Render(canvas, context)
+const options  = new OptionHandler()
+const language = new LanguageHandler(options)
+
+const render = new Render(canvas, context, language, options)
 const inputs = new Inputs(canvas, render)
-const config = new Config(canvas)
+const config = new Config(canvas, language)
 const socket = new Socket()
 
 // --> Socket Events

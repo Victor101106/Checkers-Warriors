@@ -12,7 +12,7 @@ export class Render {
 
     // --> Constructor Function
 
-    constructor(canvas, context) {
+    constructor(canvas, context, language, options) {
         this.flicker = new FlickerRender(canvas, context)
         this.events = new EventEmitter()
         this.text = new TextRender(context)
@@ -22,6 +22,8 @@ export class Render {
         this.screens = new Object()
         this.sounds = new Object()
         this.images = new Object()
+        this.language = language
+        this.options = options
         this.context = context
         this.canvas = canvas
     }
@@ -29,7 +31,7 @@ export class Render {
     // --> Load Functions
 
     async loadScreens() {
-        this.screens.optionsScreen = new OptionsScreen(this.canvas, this.context, this)
+        this.screens.optionsScreen = new OptionsScreen(this.canvas, this.context, this, this.language, this.options)
         this.screens.winnerScreen = new WinnerScreen(this.canvas, this.context, this)
         this.screens.inviteScreen = new InviteScreen(this.canvas, this.context, this)
         this.screens.boardScreen = new BoardScreen(this.canvas, this.context, this)

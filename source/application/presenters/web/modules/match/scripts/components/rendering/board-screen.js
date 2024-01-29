@@ -1,5 +1,3 @@
-import language from "../langua.js"
-
 export class BoardScreen {
 
     // --> Constructor Function
@@ -17,7 +15,7 @@ export class BoardScreen {
 
     configureElements() {
 
-        const optionsButtonCaption = language.getCaption(5)
+        const optionsButtonCaption = this.parent.screens.optionsScreen.language.getCaption('options')
 
         this.parent.createElement("options-button", this.parent.board.left, this.parent.board.top + this.parent.board.height + 4, optionsButtonCaption.length * 4 + 5, 5, optionsButtonCaption, (event) => { return this._optionsButtonClickEvent(event) }, this)
         this.parent.createElement("board", this.parent.board.left, this.parent.board.top, this.parent.board.width, this.parent.board.height, undefined, (event) => { return this._boardClickEvent(event) }, this)
