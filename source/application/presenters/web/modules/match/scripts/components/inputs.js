@@ -26,8 +26,8 @@ export class Inputs {
 
         for (let element of Object.values(this.render.elements)) {
             if (this.intersect(coordinate, element) && element.onclick && element.screen == this.render.currentScreen) {
-                if (!element.onclick(coordinate) && this.render.screens.optionsScreen.options.enableSounds)
-                    this.render.sounds.mouseClickSound.play()
+                if (!element.onclick(coordinate) && this.render.screens.optionsScreen.options.get('sounds') == 'true')
+                    this.render.sounds['mouse-click-sound'].play()
             }
         }
 

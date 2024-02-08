@@ -36,13 +36,13 @@ export class InviteScreen {
 
         const acceptInviteButton = this.parent.getElement('accept-invite-button')
         const justWatchButton = this.parent.getElement('just-watch-button')
-        const characters = this.parent.images.charactersGreen
+        const characters = this.parent.images['characters-green']
 
         const translateX = this.parent.container.width / 2 - acceptInviteButton.width / 2 | 0
         const translateY = this.parent.container.height / 2 - (acceptInviteButton.height + justWatchButton.height + 7) / 2 | 0
 
         this.context.globalAlpha = 0.60
-        this.context.drawImage(this.parent.images.sectionSeparator, translateX + acceptInviteButton.width / 2 - 17 / 2 | 0, translateY + acceptInviteButton.height + 2 | 0)
+        this.context.drawImage(this.parent.images['section-separator'], translateX + acceptInviteButton.width / 2 - 17 / 2 | 0, translateY + acceptInviteButton.height + 2 | 0)
        
         this.context.globalAlpha = acceptInviteButton.hovering ? 1.00 : 0.60
         this.parent._renderString(acceptInviteButton.caption, acceptInviteButton.left, acceptInviteButton.top, characters)

@@ -159,8 +159,8 @@ export class BoardScreen {
             
             this.parent.state.board.spots[animation.endsAt.row][animation.endsAt.column] = animation.piece
             
-            if (this.parent.screens.optionsScreen.options.enableSounds)
-                this.parent.sounds.movePieceSound.play()
+            if (this.parent.screens.optionsScreen.options.get('sounds') == 'true')
+                this.parent.sounds['move-piece-sound'].play()
 
             animation.startsAt.column += animation.direction.column
             animation.startsAt.row    += animation.direction.row
@@ -316,7 +316,7 @@ export class BoardScreen {
             animation.started = true
 
             if (this.parent.screens.optionsScreen.options.enableSounds)
-                this.parent.sounds.promotionSound.play()
+                this.parent.sounds['promotion-sound'].play()
             
             this.promotionAnimation = animation
 
@@ -419,7 +419,7 @@ export class BoardScreen {
         for (let indicator of this.moveIndicators) {
             
             const rotatedPosition  = this.parent.rotatePosition(indicator.position)
-            const moveImage = this.parent.images[`indicatorMove${indicator.image}`]
+            const moveImage = this.parent.images[`indicator-move-${indicator.image}`]
 
             const index = directions.findIndex((direction) => direction.column == indicator.direction.column && direction.row == indicator.direction.row)
 
@@ -431,7 +431,7 @@ export class BoardScreen {
 
             const rotatedPosition  = this.parent.rotatePosition(indicator.position)
 
-            this.context.drawImage(this.parent.images.indicatorJump, Math.round(this.parent.board.left + rotatedPosition.column * 16), Math.round(this.parent.board.top + rotatedPosition.row * 16))
+            this.context.drawImage(this.parent.images['indicator-jump'], Math.round(this.parent.board.left + rotatedPosition.column * 16), Math.round(this.parent.board.top + rotatedPosition.row * 16))
 
         }
 
@@ -439,7 +439,7 @@ export class BoardScreen {
 
             const rotatedPosition = this.parent.rotatePosition(this.slotIndicator)
     
-            this.context.drawImage(this.parent.images.indicatorSlot, Math.round(this.parent.board.left + rotatedPosition.column * 16), Math.round(this.parent.board.top + rotatedPosition.row * 16))
+            this.context.drawImage(this.parent.images['indicator-slot'], Math.round(this.parent.board.left + rotatedPosition.column * 16), Math.round(this.parent.board.top + rotatedPosition.row * 16))
 
         }
 
@@ -456,7 +456,7 @@ export class BoardScreen {
 
     _renderPiece(column, row, piece) {
 
-        const image = piece.player ? this.parent.images.pieceBlack : this.parent.images.pieceWhite
+        const image = piece.player ? this.parent.images['piece-black'] : this.parent.images['piece-white']
         const position = this.parent.rotatePosition({ column, row })
 
         this.context.drawImage(image, Math.round(this.parent.board.left + position.column * 16 + 2), Math.round(this.parent.board.top + position.row * 16 + 2))
@@ -466,11 +466,11 @@ export class BoardScreen {
     }
 
     _renderCrown(column, row) {        
-        this.context.drawImage(this.parent.images.pieceCrown, Math.round(this.parent.board.left + column * 16 + 3), Math.round(this.parent.board.top + row * 16 - 2))
+        this.context.drawImage(this.parent.images['piece-crown'], Math.round(this.parent.board.left + column * 16 + 3), Math.round(this.parent.board.top + row * 16 - 2))
     }
 
     _renderCrownSelection(column, row) {        
-        this.context.drawImage(this.parent.images.selectionCrown, Math.round(this.parent.board.left + column * 16 + 2), Math.round(this.parent.board.top + row * 16 - 3))
+        this.context.drawImage(this.parent.images['selection-crown'], Math.round(this.parent.board.left + column * 16 + 2), Math.round(this.parent.board.top + row * 16 - 3))
     }
 
     _renderSelections() {
@@ -499,7 +499,7 @@ export class BoardScreen {
         const position = this.parent.rotatePosition({ column, row })
 
         const pieceOrUndefined = this.parent.state.board.spots[row][column]
-        const image = this.parent.images[this.promotionAnimation ? 'selectionQueen' : (pieceOrUndefined ? (pieceOrUndefined.player == this.parent.state.indexOf ? "selectionPiece" : "selectionJump") : "selectionSpot")]
+        const image = this.parent.images[this.promotionAnimation ? 'selection-queen' : (pieceOrUndefined ? (pieceOrUndefined.player == this.parent.state.indexOf ? "selection-piece" : "selection-jump") : "selection-spot")]
 
         this.context.drawImage(image, this.parent.board.left + position.column * 16, this.parent.board.top + position.row * 16)
 
@@ -531,7 +531,7 @@ export class BoardScreen {
             particle.position.x += speedX * this.parent.deltatime
             particle.position.y += speedY * this.parent.deltatime
 
-            const image = this.parent.images[`particle0${particle.image}`]
+            const image = this.parent.images[`particle-0${particle.image}`]
 
             if (image)
                 this.context.drawImage(image, image.width / 2 * particle.player, 0, image.width / 2, image.height, Math.round(particle.position.x), Math.round(particle.position.y), image.width / 2, image.height)
@@ -579,16 +579,16 @@ export class BoardScreen {
     _renderPlayerUp() {
         
         const players = this.parent.rotatePlayers().map(player => player || '???')
-        const characters = this.parent.images.charactersGreen
+        const characters = this.parent.images['characters-green']
 
         const [ left, top ] = [ this.parent.board.left, 2 ]
         
         if (this.parent.rotateTurn() == 0)
-            this.context.drawImage(this.parent.images.indicatorLeft, left + 10 + Math.min(players[0].length, 14) * 4, top + 1)
+            this.context.drawImage(this.parent.images['indicator-left'], left + 10 + Math.min(players[0].length, 14) * 4, top + 1)
         else
             this.context.globalAlpha = 0.60  
 
-        this.context.drawImage(this.parent.images.profilePicture, left, top)
+        this.context.drawImage(this.parent.images['profile-picture'], left, top)
 
         this.parent._renderString(players[0], left + 9, top + 1, characters, 14)
 
@@ -604,13 +604,13 @@ export class BoardScreen {
         
         const [ left, top ] = [ this.parent.board.left + this.parent.board.width, 3 ]
 
-        const characters = this.parent.images.charactersGreen
+        const characters = this.parent.images['characters-green']
 
         this.context.globalAlpha = 0.60
 
         this.parent._renderString(seconds.length == 1 ? '0'.concat(seconds) : seconds, left - 7, top, characters, 2)
         
-        this.context.drawImage(this.parent.images.characterColon, left - 10, top)
+        this.context.drawImage(this.parent.images['character-colon'], left - 10, top)
         
         this.parent._renderString(minutes.length == 1 ? '0'.concat(minutes) : minutes, left - 17, top, characters, 2)
 
@@ -623,14 +623,14 @@ export class BoardScreen {
         const top  = this.parent.board.top + Math.floor((this.parent.board.height - 6) / 2 - 7)
         const left = this.parent.board.left - 3
         
-        const characters = this.parent.images.charactersGreen
+        const characters = this.parent.images['characters-green']
         const score = this.parent.rotateScore()
 
         this.context.globalAlpha = 0.60
 
         this.parent._renderString(String(score[0]).split('').reverse().join(''), left - 3, top, characters, Infinity, -1)
         
-        this.context.drawImage(this.parent.images.characterCross, left - 3, top + 6)
+        this.context.drawImage(this.parent.images['character-cross'], left - 3, top + 6)
         
         this.parent._renderString(String(score[1]).split('').reverse().join(''), left - 3, top + 10, characters, Infinity, -1)
 
@@ -641,12 +641,12 @@ export class BoardScreen {
     _renderOptionsButton() {
         
         const optionsButton = this.parent.getElement('options-button')
-        const characters = this.parent.images.charactersGreen
+        const characters = this.parent.images['characters-green']
         
         if (!optionsButton.hovering)
             this.context.globalAlpha = 0.60
         
-        this.context.drawImage(this.parent.images.characterLines, optionsButton.left, optionsButton.top)
+        this.context.drawImage(this.parent.images['character-lines'], optionsButton.left, optionsButton.top)
         
         this.parent._renderString(optionsButton.caption, optionsButton.left + 6, optionsButton.top, characters)
 
@@ -657,17 +657,17 @@ export class BoardScreen {
     _renderPlayerDown() {
 
         const players = this.parent.rotatePlayers().map(player => player || '???')
-        const characters = this.parent.images.charactersGreen
+        const characters = this.parent.images['characters-green']
 
         const left = this.parent.board.left + this.parent.board.width - 7
         const top = this.parent.board.top + this.parent.board.height + 3
 
         if (this.parent.rotateTurn() == 1)
-            this.context.drawImage(this.parent.images.indicatorRight, left - players[1].length * 4 - 11, top + 1)
+            this.context.drawImage(this.parent.images['indicator-right'], left - players[1].length * 4 - 11, top + 1)
         else
             this.context.globalAlpha = 0.60
 
-        this.context.drawImage(this.parent.images.profilePicture, left, top)
+        this.context.drawImage(this.parent.images['profile-picture'], left, top)
         
         this.parent._renderString(players[1].split('').reverse().join(''), left - 5, top + 1, characters, 14, -1)
 

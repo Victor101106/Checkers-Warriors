@@ -39,11 +39,11 @@ export class WinnerScreen {
         
         this.context.globalAlpha = 1.00 * this.animationPercentage
 
-        const image = this.parent.images[(this.parent.state.indexOf == -1 || this.parent.state.winner == this.parent.state.indexOf ? 'wonText' : 'lossText') + (this.parent.state.winner == 0 && (this.parent.state.indexOf == -1 || this.parent.state.winner == this.parent.state.indexOf) ? "White" : "Black") ]
+        const image = this.parent.images[(this.parent.state.indexOf == -1 || this.parent.state.winner == this.parent.state.indexOf ? 'won-text-' : 'loss-text-') + (this.parent.state.winner == 0 && (this.parent.state.indexOf == -1 || this.parent.state.winner == this.parent.state.indexOf) ? "white" : "black") ]
         this.context.drawImage(image, this.parent.container.width / 2 - image.width / 2 | 0, this.parent.container.height / 2 - image.height / 2 | 0)
 
         this.context.globalAlpha = returnToHomeButton.hovering ? 1.00 : 0.75
-        this.parent._renderString(returnToHomeButton.caption, returnToHomeButton.left, returnToHomeButton.top, this.parent.state.indexOf == -1 || this.parent.state.winner == this.parent.state.indexOf ? this.parent.images.charactersGreen : this.parent.images.charactersRed)
+        this.parent._renderString(returnToHomeButton.caption, returnToHomeButton.left, returnToHomeButton.top, this.parent.state.indexOf == -1 || this.parent.state.winner == this.parent.state.indexOf ? this.parent.images['characters-green'] : this.parent.images['characters-red'])
 
         this.context.globalAlpha = 1.00
 

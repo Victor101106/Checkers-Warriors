@@ -1,7 +1,7 @@
 import { FlickerRender } from "../../../../@shared/scripts/components/rendering/render-flicker.js"
+import { loadAllAudios } from "../../../../@shared/scripts/components/loading/load-all-audios.js"
+import { loadAllImages } from "../../../../@shared/scripts/components/loading/load-all-images.js"
 import { TextRender } from "../../../../@shared/scripts/components/rendering/render-text.js"
-import { loadImage } from "../../../../@shared/scripts/components/loading/load-image.js"
-import { loadAudio } from "../../../../@shared/scripts/components/loading/load-audio.js"
 import { EventEmitter } from "../../../../@shared/scripts/components/event-emitter.js"
 import { OptionsScreen } from "./rendering/options-screen.js"
 import { InviteScreen } from "./rendering/invite-screen.js"
@@ -38,49 +38,11 @@ export class Render {
     }
 
     async loadImages() {
-        this.images.sectionSeparator = await loadImage('../static/modules/match/assets/images/section-separator.png')
-        this.images.charactersGreen = await loadImage('../static/modules/match/assets/images/characters-green.png')
-        this.images.indicatorMove1 = await loadImage('../static/modules/match/assets/images/indicator-move-1.png')
-        this.images.indicatorMove2 = await loadImage('../static/modules/match/assets/images/indicator-move-2.png')
-        this.images.indicatorMove3 = await loadImage('../static/modules/match/assets/images/indicator-move-3.png')
-        this.images.languageSwitch = await loadImage('../static/modules/match/assets/images/language-switch.png')
-        this.images.characterColon = await loadImage('../static/modules/match/assets/images/character-colon.png')
-        this.images.characterCross = await loadImage('../static/modules/match/assets/images/character-cross.png')
-        this.images.characterLines = await loadImage('../static/modules/match/assets/images/character-lines.png')
-        this.images.indicatorRight = await loadImage('../static/modules/match/assets/images/indicator-right.png')
-        this.images.profilePicture = await loadImage('../static/modules/match/assets/images/profile-picture.png')
-        this.images.selectionPiece = await loadImage('../static/modules/match/assets/images/selection-piece.png')
-        this.images.selectionQueen = await loadImage('../static/modules/match/assets/images/selection-queen.png')
-        this.images.selectionCrown = await loadImage('../static/modules/match/assets/images/selection-crown.png')
-        this.images.lossTextBlack = await loadImage('../static/modules/match/assets/images/loss-text-black.png')
-        this.images.lossTextWhite = await loadImage('../static/modules/match/assets/images/loss-text-white.png')
-        this.images.indicatorJump = await loadImage('../static/modules/match/assets/images/indicator-jump.png')
-        this.images.indicatorSlot = await loadImage('../static/modules/match/assets/images/indicator-slot.png')
-        this.images.charactersRed = await loadImage('../static/modules/match/assets/images/characters-red.png')
-        this.images.indicatorLeft = await loadImage('../static/modules/match/assets/images/indicator-left.png')
-        this.images.selectionJump = await loadImage('../static/modules/match/assets/images/selection-jump.png')
-        this.images.selectionSpot = await loadImage('../static/modules/match/assets/images/selection-spot.png')
-        this.images.wonTextWhite = await loadImage('../static/modules/match/assets/images/won-text-white.png')
-        this.images.wonTextBlack = await loadImage('../static/modules/match/assets/images/won-text-black.png')
-        this.images.checkBoxOff = await loadImage('../static/modules/match/assets/images/check-box-off.png')
-        this.images.checkBoxOn = await loadImage('../static/modules/match/assets/images/check-box-on.png')
-        this.images.pieceCrown = await loadImage('../static/modules/match/assets/images/piece-crown.png')
-        this.images.pieceBlack = await loadImage('../static/modules/match/assets/images/piece-black.png')
-        this.images.pieceWhite = await loadImage('../static/modules/match/assets/images/piece-white.png')
-        this.images.particle01 = await loadImage('../static/modules/match/assets/images/particle-01.png')
-        this.images.particle02 = await loadImage('../static/modules/match/assets/images/particle-02.png')
-        this.images.particle03 = await loadImage('../static/modules/match/assets/images/particle-03.png')
-        this.images.particle04 = await loadImage('../static/modules/match/assets/images/particle-04.png')
-        this.images.particle05 = await loadImage('../static/modules/match/assets/images/particle-05.png')
+        this.images = await loadAllImages()
     }
 
     async loadAudios() {
-        this.sounds.mouseClickSound = await loadAudio('../static/modules/match/assets/sounds/mouse-click-sound.mp3')
-        this.sounds.backgroundSound = await loadAudio('../static/modules/match/assets/sounds/background-sound.mp3')
-        this.sounds.movePieceSound = await loadAudio('../static/modules/match/assets/sounds/move-piece-sound.mp3')
-        this.sounds.promotionSound = await loadAudio('../static/modules/match/assets/sounds/promotion-sound.mp3')
-        this.sounds.victorySound = await loadAudio('../static/modules/match/assets/sounds/victory-sound.mp3')
-        this.sounds.defeatSound = await loadAudio('../static/modules/match/assets/sounds/defeat-sound.mp3')
+        this.sounds = await loadAllAudios()
     }
 
     // --> Receive Functions
@@ -129,9 +91,9 @@ export class Render {
             return
 
         if (this.state.indexOf == -1 || this.state.winner == this.state.indexOf)
-            this.sounds.victorySound.play()
+            this.sounds['victory-sound'].play()
         else
-            this.sounds.defeatSound.play()
+            this.sounds['defeat-sound'].play()
 
     }
 

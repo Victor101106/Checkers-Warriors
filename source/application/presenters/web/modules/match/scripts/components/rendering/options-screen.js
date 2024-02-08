@@ -99,30 +99,30 @@ export class OptionsScreen {
         const giveUpButton = this.parent.getElement('give-up-button')
         const closeButton = this.parent.getElement('close-button')
 
-        const characters = this.parent.images.charactersGreen
+        const characters = this.parent.images['characters-green']
 
         this.context.globalAlpha = enableAnimationsToggle.hovering ? 1.00 : 0.60
-        this.context.drawImage(this.parent.images[this.options.get('animation') == 'true' ? "checkBoxOn" : "checkBoxOff"], enableAnimationsToggle.left, enableAnimationsToggle.top)
+        this.context.drawImage(this.parent.images[this.options.get('animation') == 'true' ? "check-box-on" : "check-box-off"], enableAnimationsToggle.left, enableAnimationsToggle.top)
         this.parent._renderString(enableAnimationsToggle.caption, 7 + enableAnimationsToggle.left, enableAnimationsToggle.top, characters)
 
         this.context.globalAlpha = enableRotationToggle.hovering ? 1.00 : 0.60
-        this.context.drawImage(this.parent.images[this.options.get('rotation') == 'true' ? "checkBoxOn" : "checkBoxOff"], enableRotationToggle.left, enableRotationToggle.top)
+        this.context.drawImage(this.parent.images[this.options.get('rotation') == 'true' ? "check-box-on" : "check-box-off"], enableRotationToggle.left, enableRotationToggle.top)
         this.parent._renderString(enableRotationToggle.caption, 7 + enableRotationToggle.left, enableRotationToggle.top, characters)
 
         this.context.globalAlpha = enableEffectsToggle.hovering ? 1.00 : 0.60
-        this.context.drawImage(this.parent.images[this.options.get('effects') == 'true' ? "checkBoxOn" : "checkBoxOff"], enableEffectsToggle.left, enableEffectsToggle.top)
+        this.context.drawImage(this.parent.images[this.options.get('effects') == 'true' ? "check-box-on" : "check-box-off"], enableEffectsToggle.left, enableEffectsToggle.top)
         this.parent._renderString(enableEffectsToggle.caption, 7 + enableEffectsToggle.left, enableEffectsToggle.top, characters)
 
         this.context.globalAlpha = enableSoundsToggle.hovering ? 1.00 : 0.60
-        this.context.drawImage(this.parent.images[this.options.get('sounds') == 'true' ? "checkBoxOn" : "checkBoxOff"], enableSoundsToggle.left, enableSoundsToggle.top)
+        this.context.drawImage(this.parent.images[this.options.get('sounds') == 'true' ? "check-box-on" : "check-box-off"], enableSoundsToggle.left, enableSoundsToggle.top)
         this.parent._renderString(enableSoundsToggle.caption, 7 + enableSoundsToggle.left, enableSoundsToggle.top, characters)
 
         this.context.globalAlpha = languageSwitch.hovering ? 1.00 : 0.60
-        this.context.drawImage(this.parent.images.languageSwitch, languageSwitch.left, languageSwitch.top)
+        this.context.drawImage(this.parent.images['language-switch'], languageSwitch.left, languageSwitch.top)
         this.parent._renderString(languageSwitch.caption, 9 + languageSwitch.left, languageSwitch.top + 1, characters)
 
         this.context.globalAlpha = 0.60
-        this.context.drawImage(this.parent.images.sectionSeparator, enableAnimationsToggle.left + enableAnimationsToggle.width / 2 - 17 / 2 | 0, languageSwitch.top + languageSwitch.height + 2 | 0)
+        this.context.drawImage(this.parent.images['section-separator'], enableAnimationsToggle.left + enableAnimationsToggle.width / 2 - 17 / 2 | 0, languageSwitch.top + languageSwitch.height + 2 | 0)
         
         this.context.globalAlpha = exitToHomeButton.hovering ? 1.00 : 0.60
         this.parent._renderString(exitToHomeButton.caption, exitToHomeButton.left, exitToHomeButton.top, characters)
