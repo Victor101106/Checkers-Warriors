@@ -20,7 +20,7 @@ export class OptionsScreen {
         const translateX = this.parent.container.width / 2 - middleX | 0
         const translateY = this.parent.container.height / 2 - 51 / 2 | 0
 
-        const enableAnimationsToggleOnClick = () => { this.options.set('animation', this.options.get('animation') == 'true' ? 'false' : 'true') }
+        const enableAnimationsToggleOnClick = () => { this.options.set('animations', this.options.get('animations') == 'true' ? 'false' : 'true') }
         const enableAnimationsToggleWidth = enableAnimationsToggleCaption.length * 4 + 6
         const enableAnimationsToggleLeft = translateX
         const enableAnimationsToggleTop = translateY
@@ -102,7 +102,7 @@ export class OptionsScreen {
         const characters = this.parent.sprites['characters-green']
 
         this.context.globalAlpha = enableAnimationsToggle.hovering ? 1.00 : 0.60
-        this.context.drawImage(this.parent.sprites[this.options.get('animation') == 'true' ? "check-box-on" : "check-box-off"], enableAnimationsToggle.left, enableAnimationsToggle.top)
+        this.context.drawImage(this.parent.sprites[this.options.get('animations') == 'true' ? "check-box-on" : "check-box-off"], enableAnimationsToggle.left, enableAnimationsToggle.top)
         this.parent._renderString(enableAnimationsToggle.caption, 7 + enableAnimationsToggle.left, enableAnimationsToggle.top, characters)
 
         this.context.globalAlpha = enableRotationToggle.hovering ? 1.00 : 0.60

@@ -50,7 +50,7 @@ export class RenderBoard extends BoardAuxiliary {
 
     updateAnimations() {
 
-        if (this.options.get('animation') == 'true')
+        if (this.options.get('animations') == 'true')
             return this.updateAnimation(0)
 
         for (let index = 0; index < this.animations.length; index++) {

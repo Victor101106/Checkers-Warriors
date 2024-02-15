@@ -29,8 +29,8 @@ export class OptionHandler {
 
         const defaultOptions = {
             'language': (navigator.language || navigator.userLanguage).toLowerCase(),
+            'animations': true,
             'first-use': true,
-            'animation': true,
             'rotation': true,
             'effects': true,
             'audios': true
