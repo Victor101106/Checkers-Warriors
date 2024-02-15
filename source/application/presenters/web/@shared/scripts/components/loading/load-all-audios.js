@@ -2,15 +2,14 @@ import { loadAudio } from './load-audio.js'
 
 export async function loadAllAudios() {
     
-    const AUDIO_PATH = '../static/modules/match/assets/sounds'
+    const AUDIO_PATH = '../static/@shared/assets/audios'
 
     const audioURLArray = [ 
-        `${AUDIO_PATH}/mouse-click-sound.mp3`,
-        `${AUDIO_PATH}/background-sound.mp3`,
-        `${AUDIO_PATH}/move-piece-sound.mp3`,
-        `${AUDIO_PATH}/promotion-sound.mp3`,
-        `${AUDIO_PATH}/victory-sound.mp3`,
-        `${AUDIO_PATH}/defeat-sound.mp3`
+        `${AUDIO_PATH}/mouse-click-audio.mp3`,
+        `${AUDIO_PATH}/move-piece-audio.mp3`,
+        `${AUDIO_PATH}/promotion-audio.mp3`,
+        `${AUDIO_PATH}/victory-audio.mp3`,
+        `${AUDIO_PATH}/defeat-audio.mp3`
     ]
 
     try {
@@ -31,5 +30,9 @@ export async function loadAllAudios() {
 }
 
 function extractFilenameFromUrl(url) {
-    return url.split('/').at(-1).split('.').at(0)
+    
+    const fullFilename = url.split('/').at(-1).split('.').at(0)
+
+    return fullFilename.substring(0, fullFilename.length - '-audio'.length)
+
 }

@@ -1,8 +1,8 @@
 import { loadImage } from './load-image.js'
 
-export async function loadAllImages() {
+export async function loadAllSprites() {
     
-    const IMAGE_PATH = '../static/modules/match/assets/images'
+    const IMAGE_PATH = '../static/@shared/assets/sprites'
 
     const imageURLArray = [ 
         `${IMAGE_PATH}/section-separator.png`,
@@ -50,7 +50,7 @@ export async function loadAllImages() {
 
     } catch (error) {
         
-        console.error('Error loading images:', error.message, error.url)
+        console.error('Error loading sprites:', error.message, error.url)
         
         throw error
 

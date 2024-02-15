@@ -1,6 +1,6 @@
 import { FlickerRender } from "../../../../@shared/scripts/components/rendering/render-flicker.js"
+import { loadAllSprites } from "../../../../@shared/scripts/components/loading/load-all-sprites.js"
 import { loadAllAudios } from "../../../../@shared/scripts/components/loading/load-all-audios.js"
-import { loadAllImages } from "../../../../@shared/scripts/components/loading/load-all-images.js"
 import { TextRender } from "../../../../@shared/scripts/components/rendering/render-text.js"
 import { EventEmitter } from "../../../../@shared/scripts/components/event-emitter.js"
 import { OptionsScreen } from "./rendering/options-screen.js"
@@ -20,8 +20,6 @@ export class Render {
         this.animations = new Array()
         this.elements = new Object()
         this.screens = new Object()
-        this.sounds = new Object()
-        this.images = new Object()
         this.language = language
         this.options = options
         this.context = context
@@ -38,11 +36,11 @@ export class Render {
     }
 
     async loadImages() {
-        this.images = await loadAllImages()
+        this.sprites = await loadAllSprites()
     }
 
     async loadAudios() {
-        this.sounds = await loadAllAudios()
+        this.audios = await loadAllAudios()
     }
 
     // --> Receive Functions
@@ -87,13 +85,13 @@ export class Render {
         this.currentScreen = this.screens.winnerScreen
         this.state.winner = winner
 
-        if (this.screens.optionsScreen.options.get('sounds') != 'true')
+        if (this.screens.optionsScreen.options.get('audios') != 'true')
             return
 
         if (this.state.indexOf == -1 || this.state.winner == this.state.indexOf)
-            this.sounds['victory-sound'].play()
+            this.audios['victory'].play()
         else
-            this.sounds['defeat-sound'].play()
+            this.audios['defeat'].play()
 
     }
 

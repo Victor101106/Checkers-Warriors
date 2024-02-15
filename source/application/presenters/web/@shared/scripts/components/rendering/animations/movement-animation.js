@@ -42,8 +42,8 @@ export class MovementAnimation {
         this.calculateFirstIndicators()
         this.calculateLastIndicators()
 
-        if (this.parent.options.get('sounds') == 'true' && !this.afterEndsAt)
-            this.parent.audios['move-piece-sound'].play()
+        if (this.parent.options.get('audios') == 'true' && !this.afterEndsAt)
+            this.parent.audios['move-piece'].play()
 
     }
     
@@ -80,8 +80,8 @@ export class MovementAnimation {
             
             this.calculateLastIndicators()
             
-            if (this.parent.options.get('sounds') == 'true')
-                this.parent.audios['move-piece-sound'].play()
+            if (this.parent.options.get('audios') == 'true')
+                this.parent.audios['move-piece'].play()
 
             this.position = this.endsAt
             this.finished = true

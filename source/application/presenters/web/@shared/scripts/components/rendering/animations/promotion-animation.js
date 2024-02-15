@@ -39,8 +39,8 @@ export class PromotionAnimation {
         
         this.piece = this.parent.state.board.spots[this.position.row][this.position.column]
 
-        if (this.parent.options.get('sounds') == 'true')
-            this.parent.audios['promotion-sound'].play()
+        if (this.parent.options.get('audios') == 'true')
+            this.parent.audios['promotion'].play()
         
         this.started = true
 

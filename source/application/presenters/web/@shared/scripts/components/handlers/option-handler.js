@@ -33,7 +33,7 @@ export class OptionHandler {
             'animation': true,
             'rotation': true,
             'effects': true,
-            'sounds': true
+            'audios': true
         }
 
         for (const [option, value] of Object.entries(defaultOptions)) {
