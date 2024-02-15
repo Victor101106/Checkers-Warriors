@@ -25,9 +25,9 @@ const socket = new Socket()
 
 socket.events.on('receive-match-accepted', async (event) => {
 
-    await render.loadScreens()
     await render.loadImages()
     await render.loadAudios()
+    await render.loadScreens()
 
     config.configureContainer(event)
     config.configureBoard(event)
@@ -48,7 +48,7 @@ socket.events.on('receive-match-rejected', async (event) => {
 })
 
 socket.events.on('find-all-movements-accepted', async (event) => {
-    render.screens.boardScreen.movements = event
+    render.screens.boardScreen.renderBoard.movements = event
 })
 
 socket.events.on('find-all-movements-rejected', async (event) => {
