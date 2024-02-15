@@ -1,7 +1,7 @@
-import { FlickerRender } from "../../../../@shared/scripts/components/rendering/render-flicker.js"
+import { RenderFlicker } from "../../../../@shared/scripts/components/rendering/render-flicker.js"
 import { loadAllSprites } from "../../../../@shared/scripts/components/loading/load-all-sprites.js"
 import { loadAllAudios } from "../../../../@shared/scripts/components/loading/load-all-audios.js"
-import { TextRender } from "../../../../@shared/scripts/components/rendering/render-text.js"
+import { RenderText } from "../../../../@shared/scripts/components/rendering/render-text.js"
 import { EventEmitter } from "../../../../@shared/scripts/components/event-emitter.js"
 import { OptionsScreen } from "./rendering/options-screen.js"
 import { InviteScreen } from "./rendering/invite-screen.js"
@@ -13,9 +13,9 @@ export class Render {
     // --> Constructor Function
 
     constructor(canvas, context, language, options) {
-        this.flicker = new FlickerRender(canvas, context)
+        this.renderFlicker = new RenderFlicker(canvas, context)
+        this.renderText = new RenderText(context)
         this.events = new EventEmitter()
-        this.text = new TextRender(context)
         this.currentScreen = undefined
         this.animations = new Array()
         this.elements = new Object()
@@ -189,7 +189,7 @@ export class Render {
         if (this.screens.optionsScreen.options.get('effects') != 'true')
             return
         
-        this.flicker.render(this.deltatime, {
+        this.renderFlicker.render(this.deltatime, {
             left: -this.container.left ?? 0,
             top: -this.container.top ?? 0
         })
@@ -197,7 +197,7 @@ export class Render {
     }
 
     _renderString(string, left, top, characterImage, maxLength = Infinity, positionIncrement = 1) {
-        this.text.render(string, { left, top }, characterImage, maxLength, positionIncrement)
+        this.renderText.render(string, { left, top }, characterImage, maxLength, positionIncrement)
     }
 
     // --> Final Class

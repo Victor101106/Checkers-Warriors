@@ -1,4 +1,4 @@
-export class TextRender {
+export class RenderText {
 
     constructor(context, defaultCharacterImage) {
         this.defaultCharacterImage = defaultCharacterImage

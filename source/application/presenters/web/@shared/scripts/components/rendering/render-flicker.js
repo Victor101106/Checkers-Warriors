@@ -1,4 +1,4 @@
-export class FlickerRender {
+export class RenderFlicker {
 
     constructor(canvas, context) {
         this.timeInterval = new Date().getTime()
