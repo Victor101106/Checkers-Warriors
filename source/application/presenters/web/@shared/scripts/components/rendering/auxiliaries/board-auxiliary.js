@@ -77,6 +77,84 @@ export class BoardAuxiliary {
 
     }
 
+    calculateMovementIndicators(movement) {
+
+        for (let index = 0; index < movement.positions.length; index++) {
+
+            const beforeStartsAt = movement.positions[index - 2] || movement.startsAt
+            const afterEndsAt = movement.positions[index + 1]
+            
+            const startsAt = movement.positions[index - 1] || movement.startsAt            
+            const endsAt = movement.positions[index]
+
+            this.calculateInitialIndicators(beforeStartsAt, startsAt, endsAt)
+            this.calculateFinalIndicators(startsAt, endsAt, afterEndsAt, movement.jumps.shift())
+
+        }
+
+    }
+
+    calculateInitialIndicators(beforeStartsAt, startsAt, endsAt) {
+
+        const currentMovementDirection = this.calculateDirection(startsAt, endsAt)
+
+        const beforeStartsAtDirection = this.calculateDirection(beforeStartsAt, startsAt)
+        const hasCurveBefore = !this.comparePosition(beforeStartsAtDirection, currentMovementDirection)
+
+        const sprite = this.indicators.moves.length && !hasCurveBefore ? 1 : 2
+
+        this.indicators.moves.push({
+            direction: this.rotateDirection(currentMovementDirection),
+            position: startsAt,
+            sprite: sprite,
+        })
+
+        if (hasCurveBefore) {
+
+            const reverseBeforeStartsAtDirection = this.reverseDirection(beforeStartsAtDirection)
+
+            this.indicators.moves.push({
+                direction: this.rotateDirection(reverseBeforeStartsAtDirection),
+                position: startsAt,
+                sprite: 3
+            })
+
+        }
+
+    }
+
+    calculateFinalIndicators(startsAt, endsAt, afterEndsAt, jumpBetween) {
+
+        const currentMovementDirection = this.calculateDirection(startsAt, endsAt)
+
+        startsAt = { ...startsAt }
+
+        startsAt.column += currentMovementDirection.column
+        startsAt.row    += currentMovementDirection.row
+
+        while (!this.comparePosition(startsAt, endsAt)) {
+                
+            if (!jumpBetween || !this.comparePosition(jumpBetween.position, startsAt)) {
+                this.indicators.moves.push({
+                    direction: this.rotateDirection(currentMovementDirection),
+                    position: { ...startsAt },
+                    sprite: 1
+                })
+            }
+
+            startsAt.column += currentMovementDirection.column
+            startsAt.row    += currentMovementDirection.row
+
+        }
+
+        if (jumpBetween)
+            this.indicators.jumps.push(jumpBetween.position)
+        
+        if (!afterEndsAt)
+            this.indicators.spots.push(endsAt)
+
+    }
+
     calculateElement(state = this.state, position = this.position) {
         
         const height = state.board.rows * 16 + 8
@@ -165,11 +243,15 @@ export class BoardAuxiliary {
         if (rotationNotEnabled)
             return direction
 
+        return this.reverseDirection(direction)
+
+    }
+
+    reverseDirection(direction) {
         return {
             column: direction.column * -1,
             row: direction.row  * -1
         }
-
     }
 
     // --> Compare Functions <-- //

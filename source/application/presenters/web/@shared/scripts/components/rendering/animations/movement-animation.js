@@ -39,8 +39,8 @@ export class MovementAnimation {
         this.parent.state.board.spots[this.startsAt.row][this.startsAt.column] = undefined
         this.parent.state.board.spots[this.endsAt.row][this.endsAt.column] = this.piece
 
-        this.calculateFirstIndicators()
-        this.calculateLastIndicators()
+        this.parent.calculateInitialIndicators(this.beforeStartsAt, this.startsAt, this.endsAt)
+        this.parent.calculateFinalIndicators(this.startsAt, this.endsAt, this.afterEndsAt, this.jumpBetween)
 
         if (this.parent.options.get('audios') == 'true' && !this.afterEndsAt)
             this.parent.audios['move-piece'].play()
@@ -55,7 +55,7 @@ export class MovementAnimation {
 
         this.parent.state.board.spots[this.startsAt.row][this.startsAt.column] = undefined
 
-        this.calculateFirstIndicators()
+        this.parent.calculateInitialIndicators(this.beforeStartsAt, this.startsAt, this.endsAt)
 
         this.started = true
         
@@ -78,7 +78,7 @@ export class MovementAnimation {
             
             this.parent.state.board.spots[this.endsAt.row][this.endsAt.column] = this.piece
             
-            this.calculateLastIndicators()
+            this.parent.calculateFinalIndicators(this.startsAt, this.endsAt, this.afterEndsAt, this.jumpBetween)
             
             if (this.parent.options.get('audios') == 'true')
                 this.parent.audios['move-piece'].play()
@@ -94,55 +94,6 @@ export class MovementAnimation {
 
     render(deltatime = this.parent.deltatime) {
         this.parent.renderPiece(this.position.column, this.position.row, this.piece)
-    }
-
-    // --> Calculate Functions <-- //
-
-    calculateFirstIndicators() {
-
-        const beforeStartsAtDirection = this.beforeStartsAt ? this.parent.calculateDirection(this.beforeStartsAt, this.startsAt) : undefined
-        const hasCurveBefore = beforeStartsAtDirection && !this.parent.comparePosition(beforeStartsAtDirection, this.direction)
-
-        this.parent.indicators.moves.push({
-            direction: this.parent.rotateDirection(this.direction),
-            position: { ...this.startsAt },
-            sprite: this.parent.indicators.moves.length && !hasCurveBefore ? 1 : 2
-        })
-
-        hasCurveBefore && this.parent.indicators.moves.push({
-            direction: this.parent.rotateDirection({
-                column: beforeStartsAtDirection.column * -1,
-                row: beforeStartsAtDirection.row * -1,
-            }),
-            position: { ...this.startsAt },
-            sprite: 3,
-        })
-
-    }
-
-    calculateLastIndicators() {
-
-        this.startsAt.column += this.direction.column
-        this.startsAt.row    += this.direction.row
-
-        while (!this.parent.comparePosition(this.endsAt, this.startsAt)) {
-                
-            if (!this.jumpBetween || !this.parent.comparePosition(this.jumpBetween.position, this.startsAt)) {
-                this.parent.indicators.moves.push({
-                    direction: this.parent.rotateDirection(this.direction),
-                    position: { ...this.startsAt },
-                    sprite: 1
-                })
-            }
-
-            this.startsAt.column += this.direction.column
-            this.startsAt.row    += this.direction.row
-
-        }
-        
-        if (!this.afterEndsAt)
-            this.parent.indicators.spots.push(this.endsAt)
-
     }
 
     // --> Final Class <-- //

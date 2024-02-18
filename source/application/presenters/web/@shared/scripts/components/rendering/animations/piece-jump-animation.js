@@ -33,8 +33,6 @@ export class PieceJumpAnimation {
         this.parent.state.board.spots[this.jump.position.row][this.jump.position.column] = undefined
         
         this.parent.state.score[this.jump.piece.player ? 0 : 1]++
-        
-        this.parent.indicators.jumps.push(this.jump.position)
 
     }
 
@@ -100,8 +98,6 @@ export class PieceJumpAnimation {
             })
 
         }
-
-        this.parent.indicators.jumps.push(this.jump.position)
 
         this.started = true
 

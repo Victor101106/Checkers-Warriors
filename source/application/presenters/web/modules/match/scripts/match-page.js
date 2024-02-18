@@ -38,6 +38,9 @@ socket.events.on('receive-match-accepted', async (event) => {
     render.configureElements()
     render.beginRendering()
 
+    if (event.movements.length)
+        render.screens.boardScreen.renderBoard.calculateMovementIndicators(event.movements.at(-1))
+
     if (event.turn == event.indexOf)
         socket.findAllMovements()
 
