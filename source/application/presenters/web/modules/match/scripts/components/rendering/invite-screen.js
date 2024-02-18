@@ -45,10 +45,10 @@ export class InviteScreen {
         this.context.drawImage(this.parent.sprites['section-separator'], translateX + acceptInviteButton.width / 2 - 17 / 2 | 0, translateY + acceptInviteButton.height + 2 | 0)
        
         this.context.globalAlpha = acceptInviteButton.hovering ? 1.00 : 0.60
-        this.parent._renderString(acceptInviteButton.caption, acceptInviteButton.left, acceptInviteButton.top, characters)
+        this.parent._renderString(acceptInviteButton.caption, characters, 0, acceptInviteButton.top, this.canvas.width, 5, 'center')
        
         this.context.globalAlpha = justWatchButton.hovering ? 1.00 : 0.60
-        this.parent._renderString(justWatchButton.caption, justWatchButton.left, justWatchButton.top, characters)
+        this.parent._renderString(justWatchButton.caption, characters, 0, justWatchButton.top, this.canvas.width, 5, 'center')
 
         this.context.globalAlpha = 1.00
 

@@ -98,7 +98,7 @@ export class BoardScreen {
 
         this.context.drawImage(this.parent.sprites['profile-picture'], left, top)
 
-        this.parent._renderString(players[0], left + 9, top + 1, characters, 14)
+        this.parent._renderString(players[0], characters, left + 9, top + 1, 14 * 4 - 1, 5)
 
         this.context.globalAlpha = 1.00
         
@@ -116,11 +116,11 @@ export class BoardScreen {
 
         this.context.globalAlpha = 0.60
 
-        this.parent._renderString(seconds.length == 1 ? '0'.concat(seconds) : seconds, left - 7, top, characters, 2)
+        this.parent._renderString(seconds.length == 1 ? '0'.concat(seconds) : seconds, characters, left - 7, top, 2 * 4 - 1, 5)
         
         this.context.drawImage(this.parent.sprites['character-colon'], left - 10, top)
         
-        this.parent._renderString(minutes.length == 1 ? '0'.concat(minutes) : minutes, left - 17, top, characters, 2)
+        this.parent._renderString(minutes.length == 1 ? '0'.concat(minutes) : minutes, characters, left - 17, top, 2 * 4 - 1, 5)
 
         this.context.globalAlpha = 1.00
 
@@ -136,11 +136,11 @@ export class BoardScreen {
 
         this.context.globalAlpha = 0.60
 
-        this.parent._renderString(String(score[0]).split('').reverse().join(''), left - 3, top, characters, Infinity, -1)
+        this.parent._renderString(String(score[0]).split('').reverse().join(''), characters, left - 7, top, 7, 5, 'right')
         
         this.context.drawImage(this.parent.sprites['character-cross'], left - 3, top + 6)
         
-        this.parent._renderString(String(score[1]).split('').reverse().join(''), left - 3, top + 10, characters, Infinity, -1)
+        this.parent._renderString(String(score[1]).split('').reverse().join(''), characters, left - 7, top + 10, 7, 5, 'right')
 
         this.context.globalAlpha = 1.00
 
@@ -156,7 +156,7 @@ export class BoardScreen {
         
         this.context.drawImage(this.parent.sprites['character-lines'], optionsButton.left, optionsButton.top)
         
-        this.parent._renderString(optionsButton.caption, optionsButton.left + 6, optionsButton.top, characters)
+        this.parent._renderString(optionsButton.caption, characters, optionsButton.left + 6, optionsButton.top, optionsButton.caption.length * 4 - 1, 5)
 
         this.context.globalAlpha = 1.00
 
@@ -177,7 +177,7 @@ export class BoardScreen {
 
         this.context.drawImage(this.parent.sprites['profile-picture'], left, top)
         
-        this.parent._renderString(players[1].split('').reverse().join(''), left - 5, top + 1, characters, 14, -1)
+        this.parent._renderString(players[1], characters, left - 14 * 4 - 1, top + 1, 14 * 4 - 1, 5, 'right')
 
         this.context.globalAlpha = 1.00
 

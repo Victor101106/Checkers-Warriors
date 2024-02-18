@@ -43,7 +43,7 @@ export class WinnerScreen {
         this.context.drawImage(image, this.parent.container.width / 2 - image.width / 2 | 0, this.parent.container.height / 2 - image.height / 2 | 0)
 
         this.context.globalAlpha = returnToHomeButton.hovering ? 1.00 : 0.75
-        this.parent._renderString(returnToHomeButton.caption, returnToHomeButton.left, returnToHomeButton.top, this.parent.state.indexOf == -1 || this.parent.state.winner == this.parent.state.indexOf ? this.parent.sprites['characters-green'] : this.parent.sprites['characters-red'])
+        this.parent._renderString(returnToHomeButton.caption, this.parent.state.indexOf == -1 || this.parent.state.winner == this.parent.state.indexOf ? this.parent.sprites['characters-green'] : this.parent.sprites['characters-red'], returnToHomeButton.left, returnToHomeButton.top, this.parent.board.width, 5)
 
         this.context.globalAlpha = 1.00
 

@@ -14,7 +14,7 @@ export class Render {
 
     constructor(canvas, context, language, options) {
         this.renderFlicker = new RenderFlicker(canvas, context)
-        this.renderText = new RenderText(context)
+        this.renderText = new RenderText(canvas, context)
         this.events = new EventEmitter()
         this.currentScreen = undefined
         this.animations = new Array()
@@ -196,8 +196,8 @@ export class Render {
 
     }
 
-    _renderString(string, left, top, characterImage, maxLength = Infinity, positionIncrement = 1) {
-        this.renderText.render(string, { left, top }, characterImage, maxLength, positionIncrement)
+    _renderString(text, sprite, left, top, width, height, align, baseline) {
+        this.renderText.render(text, sprite, left, top, width, height, align, baseline)
     }
 
     // --> Final Class
