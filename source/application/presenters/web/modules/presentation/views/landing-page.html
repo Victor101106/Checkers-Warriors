@@ -25,21 +25,19 @@
 <body>
 
     <!-- Header -->
-    <header id="header-container">
-        <div id="header-left-wrapper">
-            <a id="header-link" href="/"><img id="header-logotype" src="/static/@shared/assets/logomark.png" alt="Checkers Warrior Logo"></a>
-            <i id="header-menu-toggle" class="ri-menu-line"></i>
-        </div>
-        <nav id="header-nav-wrapper">
-            <a class="header-nav-link" href="/"><button class="button-tertiary">Home</button></a>
-            <a class="header-nav-link" href="/about"><button class="button-tertiary">About</button></a>
-            <a class="header-nav-link" href="https://github.com/Victor101106/Checkers-Warriors" target="_blank"><button class="button-tertiary">Repository</button></a>
-            <% if (auth) { %>
-                <a class="header-nav-link" href="/create-match"><button class="button-secondary-smooth">Create Match</button></a>
-            <% } else { %>
-                <a class="header-nav-link" href="/signup"><button class="button-secondary-smooth">Sign Up</button></a>
-            <% }  %>
+    <header id="header-wrapper">
+        <a href="/"><img id="header-img" src="/static/@shared/assets/logomark.png" alt="Checkers Warriors's Logo"></a>
+        <nav id="header-nav">
+            <a href="/"><button class="button-tertiary button-selected">Home</button></a>
+            <a href="/create-match"><button class="button-tertiary">Create</button></a>
+            <a href="/about"><button class="button-tertiary">About</button></a>
+            <a href="https://github.com/Victor101106/Checkers-Warriors"><button class="button-tertiary">Repository</button></a>
         </nav>
+        <% if (auth) { %>
+            <a href="/create-match"><button class="button-secondary-smooth">Create <i class="ri-add-line"></i></button></a>
+        <% } else { %>
+            <a href="/signup"><button class="button-secondary-smooth">Sign Up <i class="ri-user-add-line"></i></button></a>
+        <% }  %>
     </header>
 
     <!-- Main -->

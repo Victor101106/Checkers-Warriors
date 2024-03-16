@@ -75,13 +75,19 @@
 /* <!-- Button Tertiary --> */
 
 .button-tertiary {
+    color: var(--color-primary-200);
     background: none;
-    color: #ffffff;
     opacity: 0.5;
     border: none;
 }
 
 .button-tertiary:hover {
+    background: var(--color-primary-800);
+    opacity: 1;
+}
+
+.button-tertiary.button-selected {
+    color: var(--color-primary-100);
     opacity: 1;
 }
 
