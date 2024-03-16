@@ -1,15 +1,14 @@
-
 /* <!-- Board Style --> */
 
-.board-container {
-    transform: rotateX(-5deg) rotateY(-40deg) rotateZ(10deg);
+.board-wrapper {
+    transform: rotateX(-2.5deg) rotateY(-30deg) rotateZ(5deg);
     transform-style: preserve-3d;
     transition: transform .5s;
     position: relative;
     display: flex;
 }
 
-.board-container:hover {
+.board-wrapper:hover {
     transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
 }
 

@@ -1,79 +1,122 @@
-/* <!-- General Style --> */
+/* <!-- Imports --> */
 
-html, body {
-    grid-template-rows: min-content 1fr min-content;
-    background-size: 6rem;
-    display: grid;
-}
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@200..700&display=swap');
 
 /* <!-- Main Style --> */
 
-#main-container {
-    justify-content: space-around;
-    align-items: center;
-    display: flex;
-    padding: 4rem;
-    margin: auto;
-    width: 100vw;
-    gap: 4rem;
+#main-wrapper {
+    padding-bottom: 6vh;
 }
 
-#main-left-wrapper {
-    height: fit-content;
-    width: min-content;
+#main-text-wrapper {
+    flex-direction: column;
+    margin-block: 8vh 10vh;
+    margin-inline: auto;
+    align-items: center;
+    position: relative;
+    width: max-content;
+    display: flex;
+}
+
+#main-subtitle {
+    color: var(--color-primary-300);
+    font-size: min(2.8vw, 1.4rem);
+    text-transform: uppercase;
+    letter-spacing: .12rem;
+    margin-bottom: 3vh;
+    text-align: center;
+    user-select: none;
+    font-weight: 700;
+    opacity: .6;
+}
+
+#main-title, #main-title span {
+    font-family: "Anton", sans-serif;
+    text-transform: uppercase;
+    text-align: center;
+    user-select: none;
+    font-weight: 400;
+    line-height: 94%;
 }
 
 #main-title {
-    text-transform: capitalize;
-    font-size: min(14vw, 8rem);
-    margin-bottom: .8rem;
-    width: max-content;
-    cursor: default;
-    color: white;
+    color: var(--color-primary-200);
+    font-size: min(17.3vw, 12rem);
 }
 
-#main-title-span {
-    border-bottom: min(.4rem, 2vw) dashed #8DC3A7;
-    transition: color .25s, border .25s;
-    font-size: min(17vw, 8.5rem);
+#main-title span {
+    color: var(--color-primary-100);
+    font-size: min(21vw, 14.6rem);
 }
 
-#main-title-span:hover {
-    color: #8DC3A7;
+#main-button-wrapper {
+    padding-inline: 2rem;
+    margin-bottom: 12vh;
+    place-items: center;
+    display: grid;
 }
 
-#main-text {
-    font-size: min(4.5vw, 1.8rem);
-    margin-bottom: 2.2rem;
-    cursor: default;
-    color: white;
+#main-button-wrapper a {
+    z-index: 1;
 }
 
-#main-buttons {
-    align-items: center;
-    display: flex;
-    gap: 1rem;
+#main-button {
+    gap: 2.6rem;
 }
 
-#main-board {
-    max-width: 48rem;
-    min-width: 10rem;
-    width: 100%;
+#main-board-wrapper {
+    width: min(88vw, 60rem);
+    border-radius: .4rem;
+    aspect-ratio: 1/1;
+    background: none;
+    display: block;
+    margin: auto;
 }
 
-@media (max-width: 38rem) {
-    
-    #main-buttons .outlined-button span {
-        display: none;
-    }
+/* <!-- Sticker Styles --> */
 
-    #main-container {
-        flex-direction: column;
-        width: min-content;
-        padding-top: 15vh;
-        gap: 14vh;
-    }
-    
+.sticker {
+    image-rendering: pixelated;
+    position: absolute;
+    user-select: none;
+}
+
+#sticker-crown-1 {
+    transform: translate(-50%, -65%) rotateZ(30deg);
+    height: min(4rem, 6vw);
+    left: 100%;
+}
+
+#sticker-crown-2 {
+    transform: translateY(.6rem);
+    position: relative;
+    height: 3.2rem;
+}
+
+#sticker-skull-1 {
+    transform: translate(-40%, -90%) rotateZ(10deg);
+    height: min(8rem, 12vw);
+}
+
+#sticker-skull-2 {
+    transform: rotateZ(-30deg);
+    height: min(7rem, 9vw);
+    opacity: .75;
+    left: 60%;
+    top: 100%;
+}
+
+#sticker-black {
+    transform: rotateZ(20deg);
+    height: min(6.4rem, 8vw);
+    left: 97%;
+    top: 66%;
+}
+
+#sticker-white {
+    transform: translate(-40%, -40%) rotateZ(-30deg);
+    height: min(6rem, 8vw);
+    top: 100%;
 }
 
 /* <!-- Final Style --> */

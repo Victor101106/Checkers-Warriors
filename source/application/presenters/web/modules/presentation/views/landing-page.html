@@ -41,28 +41,33 @@
     </header>
 
     <!-- Main -->
-    <main id="main-container">
-        <section id="main-left-wrapper">
-            <h1 id="main-title">Let's Play<br><span id="main-title-span">Checkers!</span></h1>
-            <p id="main-text">Checkers is a classic board game, now imagine it with pixelated visuals and some gameplay updates. Well, this is <strong>Checkers Warriors</strong>!</p>
-            <div id="main-buttons">
-                <a href="<%= auth ? '/create-match' : '/signup' %>">
-                    <button class="button-cta">
-                        <span>Get Started</span>
-                        <i class="ri-arrow-right-line"></i>
-                    </button>
-                </a>
-                <button class="button-secondary-ghost">
-                    <i class="ri-discord-fill"></i>
-                    <span>Join our Discord</span>
-                </button>
+    <main id="main-wrapper">
+        <div id="main-text-wrapper">
+            <h2 id="main-subtitle" translate="no">Checkers Warriors</h2>
+            <div id="main-title-wrapper">
+                <img class="sticker" id="sticker-skull-1" src="/static/@shared/assets/sprites/indicator-jump.png" alt="Skull">
+                <img class="sticker" id="sticker-skull-2" src="/static/@shared/assets/sprites/indicator-jump.png" alt="Skull">
+                <img class="sticker" id="sticker-crown-1" src="/static/@shared/assets/sprites/piece-crown.png"    alt="Crown">
+                <img class="sticker" id="sticker-white"   src="/static/@shared/assets/sprites/piece-white.png"    alt="Piece">
+                <img class="sticker" id="sticker-black"   src="/static/@shared/assets/sprites/piece-black.png"    alt="Piece">
+                <h1 id="main-title" translate="no">Lets Become <br> <span>Warriors!</span></h1>
             </div>
-        </section>
-        <section class="board-container" id="main-board">
-            <div class="board-face board-front"></div>
-            <div class="board-face board-right"></div>
-            <div class="board-face board-top"></div>
-        </section>
+        </div>
+        <div id="main-button-wrapper">
+            <img class="sticker" id="sticker-crown-2" src="/static/@shared/assets/sprites/piece-crown.png" alt="Crown">
+            <% if (auth) { %>
+                <a href="/create"><button class="button-cta button-big" id="main-button"> Get Started Free <i class="ri-arrow-right-line"></i> </button></a>
+            <% } else { %>
+                <a href="/signup"><button class="button-cta button-big" id="main-button"> Get Started Free <i class="ri-arrow-right-line"></i> </button></a>
+            <% }  %>
+        </div>
+        <div id="main-board-wrapper">
+            <section class="board-wrapper">
+                <div class="board-face board-front"></div>
+                <div class="board-face board-right"></div>
+                <div class="board-face board-top"></div>
+            </section>
+        </div>
     </main>
 
     <!-- Footer -->

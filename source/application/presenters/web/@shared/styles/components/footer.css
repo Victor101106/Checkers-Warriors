@@ -1,7 +1,9 @@
 /* <!-- Footer Style --> */
 
 #footer-container {
+    justify-content: center;
     padding: 1.4rem;
+    display: flex;
     margin: auto;
 }
 
