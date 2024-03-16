@@ -3,9 +3,9 @@
 html, body {
     overflow: hidden;
     height: 100vh;
-    height: 100dvh;
+    height: 100svh;
     width: 100vw;
-    width: 100dvw;
+    width: 100svw;
 }
 
 /* <!-- Canvas Style --> */

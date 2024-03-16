@@ -4,6 +4,10 @@ html, body {
     grid-template-rows: min-content 1fr min-content;
     background-size: 6rem;
     display: grid;
+    height: 100vh;
+    height: 100svh;
+    width: 100vw;
+    width: 100svw;
 }
 
 /* <!-- Main Style --> */
