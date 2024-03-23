@@ -155,13 +155,22 @@ export class BoardAuxiliary {
 
     }
 
+    static calculateElement(columns, rows) {
+        
+        const width  = columns * 16 + 2
+        const height = rows * 16 + 8
+
+        return { height, width }
+
+    }
+
     calculateElement(state = this.state, position = this.position) {
         
-        const height = state.board.rows * 16 + 8
-        const width = state.board.columns * 16 + 2
-
-        this.element = { ...position, height, width }
-
+        this.element =  {
+            ...BoardAuxiliary.calculateElement(state.board.columns, state.board.rows),
+            ...position
+        }
+        
         return this.element
 
     }

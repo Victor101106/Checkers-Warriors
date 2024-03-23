@@ -1,5 +1,7 @@
-import { createMatchRequest } from "./components/request/create-match-request.js"
 import { statusHandler } from "../../../@shared/scripts/components/handlers/status-handler.js"
+import { createMatchRequest } from "./components/request/create-match-request.js"
+
+import '../../../@shared/scripts/components/rendering/flicker-overlay.js'
 
 const [ cardListItemButtonBrazilian ] = [ document.querySelector('#card-list-item-button-brazilian') ]
 

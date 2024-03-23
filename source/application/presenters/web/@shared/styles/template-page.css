@@ -18,9 +18,7 @@
 }
 
 html, body {
-    background-image: url('/static/@shared/assets/background.gif');
-    background-color: #0d302a;
-    background-size: 6rem;
+    position: relative;
 }
 
 /* <!-- Final Style --> */

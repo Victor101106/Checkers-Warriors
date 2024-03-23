@@ -13,6 +13,7 @@
     <link rel="shortcut icon" href="/static/@shared/assets/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="/static/modules/presentation/styles/landing-page.css">
     <link rel="stylesheet" href="/static/@shared/styles/components/buttons.css">
+    <link rel="stylesheet" href="/static/@shared/styles/components/overlay.css">
     <link rel="stylesheet" href="/static/@shared/styles/components/footer.css">
     <link rel="stylesheet" href="/static/@shared/styles/components/header.css">
     <link rel="stylesheet" href="/static/@shared/styles/components/tokens.css">
@@ -23,6 +24,9 @@
 
 </head>
 <body>
+
+    <!-- Overlay -->
+    <canvas id="canvas-overlay"></canvas>
 
     <!-- Header -->
     <header id="header-wrapper">
@@ -75,6 +79,9 @@
         <a class="footer-link" href="https://github.com/Victor101106/Checkers-Warriors" target="_blank"><i class="footer-icon ri-github-fill"></i></a>
         <a class="footer-link" href="https://www.linkedin.com/in/victor101106/" target="_blank"><i class="footer-icon ri-linkedin-fill"></i></a>
     </footer>
+
+    <!-- Script -->
+    <script type="module" src="/static/@shared/scripts/components/rendering/flicker-overlay.js"></script>
 
 </body>
 </html>

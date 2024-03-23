@@ -82,7 +82,6 @@
 }
 
 .button-tertiary:hover {
-    background: var(--color-primary-800);
     opacity: 1;
 }
 

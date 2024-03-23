@@ -1,0 +1,15 @@
+/* <!-- Overlay Style --> */
+
+#canvas-overlay {
+    height: max(100%, min(100vh, 100dvh));
+    width: max(100%, min(100vw, 100dvw));
+    background-color: #0d302a;
+    image-rendering: pixelated;
+    pointer-events: none;
+    position: absolute;
+    z-index: -1;
+    left: 0rem;
+    top: 0rem;
+}
+
+/* <!-- Final Style --> */

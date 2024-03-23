@@ -2,6 +2,8 @@ import { statusHandler } from '../../../@shared/scripts/components/handlers/stat
 import { signinRequest } from './components/request/signin-request.js'
 import InputValidation from './components/form/input-validation.js'
 
+import '../../../@shared/scripts/components/rendering/flicker-overlay.js'
+
 const [ passwordInput, emailInput, submitButton, formError ] = [
     document.querySelector('#form-password-input'),
     document.querySelector('#form-email-input'),
