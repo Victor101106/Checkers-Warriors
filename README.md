@@ -19,9 +19,14 @@
 ##
 
 ## Content Table
+- [Requirements](#requirements)
 - [Conventional Commits](#conventional-commits)
 - [License](#license)
 - [Contact](#contact)
+
+## Requirements
+
+1. `NodeJS v20.x`.
 
 ## Conventional Commits
 

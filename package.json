@@ -1,0 +1,51 @@
+{
+  "name": "checkers-warriors",
+  "version": "0.0.1",
+  "description": "Checkers Warriors is a web application that brings together all types of checkers games on a single platform, with a focus on online multiplayer. In addition to classic rules, the game introduces a unique variant with special cards, offering a more engaging experience. It’s the perfect place for checkers enthusiasts to explore this timeless game!",
+  "keywords": [
+    "checkers",
+    "checkers-game",
+    "multiplayer",
+    "multiplayer-game",
+    "board-game",
+    "strategy-game",
+    "online-checkers",
+    "checkers-online",
+    "game-development",
+    "clean-architecture",
+    "typescript",
+    "html",
+    "css",
+    "javascript",
+    "html-css-js",
+    "modern-checkers",
+    "variant-rules",
+    "card-based-game",
+    "web-checkers",
+    "checkers-platform",
+    "checkers-variants",
+    "game-platform",
+    "online-gaming",
+    "multiplayer-strategy",
+    "web-based-game",
+    "web-app-game",
+    "checkers-warriors"
+  ],
+  "author": {
+    "name": "Victor Gabriel",
+    "email": "victorgabriel101106+github@gmail.com",
+    "url": "https://github.com/Victor101106/"
+  },
+  "homepage": "https://github.com/Victor101106/Checkers-Warriors#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Victor101106/Checkers-Warriors"
+  },
+  "bugs": {
+    "url": "https://github.com/Victor101106/Checkers-Warriors/issues"
+  },
+  "engines": {
+    "node": "20.x"
+  },
+  "license": "GPL-3.0-only"
+}
