@@ -32,6 +32,22 @@
 
 This project follows the [Conventional Commits](https://www.conventionalcommits.org/) specification to maintain a clean and consistent commit history.
 
+### Commitizen: How to Use
+
+1. Stage your changes:
+
+    ```bash
+    git add [<pathspec>...]
+    ```
+
+2. Commit using `Commitizen`:
+
+    ```bash
+    npm run git:commit
+    ```
+
+3. Follow the interactive prompts. `Commitizen` will guide you through crafting a proper commit message.
+
 ### Message Structure
 
 The commit message should be structured as follows:
